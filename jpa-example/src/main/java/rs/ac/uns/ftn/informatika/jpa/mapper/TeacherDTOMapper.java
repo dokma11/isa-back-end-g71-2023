@@ -14,7 +14,7 @@ public class TeacherDTOMapper {
 	
 	@Autowired
 	public TeacherDTOMapper(ModelMapper modelMapper) {
-		this.modelMapper = modelMapper;
+		TeacherDTOMapper.modelMapper = modelMapper;
 	}
 
 	public static Teacher fromDTOtoTeacher(TeacherDTO dto) {
