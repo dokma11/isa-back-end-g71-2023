@@ -1,3 +1,3 @@
-UPDATE public.student
-	SET last_name='Petrovic'
+UPDATE public.company
+	SET description='Petrovic'
 	WHERE id = 1;
