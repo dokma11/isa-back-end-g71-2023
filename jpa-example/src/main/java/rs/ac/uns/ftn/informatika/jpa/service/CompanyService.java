@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,15 @@ public class CompanyService {
 
     public void remove(Integer id) {
         companyRepository.deleteById(id);
+    }
+
+    public List<Company> search(String searchTerm, String searchType){
+        if ("name".equals(searchType)) {
+            return companyRepository.findByNameContainingIgnoreCase(searchTerm);
+        } else if ("city".equals(searchType)) {
+            return companyRepository.findByAddressContainingIgnoreCase(searchTerm);
+        } else {
+            return Collections.emptyList();
+        }
     }
 }
