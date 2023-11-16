@@ -35,6 +35,9 @@ public class Company {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<Appointment>();
 
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Grade> grades = new HashSet<Grade>();
+
     public Company() {
     }
 
@@ -136,6 +139,14 @@ public class Company {
     public void removeAppointment(Appointment appointment) {
         appointments.remove(appointment);
         appointment.setCompany(null);
+    }
+
+    public Set<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<Grade> grades) {
+        this.grades = grades;
     }
 
     @Override
