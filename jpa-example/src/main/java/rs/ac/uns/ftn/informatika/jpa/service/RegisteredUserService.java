@@ -18,27 +18,23 @@ public class RegisteredUserService {
     RegisteredUserRepository registeredUserRepository;
 
     @Autowired
-    MailService mailService;
-
+    private MailService mailService;
     public Page<RegisteredUser> findAll(Pageable pageable) {return registeredUserRepository.findAll(pageable);}
-    public RegisteredUser create(RegisteredUser user) throws MailException {
-
-        RegisteredUser newUser =  registeredUserRepository.save(user);
-        try{
-                mailService.sendRegistrationNotification(newUser);
-        }
-        catch(InterruptedException e){
-            System.out.println("Interrupted exeption cught");
-        }
-
-
-        return newUser;
-
-    }
+    public RegisteredUser create(RegisteredUser user)  { return registeredUserRepository.save(user); }
     public void remove(int id) { registeredUserRepository.deleteById(id);}
 
     public List<RegisteredUser> getAll() {return registeredUserRepository.findAll();}
     public RegisteredUser findOne(Integer id){
         return registeredUserRepository.findById(id).orElse(null);
+    }
+
+    public RegisteredUser register(RegisteredUser user) throws MailException{
+        RegisteredUser newUser = create(user);
+        try{
+            mailService.sendRegistrationNotification(newUser);
+        }catch(InterruptedException e){
+            System.out.println("Interrupted exception!");
+        }
+        return newUser;
     }
 }

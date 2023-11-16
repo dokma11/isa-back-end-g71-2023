@@ -27,6 +27,6 @@ public class MailService {
         mail.setText("Hello " + user.getName() + ",\n\nthank you for using our site.\nYour registration was successfull!");
         javaMailSender.send(mail);
 
-        System.out.println("Email poslat!");
+        System.out.println("Email sent!");
     }
 }
