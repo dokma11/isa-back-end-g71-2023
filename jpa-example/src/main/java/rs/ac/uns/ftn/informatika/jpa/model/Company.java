@@ -2,6 +2,8 @@ package rs.ac.uns.ftn.informatika.jpa.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -34,6 +36,9 @@ public class Company {
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<Appointment>();
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CompanyComplaint> complaints;
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Grade> grades = new HashSet<Grade>();
@@ -123,6 +128,7 @@ public class Company {
         administrators.remove(administrator);
         administrator.setCompany(null);
     }
+
     public Set<Appointment> getAppointments() {
         return appointments;
     }
@@ -147,6 +153,14 @@ public class Company {
 
     public void setGrades(Set<Grade> grades) {
         this.grades = grades;
+    }
+
+    public List<CompanyComplaint> getComplaints() {
+        return complaints;
+    }
+
+    public void setComplaints(List<CompanyComplaint> complaints) {
+        this.complaints = complaints;
     }
 
     @Override

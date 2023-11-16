@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.model;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 
 @Entity
@@ -16,6 +17,12 @@ public class RegisteredUser extends User{
 
     @Column(name = "category", unique = false, nullable = true)
     private User_Category category;
+
+    @OneToMany(mappedBy = "registeredUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CompanyComplaint> companyComplaints;
+
+    @OneToMany(mappedBy = "registeredUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AdministratorComplaint> administratorComplaints;
 
     public RegisteredUser() {
         // predefined values
@@ -51,5 +58,21 @@ public class RegisteredUser extends User{
 
     public void setGivenGrade(Set<Grade> givenGrade) {
         this.givenGrade = givenGrade;
+    }
+
+    public List<CompanyComplaint> getCompanyComplaints() {
+        return companyComplaints;
+    }
+
+    public void setCompanyComplaints(List<CompanyComplaint> companyComplaints) {
+        this.companyComplaints = companyComplaints;
+    }
+
+    public List<AdministratorComplaint> getAdministratorComplaints() {
+        return administratorComplaints;
+    }
+
+    public void setAdministratorComplaints(List<AdministratorComplaint> administratorComplaints) {
+        this.administratorComplaints = administratorComplaints;
     }
 }
