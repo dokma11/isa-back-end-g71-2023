@@ -1,12 +1,9 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Company {
@@ -32,6 +29,9 @@ public class Company {
 
     @Column(name = "averageGrade", nullable = true)
     private double averageGrade;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CompanyComplaint> complaints;
 
 /*
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -116,6 +116,14 @@ public class Company {
     }
 
      */
+
+    public List<CompanyComplaint> getComplaints() {
+        return complaints;
+    }
+
+    public void setComplaints(List<CompanyComplaint> complaints) {
+        this.complaints = complaints;
+    }
 
     @Override
     public int hashCode() {
