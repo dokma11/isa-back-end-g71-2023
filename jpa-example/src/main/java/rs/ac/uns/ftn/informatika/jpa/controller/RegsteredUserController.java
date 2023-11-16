@@ -38,7 +38,7 @@ public class RegsteredUserController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<RegisteredUserResponseDTO> create(@RequestBody RegisterUserCreateDTO user){
+    public ResponseEntity<RegisteredUserResponseDTO> register(@RequestBody RegisterUserCreateDTO user){
         try{
             RegisteredUser newUser = new RegisteredUser();
 
@@ -55,7 +55,7 @@ public class RegsteredUserController {
 
 
             //saving new user
-            RegisteredUser savedUser = registeredUserService.create(newUser);
+            RegisteredUser savedUser = registeredUserService.register(newUser);
 
             //DTO mapping
             RegisteredUserResponseDTO response = new RegisteredUserResponseDTO(savedUser);
