@@ -1,12 +1,10 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Company {
@@ -32,6 +30,8 @@ public class Company {
 
     @Column(name = "averageGrade", nullable = true)
     private double averageGrade;
+
+
 
 /*
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -130,5 +130,16 @@ public class Company {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Grade> grades = new HashSet<Grade>();
+
+    public Set<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<Grade> grades) {
+        this.grades = grades;
     }
 }
