@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 
 import javax.persistence.*;
@@ -138,5 +140,16 @@ public class Company {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Grade> grades = new HashSet<Grade>();
+
+    public Set<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<Grade> grades) {
+        this.grades = grades;
     }
 }

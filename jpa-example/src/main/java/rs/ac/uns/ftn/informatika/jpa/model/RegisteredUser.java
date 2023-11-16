@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 
 
@@ -29,6 +31,10 @@ public class RegisteredUser extends User{
         setRole(UserRole.REGISTERED_USER);
     }
 
+    @OneToMany(mappedBy = "registeredUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Grade> givenGrade = new HashSet<Grade>();
+
+
     public int getPoints() {
         return points;
     }
@@ -43,6 +49,15 @@ public class RegisteredUser extends User{
 
     public void setCategory(User_Category category) {
         this.category = category;
+    }
+
+
+    public Set<Grade> getGivenGrade() {
+        return givenGrade;
+    }
+
+    public void setGivenGrade(Set<Grade> givenGrade) {
+        this.givenGrade = givenGrade;
     }
 
     public List<CompanyComplaint> getCompanyComplaints() {
