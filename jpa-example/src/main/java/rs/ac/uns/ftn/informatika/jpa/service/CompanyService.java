@@ -46,4 +46,10 @@ public class CompanyService {
             return Collections.emptyList();
         }
     }
+    public Company findOneWithAdministrators(Integer id) {
+        return companyRepository.findOneWithAdministrators(id);
+    }
+    public Company findOneWithAppointments(Integer id) {
+        return companyRepository.findOneWithAppointments(id);
+    }
 }

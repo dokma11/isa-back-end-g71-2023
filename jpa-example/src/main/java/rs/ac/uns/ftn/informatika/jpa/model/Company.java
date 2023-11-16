@@ -1,12 +1,8 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
-import java.util.ArrayList;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.*;
 
 @Entity
 public class Company {
@@ -33,10 +29,11 @@ public class Company {
     @Column(name = "averageGrade", nullable = true)
     private double averageGrade;
 
-/*
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<CompanyAdministrator> administrators = new HashSet<CompanyAdministrator>();
+
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<User> administrators = new List<User>(); // for now I will leave it as User, we need to see how we will model that
-    */
+    private Set<Appointment> appointments = new HashSet<Appointment>();
 
     public Company() {
     }
@@ -106,16 +103,40 @@ public class Company {
         this.averageGrade = averageGrade;
     }
 
-/*
-    public List<User> getAdministrators() {
+    public Set<CompanyAdministrator> getAdministrators() {
         return administrators;
     }
 
-    public void setAdministrators(List<User> administrators) {
+    public void setAdministrators(Set<CompanyAdministrator> administrators) {
         this.administrators = administrators;
     }
 
-     */
+    public void addAdministrator(CompanyAdministrator administrator) {
+        administrators.add(administrator);
+        administrator.setCompany(this);
+    }
+
+    public void removeAdministrator(CompanyAdministrator administrator) {
+        administrators.remove(administrator);
+        administrator.setCompany(null);
+    }
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+        appointment.setCompany(this);
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+        appointment.setCompany(null);
+    }
 
     @Override
     public int hashCode() {
