@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.RegisterUserCreateDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.RegisteredUserResponseDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.RegisteredUserUpdateDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.service.RegisteredUserService;
 
@@ -78,4 +79,46 @@ public class RegsteredUserController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
+    @PutMapping(value ="/{id}",consumes = "application/json")
+    public ResponseEntity<RegisteredUserResponseDTO> update(@PathVariable Integer id, @RequestBody RegisteredUserUpdateDTO user){
+        try{
+                RegisteredUser userForUpdate = registeredUserService.findOne(id);
+                if(userForUpdate == null){
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+                userForUpdate.setName(user.getName());
+                userForUpdate.setSurname(user.getSurname());
+                userForUpdate.setTelephoneNumber(user.getTelephoneNumber());
+                userForUpdate.setCity(user.getCity());
+                userForUpdate.setState(user.getState());
+                userForUpdate.setProfession(user.getProfession());
+                userForUpdate.setPassword(user.getPassword());
+                userForUpdate.setCompanyInformation(user.getCompanyInformation());
+
+                userForUpdate = registeredUserService.create(userForUpdate);
+                return new ResponseEntity<>(new RegisteredUserResponseDTO(userForUpdate),HttpStatus.OK);
+
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
+
+    @GetMapping(value ="/{id}")
+    public ResponseEntity<RegisteredUserResponseDTO> getOneUser(@PathVariable Integer id)
+    {
+        RegisteredUser u = registeredUserService.findOne(id);
+
+        if(u == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        RegisteredUserResponseDTO user = new RegisteredUserResponseDTO(u);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+
 }
