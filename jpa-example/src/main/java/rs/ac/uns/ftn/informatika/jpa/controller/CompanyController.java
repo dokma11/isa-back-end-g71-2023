@@ -96,10 +96,10 @@ public class CompanyController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CompanyDTO>> getSearchedCompanies(@RequestParam String searchTerm,
-                                                                 @RequestParam String searchType) {
+    public ResponseEntity<List<CompanyDTO>> getSearchedCompanies(@RequestParam String name,
+                                                                 @RequestParam String city) {
 
-        List<Company> searchedCompanies = companyService.search(searchTerm, searchType);
+        List<Company> searchedCompanies = companyService.search(name, city);
 
         // convert companies to DTOs
         List<CompanyDTO> companiesDTO = new ArrayList<>();
