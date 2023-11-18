@@ -1,7 +1,10 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
 public class Equipment {
 
     @Id
@@ -14,9 +17,12 @@ public class Equipment {
     private String description;
     @Column(name = "type",  unique = false, nullable = false)
     private String type;
-
     @Column(name = "grade",  unique = false, nullable = false)
     private int grade;
+
+    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+    @JoinTable(name = "equipmentCompanies", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"))
+    private Set<Company> companies = new HashSet<Company>();
 
     public Equipment() {
     }
@@ -67,5 +73,13 @@ public class Equipment {
 
     public void setGrade(int grade) {
         this.grade = grade;
+    }
+
+    public Set<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(Set<Company> companies) {
+        this.companies = companies;
     }
 }

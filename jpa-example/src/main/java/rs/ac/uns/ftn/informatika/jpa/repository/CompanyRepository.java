@@ -21,4 +21,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
             "where c.id = ?1")
     public Company findOneWithAdministratorsAndAppointments(Integer companyId);
 
+    @Query("select c from Company c join fetch c.equipment e where c.id =?1")
+    public Company findOneWithEquipment(Integer companyId);
 }

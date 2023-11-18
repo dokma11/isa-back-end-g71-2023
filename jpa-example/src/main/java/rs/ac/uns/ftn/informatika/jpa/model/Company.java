@@ -43,6 +43,10 @@ public class Company {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Grade> grades = new HashSet<Grade>();
 
+    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+    @JoinTable(name = "equipmentCompanies", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"))
+    private Set<Equipment> equipment = new HashSet<Equipment>();
+
     public Company() {
     }
 
@@ -161,6 +165,14 @@ public class Company {
 
     public void setComplaints(List<CompanyComplaint> complaints) {
         this.complaints = complaints;
+    }
+
+    public Set<Equipment> getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Set<Equipment> equipment) {
+        this.equipment = equipment;
     }
 
     @Override

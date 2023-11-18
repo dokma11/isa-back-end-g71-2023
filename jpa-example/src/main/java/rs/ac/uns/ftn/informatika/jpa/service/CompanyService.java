@@ -46,4 +46,7 @@ public class CompanyService {
     public Company findOneWithAppointments(Integer id) {
         return companyRepository.findOneWithAppointments(id);
     }
+    public Company findOneWithEquipment(Integer id) {
+        return companyRepository.findOneWithEquipment(id);
+    }
 }

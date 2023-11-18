@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import rs.ac.uns.ftn.informatika.jpa.dto.CompanyDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
+import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
 
 @RestController
@@ -110,4 +113,17 @@ public class CompanyController {
         return new ResponseEntity<>(companiesDTO, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{companyId}/equipment")
+    public ResponseEntity<List<EquipmentDTO>> getCompaniesEquipment(@PathVariable Integer companyId) {
+
+        Company company = companyService.findOneWithEquipment(companyId);
+
+        Set<Equipment> equipment = company.getEquipment();
+        List<EquipmentDTO> equipmentDTO = new ArrayList<>();
+
+        for (Equipment e : equipment) {
+            equipmentDTO.add(new EquipmentDTO(e));
+        }
+        return new ResponseEntity<>(equipmentDTO, HttpStatus.OK);
+    }
 }
