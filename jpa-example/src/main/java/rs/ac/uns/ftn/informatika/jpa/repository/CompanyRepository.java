@@ -7,9 +7,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Company;
 
 import java.util.List;
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
-    List<Company> findByNameContainingIgnoreCase(String name);
-
-    List<Company> findByAddressContainingIgnoreCase(String address);
+    List<Company> findByNameContainingIgnoreCaseAndAddressContainingIgnoreCase(String name, String address);
 
     @Query("select c from Company c join fetch c.administrators a where c.id =?1")
     public Company findOneWithAdministrators(Integer companyId);

@@ -37,14 +37,8 @@ public class CompanyService {
         companyRepository.deleteById(id);
     }
 
-    public List<Company> search(String searchTerm, String searchType){
-        if ("name".equals(searchType)) {
-            return companyRepository.findByNameContainingIgnoreCase(searchTerm);
-        } else if ("city".equals(searchType)) {
-            return companyRepository.findByAddressContainingIgnoreCase(searchTerm);
-        } else {
-            return Collections.emptyList();
-        }
+    public List<Company> search(String name, String city){
+        return companyRepository.findByNameContainingIgnoreCaseAndAddressContainingIgnoreCase(name,city);
     }
     public Company findOneWithAdministrators(Integer id) {
         return companyRepository.findOneWithAdministrators(id);
