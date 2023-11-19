@@ -20,9 +20,9 @@ public class Equipment {
     @Column(name = "grade",  unique = false, nullable = false)
     private int grade;
 
-    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
-    @JoinTable(name = "equipmentCompanies", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"))
-    private Set<Company> companies = new HashSet<Company>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinTable(name = "equipment_companies", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"))
+    private Set<Company> companies = new HashSet<>();
 
     public Equipment() {
     }

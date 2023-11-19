@@ -49,7 +49,7 @@ public class MailService {
             mimeMessageHelper.setSubject("Registration");
 
             // Use HTML for the email body and include a registration link
-            String registrationLink = "https://localhost:4200";
+            String registrationLink = "http://localhost:4200";
             String emailBody = "Hello " + user.getName() + ",<br/><br/>Thank you for using our site.<br/>Your registration was successful!<br/><br/>";
             emailBody += "To confirm your registration, please click the following link:<br/><a href='" + registrationLink + "'>" + registrationLink + "</a>";
 
