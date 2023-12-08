@@ -7,10 +7,10 @@ insert into company(id, address, average_grade, description, latitude, longitude
 
 insert into company_administrator(id, company_information, city, email, name, password, profession, role, state, surname, telephone_number, company_id) values (1, 'Iz dobre kompanije', 'Novi Sad', 'legenda@gmail.com', 'Vukasin', 'legenda11', 'Profesionalan sef', 1, 'Srbija', 'Dokmanovski', '0659443197', 1);
 
-insert into equipment(id, description, grade, name, type) values (1, 'Kvalitetan stalak', 4, 'Stalak za infuziju', 'Stalak');
-insert into equipment(id, description, grade, name, type) values (2, 'Ostra igla', 5, 'Igla za vadjenje krvi', 'Igla');
-insert into equipment(id, description, grade, name, type) values (3, 'Solidno udoban krevet', 3, 'Krevet za pacijenta', 'Krevet');
+insert into registered_user(id, company_information, city, email, name, password, profession, role, state, surname, telephone_number, points, category) values (2, 'Iz dobre kompanije', 'Novi Sad', 'legenda@gmail.com', 'Vukasin', 'legenda11', 'Profesionalan sef', 1, 'Srbija', 'Dokmanovski', '0659443197', 0, 0);
 
-insert into equipment_companies (equipment_id, company_id) values (1, 1);
-insert into equipment_companies (equipment_id, company_id) values (2, 1);
-insert into equipment_companies (equipment_id, company_id) values (3, 1);
+insert into equipment(id, description, grade, name, type, quantity, company_id) values (1, 'Kvalitetan stalak', 4, 'Stalak za infuziju', 'Stalak', 10, 1);
+insert into equipment(id, description, grade, name, type, quantity, company_id) values (2, 'Ostra igla', 5, 'Igla za vadjenje krvi', 'Igla', 20, 1);
+insert into equipment(id, description, grade, name, type, quantity, company_id) values (3, 'Solidno udoban krevet', 3, 'Krevet za pacijenta', 'Krevet', 30, 1);
+
+insert into appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id) values (1, 3, '2023-12-06T12:30:00', 1, 1, 2);

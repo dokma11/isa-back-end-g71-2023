@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.CompanyDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
+import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
+import rs.ac.uns.ftn.informatika.jpa.service.AppointmentService;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
 import rs.ac.uns.ftn.informatika.jpa.service.EquipmentService;
 
@@ -17,8 +19,12 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/equipment")
 public class EquipmentController {
+
     @Autowired
     private EquipmentService equipmentService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @GetMapping
     public ResponseEntity<List<EquipmentDTO>> getEquipment() {
@@ -50,11 +56,15 @@ public class EquipmentController {
     @PostMapping(consumes = "application/json")
     public ResponseEntity<EquipmentDTO> saveEquipment(@RequestBody EquipmentDTO equipmentDTO) {
 
+        Company company = companyService.findOne(equipmentDTO.getCompany().getId());
+
         Equipment equipment= new Equipment();
         equipment.setName(equipmentDTO.getName());
         equipment.setDescription(equipmentDTO.getDescription());
         equipment.setType(equipmentDTO.getType());
         equipment.setGrade(equipmentDTO.getGrade());
+        equipment.setQuantity(equipmentDTO.getQuantity());
+        equipment.setCompany(company);
 
         equipment = equipmentService.save(equipment);
         return new ResponseEntity<>(new EquipmentDTO(equipment), HttpStatus.CREATED);
@@ -74,6 +84,7 @@ public class EquipmentController {
         equipment.setDescription(equipmentDTO.getDescription());
         equipment.setType(equipmentDTO.getType());
         equipment.setGrade(equipmentDTO.getGrade());
+        equipment.setQuantity(equipmentDTO.getQuantity());
 
         equipment = equipmentService.save(equipment);
         return new ResponseEntity<>(new EquipmentDTO(equipment), HttpStatus.OK);

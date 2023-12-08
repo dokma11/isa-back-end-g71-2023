@@ -2,25 +2,41 @@ package rs.ac.uns.ftn.informatika.jpa.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Appointment {
+
+    public enum AppointmentStatus {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "adminName", nullable = false)
-    private String adminName;
+    @ManyToOne
+    @JoinColumn(name = "administrator_id", nullable = false)
+    private CompanyAdministrator administrator;
 
-    @Column(name = "adminSurname", nullable = false)
-    private String adminSurname;
-
+    // Da li treba odvojiti mozda u dva (time i date)
     @Column(name = "pickupTime", nullable = false)
     private LocalDateTime pickupTime;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "registered_user_id")
+    private RegisteredUser user;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinTable(name = "appointment_equipment", joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
+    private Set<Equipment> equipment = new HashSet<>();
+
+    @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<EquipmentQuantity> equipmentQuantities = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
@@ -29,11 +45,12 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(String adminName, String adminSurname, LocalDateTime pickupTime, Integer duration) {
-        this.adminName = adminName;
-        this.adminSurname = adminSurname;
+    public Appointment(CompanyAdministrator administrator, LocalDateTime pickupTime, Integer duration, RegisteredUser user, Company company) {
+        this.administrator = administrator;
         this.pickupTime = pickupTime;
         this.duration = duration;
+        this.user = user;
+        this.company = company;
     }
 
     public Integer getId() {
@@ -44,20 +61,12 @@ public class Appointment {
         this.id = id;
     }
 
-    public String getAdminName() {
-        return adminName;
+    public CompanyAdministrator getAdministrator() {
+        return administrator;
     }
 
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
-    }
-
-    public String getAdminSurname() {
-        return adminSurname;
-    }
-
-    public void setAdminSurname(String adminSurname) {
-        this.adminSurname = adminSurname;
+    public void setAdministrator(CompanyAdministrator administrator) {
+        this.administrator = administrator;
     }
 
     public LocalDateTime getPickupTime() {
@@ -74,6 +83,30 @@ public class Appointment {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public RegisteredUser getUser() {
+        return user;
+    }
+
+    public void setUser(RegisteredUser user) {
+        this.user = user;
+    }
+
+    public Set<Equipment> getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Set<Equipment> equipment) {
+        this.equipment = equipment;
+    }
+
+    public Set<EquipmentQuantity> getEquipmentQuantities() {
+        return equipmentQuantities;
+    }
+
+    public void setEquipmentQuantities(Set<EquipmentQuantity> equipmentQuantities) {
+        this.equipmentQuantities = equipmentQuantities;
     }
 
     public Company getCompany() {

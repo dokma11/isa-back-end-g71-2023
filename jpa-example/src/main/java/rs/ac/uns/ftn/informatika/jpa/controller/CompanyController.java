@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.CompanyDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentDTO;
+import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
@@ -125,5 +127,19 @@ public class CompanyController {
             equipmentDTO.add(new EquipmentDTO(e));
         }
         return new ResponseEntity<>(equipmentDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{companyId}/appointment")
+    public ResponseEntity<List<AppointmentDTO>> getCompaniesAppointments(@PathVariable Integer companyId) {
+
+        Company company = companyService.findOneWithAppointments(companyId);
+
+        Set<Appointment> appointments = company.getAppointments();
+        List<AppointmentDTO> appointmentDTO = new ArrayList<>();
+
+        for (Appointment a : appointments) {
+            appointmentDTO.add(new AppointmentDTO(a));
+        }
+        return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
     }
 }

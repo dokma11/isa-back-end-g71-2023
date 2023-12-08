@@ -9,7 +9,9 @@ public class EquipmentDTO {
     private String name;
     private String description;
     private String type;
-    private int grade;
+    private double grade;
+    private int quantity;
+    private CompanyDTO company;
 
     public EquipmentDTO(){
     }
@@ -20,6 +22,8 @@ public class EquipmentDTO {
         this.description = equipment.getDescription();
         this.type = equipment.getType();
         this.grade = equipment.getGrade();
+        this.quantity = equipment.getQuantity();
+        this.company = new CompanyDTO(equipment.getCompany());
     }
 
     public Integer getId() {
@@ -54,11 +58,27 @@ public class EquipmentDTO {
         this.type = type;
     }
 
-    public int getGrade() {
+    public double getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(double grade) {
         this.grade = grade;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public CompanyDTO getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
     }
 }

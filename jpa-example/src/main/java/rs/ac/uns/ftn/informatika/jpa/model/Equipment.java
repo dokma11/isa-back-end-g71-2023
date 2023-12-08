@@ -11,28 +11,43 @@ public class Equipment {
     @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
     private Integer id;
-    @Column(name="name", unique=false, nullable=false)
+
+    @Column(name="name", unique = false, nullable=false)
     private String name;
-    @Column(name="description", unique=false, nullable=false)
+
+    @Column(name="description", unique = false, nullable=false)
     private String description;
+
     @Column(name = "type",  unique = false, nullable = false)
     private String type;
+
     @Column(name = "grade",  unique = false, nullable = false)
-    private int grade;
+    private double grade;
+
+    @Column(name = "quantity",  unique = false, nullable = false)
+    private int quantity;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
-    @JoinTable(name = "equipment_companies", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"))
-    private Set<Company> companies = new HashSet<>();
+    @JoinTable(name = "appointment_equipment", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
+    private Set<Appointment> appointments = new HashSet<>();
+
+    // MOJA DEVOJKA JE MNOGO LEPA, SLATKA I PAMETNA
 
     public Equipment() {
     }
 
-    public Equipment(Integer id, String name, String description, String type, int grade) {
+    public Equipment(Integer id, String name, String description, String type, double grade, int quantity) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
         this.grade = grade;
+        this.quantity = quantity;
     }
 
     public Integer getId() {
@@ -67,19 +82,27 @@ public class Equipment {
         this.type = type;
     }
 
-    public int getGrade() {
+    public double getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(double grade) {
         this.grade = grade;
     }
 
-    public Set<Company> getCompanies() {
-        return companies;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setCompanies(Set<Company> companies) {
-        this.companies = companies;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

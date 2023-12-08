@@ -1,26 +1,26 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
+import rs.ac.uns.ftn.informatika.jpa.model.Company;
 
 import java.time.LocalDateTime;
 
 public class AppointmentDTO {
     private Integer id;
-    private String adminName;
-    private String adminSurname;
+    private CompanyAdministratorDTO administrator;
     private LocalDateTime pickupTime;
     private Integer duration;
+    private RegisteredUserResponseDTO user;
     private CompanyDTO company;
 
     public AppointmentDTO() {
     }
 
     public AppointmentDTO(Appointment a) {
-        this.adminName = a.getAdminName();
-        this.adminSurname = a.getAdminSurname();
+        this.administrator = new CompanyAdministratorDTO(a.getAdministrator());
         this.pickupTime = a.getPickupTime();
         this.duration = a.getDuration();
-        this.company = new CompanyDTO(a.getCompany());
+        this.user = new RegisteredUserResponseDTO(a.getUser());
     }
 
     public Integer getId() {
@@ -31,20 +31,12 @@ public class AppointmentDTO {
         this.id = id;
     }
 
-    public String getAdminName() {
-        return adminName;
+    public CompanyAdministratorDTO getAdministrator() {
+        return administrator;
     }
 
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
-    }
-
-    public String getAdminSurname() {
-        return adminSurname;
-    }
-
-    public void setAdminSurname(String adminSurname) {
-        this.adminSurname = adminSurname;
+    public void setAdministrator(CompanyAdministratorDTO administrator) {
+        this.administrator = administrator;
     }
 
     public LocalDateTime getPickupTime() {
@@ -61,6 +53,14 @@ public class AppointmentDTO {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public RegisteredUserResponseDTO getUser() {
+        return user;
+    }
+
+    public void setUser(RegisteredUserResponseDTO user) {
+        this.user = user;
     }
 
     public CompanyDTO getCompany() {

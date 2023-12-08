@@ -16,6 +16,7 @@ public class CompanyAdministratorService {
 
     @Autowired
     CompanyAdministratorRepository companyAdministratorRepository;
+
     public CompanyAdministrator findOne(Integer id) {
         return companyAdministratorRepository.findById(id).orElseGet(null);
     }
