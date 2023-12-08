@@ -12,6 +12,9 @@ public class AppointmentDTO {
     private Integer duration;
     private RegisteredUserResponseDTO user;
     private CompanyDTO company;
+    private Appointment.AppointmentStatus status;
+    private Appointment.AppointmentType type;
+
 
     public AppointmentDTO() {
     }
@@ -21,6 +24,8 @@ public class AppointmentDTO {
         this.pickupTime = a.getPickupTime();
         this.duration = a.getDuration();
         this.user = new RegisteredUserResponseDTO(a.getUser());
+        this.status = a.getStatus();
+        this.type = a.getType();
     }
 
     public Integer getId() {
@@ -69,5 +74,21 @@ public class AppointmentDTO {
 
     public void setCompany(CompanyDTO company) {
         this.company = company;
+    }
+
+    public Appointment.AppointmentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Appointment.AppointmentStatus status) {
+        this.status = status;
+    }
+
+    public Appointment.AppointmentType getType() {
+        return type;
+    }
+
+    public void setType(Appointment.AppointmentType type) {
+        this.type = type;
     }
 }
