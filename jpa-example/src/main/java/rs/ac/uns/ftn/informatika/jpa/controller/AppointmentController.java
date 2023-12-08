@@ -117,4 +117,20 @@ public class AppointmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(value = "/predefined/{id}")
+    public ResponseEntity<List<AppointmentDTO>> getCompanysPredefinedAppointments(@PathVariable Integer id) {
+
+        List<Appointment> appointments = appointmentService.findAllPredefinedAppointmentsForCompany(id);
+
+        // convert appointments to DTOs
+        List<AppointmentDTO> appointmentsDTO = new ArrayList<>();
+        for (Appointment a : appointments) {
+            appointmentsDTO.add(new AppointmentDTO(a));
+        }
+
+        return new ResponseEntity<>(appointmentsDTO, HttpStatus.OK);
+    }
+
+
 }

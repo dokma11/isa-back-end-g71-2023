@@ -23,7 +23,12 @@ public class AppointmentDTO {
         this.administrator = new CompanyAdministratorDTO(a.getAdministrator());
         this.pickupTime = a.getPickupTime();
         this.duration = a.getDuration();
-        this.user = new RegisteredUserResponseDTO(a.getUser());
+        if(a.getUser() != null){
+            this.user = new RegisteredUserResponseDTO(a.getUser());
+        }
+        else{
+            this.user = null;
+        }
         this.status = a.getStatus();
         this.type = a.getType();
     }

@@ -35,4 +35,8 @@ public class AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
+    public List<Appointment> findAllPredefinedAppointmentsForCompany(Integer companyId) {
+        return appointmentRepository.findByCompany_IdAndType(companyId, Appointment.AppointmentType.PREDEFINED);
+    }
+
 }
