@@ -9,7 +9,15 @@ import java.util.Set;
 @Entity
 public class Appointment {
 
-    public enum AppointmentStatus {}
+    public enum AppointmentStatus {ON_HOLD, IN_PROGRESS, DONE, CANCELED}
+    public enum AppointmentType{PREDEFINED, EXCEPTIONAL}
+
+    @Column(name="status", unique=false, nullable=false)
+    private AppointmentStatus status;
+
+    @Column(name="type", unique=false, nullable=false)
+    private AppointmentType type;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +53,14 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(CompanyAdministrator administrator, LocalDateTime pickupTime, Integer duration, RegisteredUser user, Company company) {
+    public Appointment(CompanyAdministrator administrator, LocalDateTime pickupTime, Integer duration, RegisteredUser user, Company company, AppointmentStatus status, AppointmentType type) {
         this.administrator = administrator;
         this.pickupTime = pickupTime;
         this.duration = duration;
         this.user = user;
         this.company = company;
+        this.status = status;
+        this.type = type;
     }
 
     public Integer getId() {
@@ -116,4 +126,22 @@ public class Appointment {
     public void setCompany(Company company) {
         this.company = company;
     }
+
+
+    public AppointmentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
+    }
+
+    public AppointmentType getType() {
+        return type;
+    }
+
+    public void setType(AppointmentType type) {
+        this.type = type;
+    }
+
 }

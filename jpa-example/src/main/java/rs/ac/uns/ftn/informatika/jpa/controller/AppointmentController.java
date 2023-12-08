@@ -73,6 +73,8 @@ public class AppointmentController {
         appointment.setDuration(appointmentDTO.getDuration());
         appointment.setUser(user);
         appointment.setCompany(company);
+        appointment.setStatus(appointmentDTO.getStatus());
+        appointment.setType(appointment.getType());
 
         appointment = appointmentService.save(appointment);
         return new ResponseEntity<>(new AppointmentDTO(appointment), HttpStatus.CREATED);
@@ -96,6 +98,8 @@ public class AppointmentController {
         appointment.setDuration(appointmentDTO.getDuration());
         appointment.setUser(user);
         appointment.setCompany(company);
+        appointment.setStatus(appointmentDTO.getStatus());
+        appointment.setType(appointmentDTO.getType());
 
         appointment = appointmentService.save(appointment);
         return new ResponseEntity<>(new AppointmentDTO(appointment), HttpStatus.OK);

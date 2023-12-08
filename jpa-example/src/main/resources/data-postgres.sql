@@ -13,4 +13,4 @@ insert into equipment(id, description, grade, name, type, quantity, company_id) 
 insert into equipment(id, description, grade, name, type, quantity, company_id) values (2, 'Ostra igla', 5, 'Igla za vadjenje krvi', 'Igla', 20, 1);
 insert into equipment(id, description, grade, name, type, quantity, company_id) values (3, 'Solidno udoban krevet', 3, 'Krevet za pacijenta', 'Krevet', 30, 1);
 
-insert into appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id) values (1, 3, '2023-12-06T12:30:00', 1, 1, 2);
+insert into appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id,status,type) values (1, 3, '2023-12-06T12:30:00', 1, 1, 2,0,0);
