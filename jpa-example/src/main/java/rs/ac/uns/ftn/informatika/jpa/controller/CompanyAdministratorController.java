@@ -9,6 +9,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyAdministratorService;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
+import rs.ac.uns.ftn.informatika.jpa.service.RoleService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,8 @@ public class CompanyAdministratorController {
     @Autowired
     private CompanyAdministratorService companyAdministratorService;
 
+    @Autowired
+    private RoleService roleService;
     @Autowired
     private CompanyService companyService;
 
@@ -61,10 +64,11 @@ public class CompanyAdministratorController {
         companyAdministrator.setCompany(company);
         company.addAdministrator(companyAdministrator);
         companyAdministrator.setCompanyInformation(companyAdministratorDTO.getCompanyInformation());
-        companyAdministrator.setEmail(companyAdministratorDTO.getEmail());
+        companyAdministrator.setUsername(companyAdministratorDTO.getUsername());
         companyAdministrator.setPassword(companyAdministratorDTO.getPassword());
         companyAdministrator.setProfession(companyAdministratorDTO.getProfession());
-        companyAdministrator.setRole(companyAdministratorDTO.getRole());
+        //POGLEDATI JOS JEDNOM
+        companyAdministrator.setRole(roleService.findByName("ROLE_COMPANY_ADMINISTRATOR").get(0));
         companyAdministrator.setState(companyAdministratorDTO.getState());
         companyAdministrator.setTelephoneNumber(companyAdministratorDTO.getTelephoneNumber());
 
@@ -86,10 +90,10 @@ public class CompanyAdministratorController {
         companyAdministrator.setSurname(companyAdministratorDTO.getSurname());
         companyAdministrator.setCity(companyAdministratorDTO.getCity());
         companyAdministrator.setCompanyInformation(companyAdministratorDTO.getCompanyInformation());
-        companyAdministrator.setEmail(companyAdministratorDTO.getEmail());
+        companyAdministrator.setUsername(companyAdministratorDTO.getUsername());
         companyAdministrator.setPassword(companyAdministratorDTO.getPassword());
         companyAdministrator.setProfession(companyAdministratorDTO.getProfession());
-        companyAdministrator.setRole(companyAdministratorDTO.getRole());
+        companyAdministrator.setRole(roleService.findByName("ROLE_COMPANY_ADMINISTRATOR").get(0));
         companyAdministrator.setState(companyAdministratorDTO.getState());
         companyAdministrator.setTelephoneNumber(companyAdministratorDTO.getTelephoneNumber());
 

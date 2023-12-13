@@ -8,6 +8,7 @@ import java.util.List;
 @Table(name="company_administrator")
 public class CompanyAdministrator extends User{
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
