@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentCreateDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentResponseDTO;
@@ -36,6 +37,7 @@ public class AppointmentController {
     private RegisteredUserService registeredUserService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointments() {
 
         List<Appointment> appointments = appointmentService.findAll();
@@ -50,6 +52,7 @@ public class AppointmentController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<AppointmentResponseDTO> getAppointment(@PathVariable Integer id) {
 
         Appointment appointment = appointmentService.findOne(id);
@@ -63,6 +66,7 @@ public class AppointmentController {
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<AppointmentResponseDTO> saveAppointment(@RequestBody AppointmentCreateDTO appointmentDTO) {
 
         CompanyAdministrator administrator = new CompanyAdministrator();
@@ -92,6 +96,7 @@ public class AppointmentController {
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<AppointmentResponseDTO> updateAppointment(@PathVariable Integer id, @RequestBody AppointmentUpdateDTO appointmentDTO) {
 
         // an appointment must exist
@@ -117,6 +122,7 @@ public class AppointmentController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<Void> deleteAppointment(@PathVariable Integer id) {
 
         Appointment appointment = appointmentService.findOne(id);

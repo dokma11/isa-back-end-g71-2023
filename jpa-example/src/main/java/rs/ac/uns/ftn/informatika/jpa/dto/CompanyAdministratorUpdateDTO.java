@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
+
 import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
+import rs.ac.uns.ftn.informatika.jpa.model.Role;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
 
 public class CompanyAdministratorUpdateDTO {
@@ -12,7 +14,7 @@ public class CompanyAdministratorUpdateDTO {
     private String telephoneNumber;
     private String city;
     private String state;
-    private User.UserRole role;
+    private String role;
     private String profession;
     private CompanyResponseDTO company;
 
@@ -22,13 +24,13 @@ public class CompanyAdministratorUpdateDTO {
     public CompanyAdministratorUpdateDTO(CompanyAdministrator administrator) {
         this.name = administrator.getName();
         this.surname = administrator.getSurname();
-        this.email = administrator.getEmail();
+        this.email = administrator.getUsername();
         this.password = administrator.getPassword();
         this.CompanyInformation = administrator.getCompanyInformation();
         this.telephoneNumber = administrator.getTelephoneNumber();
         this.city = administrator.getCity();
         this.state = administrator.getState();
-        this.role = administrator.getRole();
+        this.role = administrator.getRole().getName();
         this.profession = administrator.getProfession();
         this.company = new CompanyResponseDTO(administrator.getCompany());
     }
@@ -97,11 +99,11 @@ public class CompanyAdministratorUpdateDTO {
         this.state = state;
     }
 
-    public User.UserRole getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(User.UserRole role) {
+    public void setRole(java.lang.String role) {
         this.role = role;
     }
 

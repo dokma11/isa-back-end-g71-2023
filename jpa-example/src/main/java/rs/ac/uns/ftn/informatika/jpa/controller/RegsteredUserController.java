@@ -1,18 +1,18 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.RegisterUserCreateDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.RegisteredUserResponseDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.RegisteredUserUpdateDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.service.RegisteredUserService;
+import rs.ac.uns.ftn.informatika.jpa.service.RoleService;
 
-import javax.persistence.RollbackException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +23,10 @@ public class RegsteredUserController {
     @Autowired
     RegisteredUserService registeredUserService;
 
+    @Autowired
+    private RoleService roleService;
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<RegisteredUserResponseDTO>> GetAll()
     {
@@ -38,6 +42,8 @@ public class RegsteredUserController {
     }
 
     @PostMapping(consumes = "application/json")
+    // kada je metoda dozvoljena onda se njega putanja dodaje u putanje koje
+    // se ignorisu u WebSecurityConfig metoda koja koritsti WebSecurity
     public ResponseEntity<RegisteredUserResponseDTO> register(@RequestBody RegisterUserCreateDTO user){
         try{
             RegisteredUser newUser = new RegisteredUser();
@@ -47,12 +53,12 @@ public class RegsteredUserController {
             newUser.setSurname(user.getSurname());
             newUser.setState(user.getState());
             newUser.setCity(user.getCity());
-            newUser.setEmail(user.getEmail());
+            newUser.setUsername(user.getUsername());
             newUser.setPassword(user.getPassword());
             newUser.setTelephoneNumber(user.getTelephoneNumber());
             newUser.setProfession(user.getProfession());
             newUser.setCompanyInformation(user.getCompanyInformation());
-
+            newUser.setRole(roleService.findByName("ROLE_REGISTERED_USER").get(0));
 
             //saving new user
             RegisteredUser savedUser = registeredUserService.register(newUser);
@@ -68,7 +74,9 @@ public class RegsteredUserController {
 
     }
 
+
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         RegisteredUser user = registeredUserService.findOne(id);
 
@@ -81,6 +89,7 @@ public class RegsteredUserController {
     }
 
     @PutMapping(value ="/{id}",consumes = "application/json")
+    @PreAuthorize("hasRole('REGISTERED_USER')")
     public ResponseEntity<RegisteredUserResponseDTO> update(@PathVariable Integer id, @RequestBody RegisteredUserUpdateDTO user){
         try{
                 RegisteredUser userForUpdate = registeredUserService.findOne(id);
@@ -107,6 +116,7 @@ public class RegsteredUserController {
     }
 
     @GetMapping(value ="/{id}")
+    @PreAuthorize("hasRole('REGISTERED_USER')")
     public ResponseEntity<RegisteredUserResponseDTO> getOneUser(@PathVariable Integer id)
     {
         RegisteredUser u = registeredUserService.findOne(id);

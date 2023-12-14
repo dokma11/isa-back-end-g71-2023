@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentCreateDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentResponseDTO;
@@ -26,6 +27,7 @@ public class EquipmentController {
     private CompanyService companyService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR', 'REGISTERED_USER','SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<List<EquipmentResponseDTO>> getEquipment() {
 
         List<Equipment> equipment = equipmentService.findAll();
@@ -40,6 +42,7 @@ public class EquipmentController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR', 'REGISTERED_USER','SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<EquipmentResponseDTO> getEquipment(@PathVariable Integer id) {
 
         Equipment equipment = equipmentService.findOne(id);
@@ -53,6 +56,7 @@ public class EquipmentController {
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<EquipmentResponseDTO> saveEquipment(@RequestBody EquipmentCreateDTO equipmentDTO) {
 
         Company company = companyService.findOne(equipmentDTO.getCompany().getId());
@@ -71,6 +75,7 @@ public class EquipmentController {
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<EquipmentResponseDTO> updateEquipment(@PathVariable Integer id, @RequestBody EquipmentUpdateDTO equipmentDTO) {
 
         // an equipment must exist
@@ -91,6 +96,7 @@ public class EquipmentController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<Void> deleteEquipment(@PathVariable Integer id) {
 
         Equipment equipment = equipmentService.findOne(id);

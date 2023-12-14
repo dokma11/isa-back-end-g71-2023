@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.CompanyAdministratorCreateDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.CompanyAdministratorResponseDTO;
@@ -11,6 +12,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyAdministratorService;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
+import rs.ac.uns.ftn.informatika.jpa.service.RoleService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +24,12 @@ public class CompanyAdministratorController {
     private CompanyAdministratorService companyAdministratorService;
 
     @Autowired
+    private RoleService roleService;
+    @Autowired
     private CompanyService companyService;
 
     @GetMapping
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<List<CompanyAdministratorResponseDTO>> getCompanyAdministrators() {
 
         List<CompanyAdministrator> companyAdministrators = companyAdministratorService.findAll();
@@ -39,6 +44,7 @@ public class CompanyAdministratorController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<CompanyAdministratorResponseDTO> getCompanyAdministrator(@PathVariable Integer id) {
 
         CompanyAdministrator companyAdministrator = companyAdministratorService.findOne(id);
@@ -52,6 +58,7 @@ public class CompanyAdministratorController {
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasAnyRole('SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<CompanyAdministratorResponseDTO> saveCompanyAdministrator(@RequestBody CompanyAdministratorCreateDTO companyAdministratorDTO) {
 
         Company company = companyService.findOneWithAdministrators(companyAdministratorDTO.getCompany().getId());
@@ -63,10 +70,11 @@ public class CompanyAdministratorController {
         companyAdministrator.setCompany(company);
         company.addAdministrator(companyAdministrator);
         companyAdministrator.setCompanyInformation(companyAdministratorDTO.getCompanyInformation());
-        companyAdministrator.setEmail(companyAdministratorDTO.getEmail());
+        companyAdministrator.setUsername(companyAdministratorDTO.getEmail());
         companyAdministrator.setPassword(companyAdministratorDTO.getPassword());
         companyAdministrator.setProfession(companyAdministratorDTO.getProfession());
-        companyAdministrator.setRole(companyAdministratorDTO.getRole());
+        //POGLEDATI JOS JEDNOM
+        companyAdministrator.setRole(roleService.findByName("ROLE_COMPANY_ADMINISTRATOR").get(0));
         companyAdministrator.setState(companyAdministratorDTO.getState());
         companyAdministrator.setTelephoneNumber(companyAdministratorDTO.getTelephoneNumber());
 
@@ -75,6 +83,7 @@ public class CompanyAdministratorController {
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR', 'SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<CompanyAdministratorResponseDTO> updateCompanyAdministrator(@PathVariable Integer id, @RequestBody CompanyAdministratorUpdateDTO companyAdministratorDTO) {
 
         // a company admin must exist
@@ -88,10 +97,10 @@ public class CompanyAdministratorController {
         companyAdministrator.setSurname(companyAdministratorDTO.getSurname());
         companyAdministrator.setCity(companyAdministratorDTO.getCity());
         companyAdministrator.setCompanyInformation(companyAdministratorDTO.getCompanyInformation());
-        companyAdministrator.setEmail(companyAdministratorDTO.getEmail());
+        companyAdministrator.setUsername(companyAdministratorDTO.getEmail());
         companyAdministrator.setPassword(companyAdministratorDTO.getPassword());
         companyAdministrator.setProfession(companyAdministratorDTO.getProfession());
-        companyAdministrator.setRole(companyAdministratorDTO.getRole());
+        companyAdministrator.setRole(roleService.findByName("ROLE_COMPANY_ADMINISTRATOR").get(0));
         companyAdministrator.setState(companyAdministratorDTO.getState());
         companyAdministrator.setTelephoneNumber(companyAdministratorDTO.getTelephoneNumber());
 
@@ -100,6 +109,7 @@ public class CompanyAdministratorController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<Void> deleteCompanyAdministrator(@PathVariable Integer id) {
 
         CompanyAdministrator companyAdministrator = companyAdministratorService.findOne(id);
@@ -113,6 +123,7 @@ public class CompanyAdministratorController {
     }
 
     @GetMapping(value = "/email/{email}")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<CompanyAdministratorResponseDTO> getByEmail(@PathVariable String email) {
 
         CompanyAdministrator companyAdministrator = companyAdministratorService.findByEmail(email);

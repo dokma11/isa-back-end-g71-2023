@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import rs.ac.uns.ftn.informatika.jpa.dto.*;
@@ -37,6 +38,7 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR', 'REGISTERED_USER')")
     public ResponseEntity<CompanyResponseDTO> getCompany(@PathVariable Integer id) {
 
         Company company = companyService.findOne(id);
@@ -50,6 +52,7 @@ public class CompanyController {
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasRole( 'SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<CompanyResponseDTO> saveCompany(@RequestBody CompanyCreateDTO companyDTO) {
 
         Company company = new Company();
@@ -65,6 +68,7 @@ public class CompanyController {
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR', 'SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<CompanyResponseDTO> updateCompany(@PathVariable Integer id, @RequestBody CompanyUpdateDTO companyDTO) {
 
         // a company must exist
@@ -86,6 +90,7 @@ public class CompanyController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole( 'SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<Void> deleteCompany(@PathVariable Integer id) {
 
         Company company = companyService.findOne(id);
@@ -114,6 +119,7 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{companyId}/equipment")
+    @PreAuthorize("hasAnyRole( 'SYSTEM_ADMINISTRATOR', 'COMPANY_ADMINISTRATOR','REGISTERED_USER')")
     public ResponseEntity<List<EquipmentResponseDTO>> getCompaniesEquipment(@PathVariable Integer companyId) {
 
         Company company = companyService.findOneWithEquipment(companyId);
@@ -128,6 +134,7 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{companyId}/appointment")
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR', 'REGISTERED_USER','SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<List<AppointmentResponseDTO>> getCompaniesAppointments(@PathVariable Integer companyId) {
 
         Company company = companyService.findOneWithAppointments(companyId);
