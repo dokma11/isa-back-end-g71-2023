@@ -144,7 +144,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/ts/**").permitAll()
 
                 .antMatchers(HttpMethod.POST,"/api/registeredUsers").permitAll()
-                .antMatchers(HttpMethod.GET,"api/companies").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/companies").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/auth/login").permitAll()// Allow access without authentication
                 .antMatchers(HttpMethod.GET,"/api/companies/search").not().hasRole("COMPANY_ADMINISTRATOR")// for everybody but not for COMPANY_ADMINISTRATOR
                 .antMatchers("/api/registeredUsers/confirmRegistration/**").permitAll()
