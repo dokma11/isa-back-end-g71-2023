@@ -138,20 +138,22 @@ public class AppointmentController {
     }
 
     @GetMapping(value = "/predefined/{id}")
-    public ResponseEntity<List<AppointmentDTO>> getCompanysPredefinedAppointments(@PathVariable Integer id) {
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<AppointmentResponseDTO>> getCompanysPredefinedAppointments(@PathVariable Integer id) {
 
         List<Appointment> appointments = appointmentService.findAllPredefinedAppointmentsForCompany(id);
 
         // convert appointments to DTOs
-        List<AppointmentDTO> appointmentsDTO = new ArrayList<>();
+        List<AppointmentResponseDTO> appointmentsDTO = new ArrayList<>();
         for (Appointment a : appointments) {
-            appointmentsDTO.add(new AppointmentDTO(a));
+            appointmentsDTO.add(new AppointmentResponseDTO(a));
         }
 
         return new ResponseEntity<>(appointmentsDTO, HttpStatus.OK);
     }
 
     @GetMapping("/freeTimeSlots")
+    @PreAuthorize("hasRole('REGISTERED_USER')")
     public List<LocalDateTime> getFreeTimeSlots(
             @RequestParam Integer companyId,
             @RequestParam String date,  // Datum u formatu "2023-12-31T00:00"
