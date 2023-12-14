@@ -3,8 +3,11 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentCreateDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentResponseDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentUpdateDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
@@ -36,21 +39,23 @@ public class AppointmentController {
     private RegisteredUserService registeredUserService;
 
     @GetMapping
-    public ResponseEntity<List<AppointmentDTO>> getAppointments() {
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointments() {
 
         List<Appointment> appointments = appointmentService.findAll();
 
         // convert appointments to DTOs
-        List<AppointmentDTO> appointmentsDTO = new ArrayList<>();
+        List<AppointmentResponseDTO> appointmentsDTO = new ArrayList<>();
         for (Appointment a : appointments) {
-            appointmentsDTO.add(new AppointmentDTO(a));
+            appointmentsDTO.add(new AppointmentResponseDTO(a));
         }
 
         return new ResponseEntity<>(appointmentsDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AppointmentDTO> getAppointment(@PathVariable Integer id) {
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<AppointmentResponseDTO> getAppointment(@PathVariable Integer id) {
 
         Appointment appointment = appointmentService.findOne(id);
 
@@ -59,14 +64,24 @@ public class AppointmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new AppointmentDTO(appointment), HttpStatus.OK);
+        return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<AppointmentDTO> saveAppointment(@RequestBody AppointmentDTO appointmentDTO) {
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<AppointmentResponseDTO> saveAppointment(@RequestBody AppointmentCreateDTO appointmentDTO) {
 
-        CompanyAdministrator administrator = companyAdministratorService.findOne(appointmentDTO.getAdministrator().getId());
-        RegisteredUser user = registeredUserService.findOne(appointmentDTO.getUser().getId());
+        CompanyAdministrator administrator = new CompanyAdministrator();
+        RegisteredUser user = new RegisteredUser();
+
+        if(appointmentDTO.getAdministrator() != null){
+            administrator = companyAdministratorService.findOne(appointmentDTO.getAdministrator().getId());
+        }
+
+        if(appointmentDTO.getUser() != null){
+            user = registeredUserService.findOne(appointmentDTO.getUser().getId());
+        }
+
         Company company = companyService.findOne(appointmentDTO.getCompany().getId());
 
         Appointment appointment = new Appointment();
@@ -76,17 +91,18 @@ public class AppointmentController {
         appointment.setUser(user);
         appointment.setCompany(company);
         appointment.setStatus(appointmentDTO.getStatus());
-        appointment.setType(appointment.getType());
+        appointment.setType(appointmentDTO.getType());
 
         appointment = appointmentService.save(appointment);
-        return new ResponseEntity<>(new AppointmentDTO(appointment), HttpStatus.CREATED);
+        return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
-    public ResponseEntity<AppointmentDTO> updateAppointment(@PathVariable Integer id, @RequestBody AppointmentDTO appointmentDTO) {
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<AppointmentResponseDTO> updateAppointment(@PathVariable Integer id, @RequestBody AppointmentUpdateDTO appointmentDTO) {
 
         // an appointment must exist
-        Appointment appointment = appointmentService.findOne(appointmentDTO.getId());
+        Appointment appointment = appointmentService.findOne(id);
         CompanyAdministrator administrator = companyAdministratorService.findOne(appointmentDTO.getAdministrator().getId());
         RegisteredUser user = registeredUserService.findOne(appointmentDTO.getUser().getId());
         Company company = companyService.findOne(appointmentDTO.getCompany().getId());
@@ -104,10 +120,11 @@ public class AppointmentController {
         appointment.setType(appointmentDTO.getType());
 
         appointment = appointmentService.save(appointment);
-        return new ResponseEntity<>(new AppointmentDTO(appointment), HttpStatus.OK);
+        return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<Void> deleteAppointment(@PathVariable Integer id) {
 
         Appointment appointment = appointmentService.findOne(id);

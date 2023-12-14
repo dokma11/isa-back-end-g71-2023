@@ -1,20 +1,19 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
-import rs.ac.uns.ftn.informatika.jpa.model.User;
 
 public class RegisteredUserResponseDTO {
 
     private int id;
     private String name;
     private String surname;
-    private String email;
+    private String username;
     private String password;
     private String telephoneNumber;
    private String city;
    private String state;
    private String profession;
-   private User.UserRole role;
+   private String role;
 
    private int points;
    private RegisteredUser.User_Category category;
@@ -28,12 +27,12 @@ public class RegisteredUserResponseDTO {
         id = user.getId();
         name = user.getName();
         surname = user.getSurname();
-        email = user.getEmail();
+        username = user.getUsername();
         telephoneNumber = user.getTelephoneNumber();
         city = user.getCity();
         state = user.getState();
         profession = user.getProfession();
-        role = user.getRole();
+        role = user.getRole().getName();
         category = user.getCategory();
         points = user.getPoints();
         password = user.getPassword();
@@ -65,12 +64,12 @@ public class RegisteredUserResponseDTO {
         this.surname = surname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getTelephoneNumber() {
@@ -105,11 +104,11 @@ public class RegisteredUserResponseDTO {
         this.profession = profession;
     }
 
-    public User.UserRole getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(User.UserRole role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

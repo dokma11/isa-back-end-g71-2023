@@ -1,39 +1,40 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
-import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
-import rs.ac.uns.ftn.informatika.jpa.model.User;
 
-public class CompanyAdministratorDTO {
+import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
+
+public class CompanyAdministratorResponseDTO {
 
     private Integer id;
     private String name;
     private String surname;
-    private String email;
+    private String username;
     private String password;
     private String CompanyInformation;
     private String telephoneNumber;
     private String city;
     private String state;
-    private User.UserRole role;
+//    private User.UserRole role;
+    private java.lang.String role;
     private String profession;
-    private CompanyDTO company;
+    private CompanyResponseDTO company;
 
-    public CompanyAdministratorDTO() {
+    public CompanyAdministratorResponseDTO() {
     }
 
-    public CompanyAdministratorDTO(CompanyAdministrator administrator) {
+    public CompanyAdministratorResponseDTO(CompanyAdministrator administrator) {
         this.id = administrator.getId();
         this.name = administrator.getName();
         this.surname = administrator.getSurname();
-        this.email = administrator.getEmail();
+        this.username = administrator.getUsername();
         this.password = administrator.getPassword();
         this.CompanyInformation = administrator.getCompanyInformation();
         this.telephoneNumber = administrator.getTelephoneNumber();
         this.city = administrator.getCity();
         this.state = administrator.getState();
-        this.role = administrator.getRole();
+        this.role = administrator.getRole().getName();
         this.profession = administrator.getProfession();
-        this.company = new CompanyDTO(administrator.getCompany());
+        this.company = new CompanyResponseDTO(administrator.getCompany());
     }
 
     public Integer getId() {
@@ -60,12 +61,12 @@ public class CompanyAdministratorDTO {
         this.surname = surname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -108,11 +109,11 @@ public class CompanyAdministratorDTO {
         this.state = state;
     }
 
-    public User.UserRole getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(User.UserRole role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -124,11 +125,11 @@ public class CompanyAdministratorDTO {
         this.profession = profession;
     }
 
-    public CompanyDTO getCompany() {
+    public CompanyResponseDTO getCompany() {
         return company;
     }
 
-    public void setCompany(CompanyDTO company) {
+    public void setCompany(CompanyResponseDTO company) {
         this.company = company;
     }
 }

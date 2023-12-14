@@ -3,13 +3,13 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.informatika.jpa.dto.CompanyDTO;
-import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentCreateDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentResponseDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentUpdateDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
-import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
-import rs.ac.uns.ftn.informatika.jpa.service.AppointmentService;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
 import rs.ac.uns.ftn.informatika.jpa.service.EquipmentService;
 
@@ -27,21 +27,23 @@ public class EquipmentController {
     private CompanyService companyService;
 
     @GetMapping
-    public ResponseEntity<List<EquipmentDTO>> getEquipment() {
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR', 'REGISTERED_USER','SYSTEM_ADMINISTRATOR')")
+    public ResponseEntity<List<EquipmentResponseDTO>> getEquipment() {
 
         List<Equipment> equipment = equipmentService.findAll();
 
         // convert companies to DTOs
-        List<EquipmentDTO> equipmentDTO = new ArrayList<>();
+        List<EquipmentResponseDTO> equipmentDTO = new ArrayList<>();
         for (Equipment e : equipment) {
-            equipmentDTO.add(new EquipmentDTO(e));
+            equipmentDTO.add(new EquipmentResponseDTO(e));
         }
 
         return new ResponseEntity<>(equipmentDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EquipmentDTO> getEquipment(@PathVariable Integer id) {
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR', 'REGISTERED_USER','SYSTEM_ADMINISTRATOR')")
+    public ResponseEntity<EquipmentResponseDTO> getEquipment(@PathVariable Integer id) {
 
         Equipment equipment = equipmentService.findOne(id);
 
@@ -50,11 +52,12 @@ public class EquipmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new EquipmentDTO(equipment), HttpStatus.OK);
+        return new ResponseEntity<>(new EquipmentResponseDTO(equipment), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<EquipmentDTO> saveEquipment(@RequestBody EquipmentDTO equipmentDTO) {
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<EquipmentResponseDTO> saveEquipment(@RequestBody EquipmentCreateDTO equipmentDTO) {
 
         Company company = companyService.findOne(equipmentDTO.getCompany().getId());
 
@@ -65,16 +68,18 @@ public class EquipmentController {
         equipment.setGrade(equipmentDTO.getGrade());
         equipment.setQuantity(equipmentDTO.getQuantity());
         equipment.setCompany(company);
+        company.addEquipment(equipment);
 
         equipment = equipmentService.save(equipment);
-        return new ResponseEntity<>(new EquipmentDTO(equipment), HttpStatus.CREATED);
+        return new ResponseEntity<>(new EquipmentResponseDTO(equipment), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
-    public ResponseEntity<EquipmentDTO> updateEquipment(@PathVariable Integer id, @RequestBody EquipmentDTO equipmentDTO) {
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<EquipmentResponseDTO> updateEquipment(@PathVariable Integer id, @RequestBody EquipmentUpdateDTO equipmentDTO) {
 
         // an equipment must exist
-        Equipment equipment = equipmentService.findOne(equipmentDTO.getId());
+        Equipment equipment = equipmentService.findOne(id);
 
         if (equipment == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -87,10 +92,11 @@ public class EquipmentController {
         equipment.setQuantity(equipmentDTO.getQuantity());
 
         equipment = equipmentService.save(equipment);
-        return new ResponseEntity<>(new EquipmentDTO(equipment), HttpStatus.OK);
+        return new ResponseEntity<>(new EquipmentResponseDTO(equipment), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<Void> deleteEquipment(@PathVariable Integer id) {
 
         Equipment equipment = equipmentService.findOne(id);

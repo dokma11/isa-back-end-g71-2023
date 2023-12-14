@@ -1,16 +1,27 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Inheritance;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
+import static javax.persistence.InheritanceType.JOINED;
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 @Entity
-@Inheritance(strategy =TABLE_PER_CLASS)
-public class User {
+@Inheritance(strategy =JOINED)
+@Table(name="users")
+public class User implements UserDetails {
     public enum UserRole {REGISTERED_USER, COMPANY_ADMINISTRATOR, SYSTEM_ADMINISTRATOR}
     @Id
     @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
@@ -29,8 +40,8 @@ public class User {
             + "(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9]"
             + "(?:[A-Za-z0-9-]*[A-Za-z0-9])?",
             message = "{invalid.email}")
-    @Column(name="email", unique=true, nullable=false)
-    private String email;
+    @Column(name="username", unique=true, nullable=false)
+    private String username;
 
     @Column(name = "password",  unique = false, nullable = false)
     private String password;
@@ -47,12 +58,20 @@ public class User {
     @Column(name="state", unique=false, nullable=false)
     private String state;
 
-    @Column(name="role", unique=false, nullable=false)
-    private UserRole role;
+//    @Column(name="role", unique=false, nullable=false)
+//    private UserRole role;
 
     @Column(name="profession", unique=false, nullable=false)
     private String profession;
 
+    @Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id") // This is the foreign key in the USER table
+    private Role role;
     public User() {
     }
 
@@ -80,12 +99,13 @@ public class User {
         this.surname = surname;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getTelephoneNumber() {
@@ -112,13 +132,13 @@ public class User {
         this.state = state;
     }
 
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
+//    public UserRole getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(UserRole role) {
+//        this.role = role;
+//    }
 
     public String getProfession() {
         return profession;
@@ -133,6 +153,8 @@ public class User {
     }
 
     public void setPassword(String password) {
+        Timestamp now = new Timestamp(new Date().getTime());
+        this.setLastPasswordResetDate(now);
         this.password = password;
     }
 
@@ -142,5 +164,57 @@ public class User {
 
     public void setCompanyInformation(String companyInformation) {
         CompanyInformation = companyInformation;
+    }
+
+    public Timestamp getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<Role> returnValue = new ArrayList<Role>();
+        returnValue.add(role);
+        return returnValue;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

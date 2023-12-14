@@ -11,6 +11,7 @@ import java.util.List;
 
 
 public class RegisteredUser extends User{
+
     public enum User_Category {BRONSE, SILVER, GOLD}
     @Column(name = "points", unique = false, nullable = true)
     private int points;
@@ -28,7 +29,7 @@ public class RegisteredUser extends User{
         // predefined values
         points = 0;
         category = User_Category.BRONSE;
-        setRole(UserRole.REGISTERED_USER);
+
     }
 
     @OneToMany(mappedBy = "registeredUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

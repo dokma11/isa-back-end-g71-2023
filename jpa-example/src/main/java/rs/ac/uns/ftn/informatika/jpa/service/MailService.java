@@ -4,13 +4,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSendException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
-import rs.ac.uns.ftn.informatika.jpa.model.User;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -44,7 +42,7 @@ public class MailService {
         try {
             // Use MimeMessageHelper to set up the MimeMessage
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            mimeMessageHelper.setTo(user.getEmail());
+            mimeMessageHelper.setTo(user.getUsername());
             mimeMessageHelper.setFrom(env.getProperty("spring.mail.username"));
             mimeMessageHelper.setSubject("Registration");
 

@@ -1,51 +1,37 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
-import rs.ac.uns.ftn.informatika.jpa.model.Company;
 
 import java.time.LocalDateTime;
 
-public class AppointmentDTO {
-    private Integer id;
-    private CompanyAdministratorDTO administrator;
+public class AppointmentUpdateDTO {
+    private CompanyAdministratorResponseDTO administrator;
     private LocalDateTime pickupTime;
     private Integer duration;
     private RegisteredUserResponseDTO user;
-    private CompanyDTO company;
+    private CompanyResponseDTO company;
     private Appointment.AppointmentStatus status;
     private Appointment.AppointmentType type;
 
+    public AppointmentUpdateDTO() {
 
-    public AppointmentDTO() {
     }
 
-    public AppointmentDTO(Appointment a) {
-        this.administrator = new CompanyAdministratorDTO(a.getAdministrator());
-        this.pickupTime = a.getPickupTime();
-        this.duration = a.getDuration();
-        if(a.getUser() != null){
-            this.user = new RegisteredUserResponseDTO(a.getUser());
-        }
-        else{
-            this.user = null;
-        }
-        this.status = a.getStatus();
-        this.type = a.getType();
+    public AppointmentUpdateDTO(Appointment appointment) {
+        this.administrator = new CompanyAdministratorResponseDTO(appointment.getAdministrator());
+        this.pickupTime = appointment.getPickupTime();
+        this.duration = appointment.getDuration();
+        this.user = new RegisteredUserResponseDTO(appointment.getUser());
+        this.company = new CompanyResponseDTO(appointment.getCompany());
+        this.status = appointment.getStatus();
+        this.type = appointment.getType();
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public CompanyAdministratorDTO getAdministrator() {
+    public CompanyAdministratorResponseDTO getAdministrator() {
         return administrator;
     }
 
-    public void setAdministrator(CompanyAdministratorDTO administrator) {
+    public void setAdministrator(CompanyAdministratorResponseDTO administrator) {
         this.administrator = administrator;
     }
 
@@ -73,11 +59,11 @@ public class AppointmentDTO {
         this.user = user;
     }
 
-    public CompanyDTO getCompany() {
+    public CompanyResponseDTO getCompany() {
         return company;
     }
 
-    public void setCompany(CompanyDTO company) {
+    public void setCompany(CompanyResponseDTO company) {
         this.company = company;
     }
 
