@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/foo").permitAll()		// /api/foo
                 .antMatchers(HttpMethod.POST,"/api/registeredUsers").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
+
                 // ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici
                 // koji tip korisnika moze da pristupi odgovarajucoj ruti. Npr. ukoliko zelimo da definisemo da ruti 'admin' moze da pristupi
                 // samo korisnik koji ima rolu 'ADMIN', navodimo na sledeci nacin:
@@ -123,7 +124,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
                         .antMatchers(HttpMethod.POST,"/api/registeredUsers")
+                        .antMatchers("/api/registeredUsers/confirmRegistration/**")
                         .antMatchers(HttpMethod.POST,"/api/auth/login");
+
     }
 
     @Override
@@ -144,6 +147,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"api/companies").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/auth/login").permitAll()// Allow access without authentication
                 .antMatchers(HttpMethod.GET,"/api/companies/search").not().hasRole("COMPANY_ADMINISTRATOR")// for everybody but not for COMPANY_ADMINISTRATOR
+                .antMatchers("/api/registeredUsers/confirmRegistration/**").permitAll()
                 .anyRequest().authenticated() // Require authentication for any other request
                 .and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils,  userDetailsService()), BasicAuthenticationFilter.class);

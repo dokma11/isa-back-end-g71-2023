@@ -130,5 +130,15 @@ public class RegsteredUserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping(value ="/confirmRegistration/{token}")
+    public ResponseEntity confirmRegistration(@PathVariable String token)
+    {
+        // jej
+        boolean result = registeredUserService.confirmRegistration(token);
+        if(!result) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok("<h1>Your Registration was successfull!</h1>");
+    }
+
+
 
 }

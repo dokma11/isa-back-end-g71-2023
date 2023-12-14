@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
+import rs.ac.uns.ftn.informatika.jpa.util.TokenUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,9 @@ public class RegisteredUserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @Autowired
     private MailService mailService;
@@ -54,5 +58,19 @@ public class RegisteredUserService {
             System.out.println("Interrupted exception!");
         }
         return newUser;
+    }
+
+    public boolean confirmRegistration(String token){
+        String username = tokenUtils.getUsernameFromToken(token);
+        //pronalazenje pomocu username
+        RegisteredUser user = registeredUserRepository.findByUsername(username);
+
+        if(user == null)
+            return false;
+
+        user.setEnabled(true);
+        registeredUserRepository.save(user);
+
+        return true;
     }
 }

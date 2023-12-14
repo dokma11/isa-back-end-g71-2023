@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
+import rs.ac.uns.ftn.informatika.jpa.util.TokenUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -20,6 +21,9 @@ public class MailService {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @Async
     public void sendRegistrationNotification(RegisteredUser user) throws MailException, InterruptedException {
@@ -47,7 +51,9 @@ public class MailService {
             mimeMessageHelper.setSubject("Registration");
 
             // Use HTML for the email body and include a registration link
-            String registrationLink = "http://localhost:4200";
+            // generating special token for confirming identity
+            String token = tokenUtils.generateToken(user.getUsername(), user.getRole().getName(), user.getId().toString());
+            String registrationLink = "http://localhost:8081/api/registeredUsers/confirmRegistration/"+token;
             String emailBody = "Hello " + user.getName() + ",<br/><br/>Thank you for using our site.<br/>Your registration was successful!<br/><br/>";
             emailBody += "To confirm your registration, please click the following link:<br/><a href='" + registrationLink + "'>" + registrationLink + "</a>";
 
