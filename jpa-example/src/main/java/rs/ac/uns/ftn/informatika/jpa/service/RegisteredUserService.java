@@ -5,12 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.mail.MailException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RegisteredUserService {
@@ -20,14 +22,20 @@ public class RegisteredUserService {
 
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private MailService mailService;
     public Page<RegisteredUser> findAll(Pageable pageable) {return registeredUserRepository.findAll(pageable);}
     public RegisteredUser create(RegisteredUser user)  {
         // hesiranje lozinke
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //provjer da li je doslo do promjene lozinke ili tek treba da upisemo u bazu
+        RegisteredUser previousValue = registeredUserRepository.findByUsername(user.getUsername());
+        if(previousValue != null && !passwordEncoder.matches(user.getPassword(), previousValue.getPassword()))
+        {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         return registeredUserRepository.save(user);
     }
     public void remove(int id) { registeredUserRepository.deleteById(id);}

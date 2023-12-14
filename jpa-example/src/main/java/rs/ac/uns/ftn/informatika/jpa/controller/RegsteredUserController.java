@@ -53,7 +53,7 @@ public class RegsteredUserController {
             newUser.setSurname(user.getSurname());
             newUser.setState(user.getState());
             newUser.setCity(user.getCity());
-            newUser.setUsername(user.getUsername());
+            newUser.setUsername(user.getEmail());
             newUser.setPassword(user.getPassword());
             newUser.setTelephoneNumber(user.getTelephoneNumber());
             newUser.setProfession(user.getProfession());

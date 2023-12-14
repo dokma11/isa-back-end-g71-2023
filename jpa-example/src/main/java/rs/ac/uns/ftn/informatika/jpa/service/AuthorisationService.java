@@ -23,9 +23,12 @@ public class AuthorisationService {
         try{
             UserDetails user = customUserService.loadUserByUsername(credentials.getUsername());
             User us = customUserService.getUserByUsername(credentials.username);
-            if(user== null || !encoder.matches(credentials.getPassword(),user.getPassword() ))
+            if(user== null || !encoder.matches(credentials.getPassword(),user.getPassword()))
                 return "";
             // generisanje tokena i vracanje
+            if(!us.isEnabled()){
+                return "";
+            }
             return tokenUtils.generateToken(credentials.username, us.getRole().getName(), us.getId().toString());
         }catch(Exception e){
             System.out.println("OVO NIJE REALNO VISE EVO.");
