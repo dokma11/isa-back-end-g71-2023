@@ -16,8 +16,8 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "administrator_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "administrator_id")
     private CompanyAdministrator administrator;
 
     @Column(name = "pickupTime", nullable = false)
@@ -27,7 +27,7 @@ public class Appointment {
     private Integer duration;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "registered_user_id")
+    @JoinColumn(name = "registered_user_id", nullable = true)
     private RegisteredUser user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
