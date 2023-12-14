@@ -1,31 +1,31 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
-import rs.ac.uns.ftn.informatika.jpa.model.Company;
 
 import java.time.LocalDateTime;
 
-public class AppointmentDTO {
+public class AppointmentResponseDTO {
     private Integer id;
-    private CompanyAdministratorDTO administrator;
+    private CompanyAdministratorResponseDTO administrator;
     private LocalDateTime pickupTime;
     private Integer duration;
     private RegisteredUserResponseDTO user;
-    private CompanyDTO company;
+    private CompanyResponseDTO company;
     private Appointment.AppointmentStatus status;
     private Appointment.AppointmentType type;
 
-
-    public AppointmentDTO() {
+    public AppointmentResponseDTO() {
     }
 
-    public AppointmentDTO(Appointment a) {
-        this.administrator = new CompanyAdministratorDTO(a.getAdministrator());
+    public AppointmentResponseDTO(Appointment a) {
+        this.id = a.getId();
+        this.administrator = new CompanyAdministratorResponseDTO(a.getAdministrator());
         this.pickupTime = a.getPickupTime();
         this.duration = a.getDuration();
         this.user = new RegisteredUserResponseDTO(a.getUser());
         this.status = a.getStatus();
         this.type = a.getType();
+        this.company = new CompanyResponseDTO(a.getCompany());
     }
 
     public Integer getId() {
@@ -36,11 +36,11 @@ public class AppointmentDTO {
         this.id = id;
     }
 
-    public CompanyAdministratorDTO getAdministrator() {
+    public CompanyAdministratorResponseDTO getAdministrator() {
         return administrator;
     }
 
-    public void setAdministrator(CompanyAdministratorDTO administrator) {
+    public void setAdministrator(CompanyAdministratorResponseDTO administrator) {
         this.administrator = administrator;
     }
 
@@ -68,11 +68,11 @@ public class AppointmentDTO {
         this.user = user;
     }
 
-    public CompanyDTO getCompany() {
+    public CompanyResponseDTO getCompany() {
         return company;
     }
 
-    public void setCompany(CompanyDTO company) {
+    public void setCompany(CompanyResponseDTO company) {
         this.company = company;
     }
 
