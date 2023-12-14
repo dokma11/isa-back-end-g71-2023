@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 
 import java.util.List;
@@ -23,4 +24,7 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
     @Query("select c from Company c join fetch c.equipment e where c.id =?1")
     public Company findOneWithEquipment(Integer companyId);
+
+    @Query("SELECT COUNT(DISTINCT a.id) FROM Company c JOIN c.administrators a WHERE c.id = :companyId")
+    long countAdminsByCompanyId(@Param("companyId") Integer companyId);
 }

@@ -14,6 +14,8 @@ import rs.ac.uns.ftn.informatika.jpa.service.CompanyAdministratorService;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
 import rs.ac.uns.ftn.informatika.jpa.service.RegisteredUserService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,5 +134,20 @@ public class AppointmentController {
         return new ResponseEntity<>(appointmentsDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/freeTimeSlots")
+    public List<LocalDateTime> getFreeTimeSlots(
+            @RequestParam Integer companyId,
+            @RequestParam String date,  // Datum u formatu "2023-12-31T00:00"
+            @RequestParam String startTime,  // Vreme u formatu "2023-12-31T08:00"
+            @RequestParam String endTime  // Vreme u formatu "2023-12-31T16:00"
+    ) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime selectedDate = LocalDateTime.parse(date, formatter);;
+        LocalDateTime parsedStartTime = LocalDateTime.parse(startTime,formatter);
+        LocalDateTime parsedEndTime = LocalDateTime.parse(endTime,formatter);
+
+        // Poziv servisa sa odgovarajućim parametrima
+        return appointmentService.findFreeTimeSlots(companyId, selectedDate, parsedStartTime, parsedEndTime);
+    }
 
 }
