@@ -1,9 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
-import rs.ac.uns.ftn.informatika.jpa.model.Company;
+public class CompanyCreateDTO {
 
-public class CompanyDTO {
-    private Integer id;
     private String name;
     private String address;
     private double longitude;
@@ -11,25 +9,7 @@ public class CompanyDTO {
     private String description;
     private double averageGrade;
 
-    public CompanyDTO(){
-    }
-
-    public CompanyDTO(Company company){
-        this.id = company.getId();
-        this.name = company.getName();
-        this.address = company.getAddress();
-        this.longitude = company.getLongitude();
-        this.latitude = company.getLatitude();
-        this.description = company.getDescription();
-        this.averageGrade = company.getAverageGrade();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public CompanyCreateDTO(){
     }
 
     public String getName() {
@@ -79,4 +59,5 @@ public class CompanyDTO {
     public void setAverageGrade(double averageGrade) {
         this.averageGrade = averageGrade;
     }
+
 }

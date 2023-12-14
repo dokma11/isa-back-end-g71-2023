@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentDTO;
-import rs.ac.uns.ftn.informatika.jpa.dto.CompanyDTO;
-import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.*;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
@@ -25,21 +23,21 @@ public class CompanyController {
     private CompanyService companyService;
 
     @GetMapping
-    public ResponseEntity<List<CompanyDTO>> getCompanies() {
+    public ResponseEntity<List<CompanyResponseDTO>> getCompanies() {
 
         List<Company> companies = companyService.findAll();
 
         // convert companies to DTOs
-        List<CompanyDTO> companiesDTO = new ArrayList<>();
+        List<CompanyResponseDTO> companiesDTO = new ArrayList<>();
         for (Company c : companies) {
-            companiesDTO.add(new CompanyDTO(c));
+            companiesDTO.add(new CompanyResponseDTO(c));
         }
 
         return new ResponseEntity<>(companiesDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CompanyDTO> getCompany(@PathVariable Integer id) {
+    public ResponseEntity<CompanyResponseDTO> getCompany(@PathVariable Integer id) {
 
         Company company = companyService.findOne(id);
 
@@ -48,11 +46,11 @@ public class CompanyController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new CompanyDTO(company), HttpStatus.OK);
+        return new ResponseEntity<>(new CompanyResponseDTO(company), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<CompanyDTO> saveCompany(@RequestBody CompanyDTO companyDTO) {
+    public ResponseEntity<CompanyResponseDTO> saveCompany(@RequestBody CompanyCreateDTO companyDTO) {
 
         Company company = new Company();
         company.setName(companyDTO.getName());
@@ -63,14 +61,14 @@ public class CompanyController {
         company.setAverageGrade(companyDTO.getAverageGrade());
 
         company = companyService.save(company);
-        return new ResponseEntity<>(new CompanyDTO(company), HttpStatus.CREATED);
+        return new ResponseEntity<>(new CompanyResponseDTO(company), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
-    public ResponseEntity<CompanyDTO> updateCompany(@PathVariable Integer id, @RequestBody CompanyDTO companyDTO) {
+    public ResponseEntity<CompanyResponseDTO> updateCompany(@PathVariable Integer id, @RequestBody CompanyUpdateDTO companyDTO) {
 
         // a company must exist
-        Company company = companyService.findOne(companyDTO.getId());
+        Company company = companyService.findOne(id);
 
         if (company == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -84,7 +82,7 @@ public class CompanyController {
         company.setAverageGrade(companyDTO.getAverageGrade());
 
         company = companyService.save(company);
-        return new ResponseEntity<>(new CompanyDTO(company), HttpStatus.OK);
+        return new ResponseEntity<>(new CompanyResponseDTO(company), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -101,44 +99,44 @@ public class CompanyController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CompanyDTO>> getSearchedCompanies(@RequestParam String name,
-                                                                 @RequestParam String city) {
+    public ResponseEntity<List<CompanyResponseDTO>> getSearchedCompanies(@RequestParam String name,
+                                                                         @RequestParam String city) {
 
         List<Company> searchedCompanies = companyService.search(name, city);
 
         // convert companies to DTOs
-        List<CompanyDTO> companiesDTO = new ArrayList<>();
+        List<CompanyResponseDTO> companiesDTO = new ArrayList<>();
         for (Company c : searchedCompanies) {
-            companiesDTO.add(new CompanyDTO(c));
+            companiesDTO.add(new CompanyResponseDTO(c));
         }
 
         return new ResponseEntity<>(companiesDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{companyId}/equipment")
-    public ResponseEntity<List<EquipmentDTO>> getCompaniesEquipment(@PathVariable Integer companyId) {
+    public ResponseEntity<List<EquipmentResponseDTO>> getCompaniesEquipment(@PathVariable Integer companyId) {
 
         Company company = companyService.findOneWithEquipment(companyId);
 
         Set<Equipment> equipment = company.getEquipment();
-        List<EquipmentDTO> equipmentDTO = new ArrayList<>();
+        List<EquipmentResponseDTO> equipmentDTO = new ArrayList<>();
 
         for (Equipment e : equipment) {
-            equipmentDTO.add(new EquipmentDTO(e));
+            equipmentDTO.add(new EquipmentResponseDTO(e));
         }
         return new ResponseEntity<>(equipmentDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{companyId}/appointment")
-    public ResponseEntity<List<AppointmentDTO>> getCompaniesAppointments(@PathVariable Integer companyId) {
+    public ResponseEntity<List<AppointmentResponseDTO>> getCompaniesAppointments(@PathVariable Integer companyId) {
 
         Company company = companyService.findOneWithAppointments(companyId);
 
         Set<Appointment> appointments = company.getAppointments();
-        List<AppointmentDTO> appointmentDTO = new ArrayList<>();
+        List<AppointmentResponseDTO> appointmentDTO = new ArrayList<>();
 
         for (Appointment a : appointments) {
-            appointmentDTO.add(new AppointmentDTO(a));
+            appointmentDTO.add(new AppointmentResponseDTO(a));
         }
         return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
     }

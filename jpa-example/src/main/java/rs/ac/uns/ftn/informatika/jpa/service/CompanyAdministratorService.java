@@ -37,4 +37,7 @@ public class CompanyAdministratorService {
         companyAdministratorRepository.deleteById(id);
     }
 
+    public CompanyAdministrator findByEmail(String email) {
+        return companyAdministratorRepository.findByEmail(email);
+    }
 }

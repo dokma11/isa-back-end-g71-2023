@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.informatika.jpa.dto.CompanyAdministratorDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.CompanyAdministratorCreateDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.CompanyAdministratorResponseDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.CompanyAdministratorUpdateDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyAdministratorService;
@@ -23,21 +25,21 @@ public class CompanyAdministratorController {
     private CompanyService companyService;
 
     @GetMapping
-    public ResponseEntity<List<CompanyAdministratorDTO>> getCompanyAdministrators() {
+    public ResponseEntity<List<CompanyAdministratorResponseDTO>> getCompanyAdministrators() {
 
         List<CompanyAdministrator> companyAdministrators = companyAdministratorService.findAll();
 
         // convert companies to DTOs
-        List<CompanyAdministratorDTO> companyAdministratorsDTO = new ArrayList<>();
+        List<CompanyAdministratorResponseDTO> companyAdministratorsDTO = new ArrayList<>();
         for (CompanyAdministrator c : companyAdministrators) {
-            companyAdministratorsDTO.add(new CompanyAdministratorDTO(c));
+            companyAdministratorsDTO.add(new CompanyAdministratorResponseDTO(c));
         }
 
         return new ResponseEntity<>(companyAdministratorsDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CompanyAdministratorDTO> getCompanyAdministrator(@PathVariable Integer id) {
+    public ResponseEntity<CompanyAdministratorResponseDTO> getCompanyAdministrator(@PathVariable Integer id) {
 
         CompanyAdministrator companyAdministrator = companyAdministratorService.findOne(id);
 
@@ -46,11 +48,11 @@ public class CompanyAdministratorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new CompanyAdministratorDTO(companyAdministrator), HttpStatus.OK);
+        return new ResponseEntity<>(new CompanyAdministratorResponseDTO(companyAdministrator), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<CompanyAdministratorDTO> saveCompanyAdministrator(@RequestBody CompanyAdministratorDTO companyAdministratorDTO) {
+    public ResponseEntity<CompanyAdministratorResponseDTO> saveCompanyAdministrator(@RequestBody CompanyAdministratorCreateDTO companyAdministratorDTO) {
 
         Company company = companyService.findOneWithAdministrators(companyAdministratorDTO.getCompany().getId());
 
@@ -69,14 +71,14 @@ public class CompanyAdministratorController {
         companyAdministrator.setTelephoneNumber(companyAdministratorDTO.getTelephoneNumber());
 
         companyAdministrator = companyAdministratorService.save(companyAdministrator);
-        return new ResponseEntity<>(new CompanyAdministratorDTO(companyAdministrator), HttpStatus.CREATED);
+        return new ResponseEntity<>(new CompanyAdministratorResponseDTO(companyAdministrator), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
-    public ResponseEntity<CompanyAdministratorDTO> updateCompanyAdministrator(@PathVariable Integer id, @RequestBody CompanyAdministratorDTO companyAdministratorDTO) {
+    public ResponseEntity<CompanyAdministratorResponseDTO> updateCompanyAdministrator(@PathVariable Integer id, @RequestBody CompanyAdministratorUpdateDTO companyAdministratorDTO) {
 
         // a company admin must exist
-        CompanyAdministrator companyAdministrator = companyAdministratorService.findOne(companyAdministratorDTO.getId());
+        CompanyAdministrator companyAdministrator = companyAdministratorService.findOne(id);
 
         if (companyAdministrator == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -94,7 +96,7 @@ public class CompanyAdministratorController {
         companyAdministrator.setTelephoneNumber(companyAdministratorDTO.getTelephoneNumber());
 
         companyAdministrator = companyAdministratorService.save(companyAdministrator);
-        return new ResponseEntity<>(new CompanyAdministratorDTO(companyAdministrator), HttpStatus.OK);
+        return new ResponseEntity<>(new CompanyAdministratorResponseDTO(companyAdministrator), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -110,4 +112,16 @@ public class CompanyAdministratorController {
         }
     }
 
+    @GetMapping(value = "/email/{email}")
+    public ResponseEntity<CompanyAdministratorResponseDTO> getByEmail(@PathVariable String email) {
+
+        CompanyAdministrator companyAdministrator = companyAdministratorService.findByEmail(email);
+
+        // company must exist
+        if (companyAdministrator == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new CompanyAdministratorResponseDTO(companyAdministrator), HttpStatus.OK);
+    }
 }

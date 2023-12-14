@@ -2,36 +2,25 @@ package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 
-import javax.persistence.Column;
-
-public class EquipmentDTO {
-    private Integer id;
+public class EquipmentUpdateDTO {
     private String name;
     private String description;
     private String type;
     private double grade;
     private int quantity;
-    private CompanyDTO company;
+    private CompanyResponseDTO company;
 
-    public EquipmentDTO(){
+    public EquipmentUpdateDTO() {
+
     }
 
-    public EquipmentDTO(Equipment equipment){
-        this.id = equipment.getId();
+    public EquipmentUpdateDTO(Equipment equipment) {
         this.name = equipment.getName();
         this.description = equipment.getDescription();
         this.type = equipment.getType();
         this.grade = equipment.getGrade();
         this.quantity = equipment.getQuantity();
-        this.company = new CompanyDTO(equipment.getCompany());
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        this.company = new CompanyResponseDTO(equipment.getCompany());
     }
 
     public String getName() {
@@ -74,11 +63,11 @@ public class EquipmentDTO {
         this.quantity = quantity;
     }
 
-    public CompanyDTO getCompany() {
+    public CompanyResponseDTO getCompany() {
         return company;
     }
 
-    public void setCompany(CompanyDTO company) {
+    public void setCompany(CompanyResponseDTO company) {
         this.company = company;
     }
 }

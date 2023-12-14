@@ -4,7 +4,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.EquipmentQuantity;
 
 public class EquipmentQuantityDTO {
     private Integer id;
-    private AppointmentDTO appointment;
+    private AppointmentResponseDTO appointment;
     private Integer equipmentId;
     private Integer quantity;
 
@@ -14,7 +14,7 @@ public class EquipmentQuantityDTO {
 
     public EquipmentQuantityDTO(EquipmentQuantity eq){
         this.id = eq.getId();
-        this.appointment = new AppointmentDTO(eq.getAppointment());
+        this.appointment = new AppointmentResponseDTO(eq.getAppointment());
         this.equipmentId = eq.getEquipmentId();
         this.quantity = eq.getQuantity();
     }
@@ -27,11 +27,11 @@ public class EquipmentQuantityDTO {
         this.id = id;
     }
 
-    public AppointmentDTO getAppointment() {
+    public AppointmentResponseDTO getAppointment() {
         return appointment;
     }
 
-    public void setAppointment(AppointmentDTO appointment) {
+    public void setAppointment(AppointmentResponseDTO appointment) {
         this.appointment = appointment;
     }
 

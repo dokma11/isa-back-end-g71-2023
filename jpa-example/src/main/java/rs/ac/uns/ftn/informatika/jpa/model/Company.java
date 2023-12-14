@@ -34,16 +34,16 @@ public class Company {
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<CompanyAdministrator> administrators = new HashSet<CompanyAdministrator>();
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<Appointment>();
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CompanyComplaint> complaints;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Grade> grades = new HashSet<Grade>();
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Equipment> equipment = new HashSet<>();
 
     public Company() {
@@ -162,6 +162,16 @@ public class Company {
 
     public void setEquipment(Set<Equipment> equipment) {
         this.equipment = equipment;
+    }
+
+    public void addEquipment(Equipment e) {
+        equipment.add(e);
+        e.setCompany(this);
+    }
+
+    public void removeEquipment(Equipment e) {
+        equipment.remove(e);
+        e.setCompany(null);
     }
 
     @Override

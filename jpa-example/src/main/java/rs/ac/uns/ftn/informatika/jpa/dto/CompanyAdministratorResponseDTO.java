@@ -3,7 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.dto;
 import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
 
-public class CompanyAdministratorDTO {
+public class CompanyAdministratorResponseDTO {
 
     private Integer id;
     private String name;
@@ -16,12 +16,12 @@ public class CompanyAdministratorDTO {
     private String state;
     private User.UserRole role;
     private String profession;
-    private CompanyDTO company;
+    private CompanyResponseDTO company;
 
-    public CompanyAdministratorDTO() {
+    public CompanyAdministratorResponseDTO() {
     }
 
-    public CompanyAdministratorDTO(CompanyAdministrator administrator) {
+    public CompanyAdministratorResponseDTO(CompanyAdministrator administrator) {
         this.id = administrator.getId();
         this.name = administrator.getName();
         this.surname = administrator.getSurname();
@@ -33,7 +33,7 @@ public class CompanyAdministratorDTO {
         this.state = administrator.getState();
         this.role = administrator.getRole();
         this.profession = administrator.getProfession();
-        this.company = new CompanyDTO(administrator.getCompany());
+        this.company = new CompanyResponseDTO(administrator.getCompany());
     }
 
     public Integer getId() {
@@ -124,11 +124,11 @@ public class CompanyAdministratorDTO {
         this.profession = profession;
     }
 
-    public CompanyDTO getCompany() {
+    public CompanyResponseDTO getCompany() {
         return company;
     }
 
-    public void setCompany(CompanyDTO company) {
+    public void setCompany(CompanyResponseDTO company) {
         this.company = company;
     }
 }

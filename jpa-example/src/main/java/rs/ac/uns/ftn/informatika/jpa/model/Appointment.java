@@ -12,13 +12,6 @@ public class Appointment {
     public enum AppointmentStatus {ON_HOLD, IN_PROGRESS, DONE, CANCELED}
     public enum AppointmentType{PREDEFINED, EXCEPTIONAL}
 
-    @Column(name="status", unique=false, nullable=false)
-    private AppointmentStatus status;
-
-    @Column(name="type", unique=false, nullable=false)
-    private AppointmentType type;
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,7 +20,6 @@ public class Appointment {
     @JoinColumn(name = "administrator_id", nullable = false)
     private CompanyAdministrator administrator;
 
-    // Da li treba odvojiti mozda u dva (time i date)
     @Column(name = "pickupTime", nullable = false)
     private LocalDateTime pickupTime;
 
@@ -49,6 +41,12 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @Column(name="status", nullable = false)
+    private AppointmentStatus status;
+
+    @Column(name="type", nullable = false)
+    private AppointmentType type;
 
     public Appointment() {
     }
@@ -126,7 +124,6 @@ public class Appointment {
     public void setCompany(Company company) {
         this.company = company;
     }
-
 
     public AppointmentStatus getStatus() {
         return status;
