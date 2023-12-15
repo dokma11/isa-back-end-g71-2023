@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
+import java.time.LocalTime;
+
 public class CompanyCreateDTO {
 
     private String name;
@@ -8,6 +10,8 @@ public class CompanyCreateDTO {
     private double latitude;
     private String description;
     private double averageGrade;
+    private LocalTime workingHoursStart;
+    private LocalTime workingHoursEnd;
 
     public CompanyCreateDTO(){
     }
@@ -60,4 +64,19 @@ public class CompanyCreateDTO {
         this.averageGrade = averageGrade;
     }
 
+    public LocalTime getWorkingHoursStart() {
+        return workingHoursStart;
+    }
+
+    public void setWorkingHoursStart(LocalTime workingHoursStart) {
+        this.workingHoursStart = workingHoursStart;
+    }
+
+    public LocalTime getWorkingHoursEnd() {
+        return workingHoursEnd;
+    }
+
+    public void setWorkingHoursEnd(LocalTime workingHoursEnd) {
+        this.workingHoursEnd = workingHoursEnd;
+    }
 }

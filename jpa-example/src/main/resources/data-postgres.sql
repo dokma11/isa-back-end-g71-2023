@@ -14,10 +14,10 @@ INSERT INTO public.users(id, company_information, city, enabled, last_password_r
 
 INSERT INTO public.registered_user(category, points, id) VALUES (0, 0, -3);
 
-insert into company(id, address, average_grade, description, latitude, longitude, name) values (-1, '4, Mihala Babinke, Novi Sad, Srbija', 4.75, 'Jako dobra', 10.45, 45.67, 'Ninina kompanija');
-insert into company(id, address, average_grade, description, latitude, longitude, name) values (-2, '54, Ulica i broj, Beograd, Srbija', 2.5, 'Onako', 11.45, 42.67, 'Neka kompanija');
-insert into company(id, address, average_grade, description, latitude, longitude, name) values (-3, '15, Neka adresa, Novi Sad, Srbija', 3, 'Solidno', 10.45, 32.67, 'Naziv kompanije');
-insert into company(id, address, average_grade, description, latitude, longitude, name) values (-4, '27, Alekse Santica, Novi Sad, Srbija', 4, 'Tu i tamo', 16.45, 48.67, 'Medical doo');
+insert into company(id, address, average_grade, description, latitude, longitude, name, workingHoursStart, workingHoursEnd) values (-1, '4, Mihala Babinke, Novi Sad, Srbija', 4.75, 'Jako dobra', 45.270335, 19.807542, 'Ninina kompanija', '08:00:00', '21:00:00');
+insert into company(id, address, average_grade, description, latitude, longitude, name, workingHoursStart, workingHoursEnd) values (-2, '54, Ulica i broj, Beograd, Srbija', 2.5, 'Onako', 11.45, 19.844811, 'Neka kompanija', '08:00:00', '21:00:00');
+insert into company(id, address, average_grade, description, latitude, longitude, name, workingHoursStart, workingHoursEnd) values (-3, '2, Narodnog fronta 2, Novi Sad, Srbija', 3, 'Solidno', 45.242465, 19.851342, 'Naziv kompanije', '08:00:00', '21:00:00');
+insert into company(id, address, average_grade, description, latitude, longitude, name, workingHoursStart, workingHoursEnd) values (-4, '27, Alekse Santica, Novi Sad, Srbija', 4, 'Tu i tamo', 45.243548, 19.835220, 'Medical doo', '08:00:00', '21:00:00');
 
 -- legenda11
 INSERT INTO public.users(id, company_information, city, enabled, last_password_reset_date, name, password, profession, state, surname, telephone_number, username, role_id) VALUES (-2, 'Iz dobre kompanije', 'Novi Sad',TRUE,'2023-09-12', 'Vukasin', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Dokmanovski', '0659443197', 'legenda@gmail.com',2);

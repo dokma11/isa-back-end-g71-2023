@@ -9,7 +9,7 @@ public class AppointmentCreateDTO {
     private LocalDateTime pickupTime;
     private Integer duration;
     private RegisteredUserResponseDTO user;
-    private CompanyResponseDTO company;
+    private Integer companyId;
     private Appointment.AppointmentStatus status;
     private Appointment.AppointmentType type;
 
@@ -49,12 +49,12 @@ public class AppointmentCreateDTO {
         this.user = user;
     }
 
-    public CompanyResponseDTO getCompany() {
-        return company;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany(CompanyResponseDTO company) {
-        this.company = company;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public Appointment.AppointmentStatus getStatus() {

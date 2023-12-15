@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.*;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
+import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
 
@@ -62,6 +63,8 @@ public class CompanyController {
         company.setLatitude(companyDTO.getLatitude());
         company.setDescription(companyDTO.getDescription());
         company.setAverageGrade(companyDTO.getAverageGrade());
+        company.setWorkingHoursStart(companyDTO.getWorkingHoursStart());
+        company.setWorkingHoursEnd(companyDTO.getWorkingHoursEnd());
 
         company = companyService.save(company);
         return new ResponseEntity<>(new CompanyResponseDTO(company), HttpStatus.CREATED);
@@ -84,6 +87,8 @@ public class CompanyController {
         company.setLatitude(companyDTO.getLatitude());
         company.setDescription(companyDTO.getDescription());
         company.setAverageGrade(companyDTO.getAverageGrade());
+        company.setWorkingHoursStart(companyDTO.getWorkingHoursStart());
+        company.setWorkingHoursEnd(companyDTO.getWorkingHoursEnd());
 
         company = companyService.save(company);
         return new ResponseEntity<>(new CompanyResponseDTO(company), HttpStatus.OK);
@@ -146,5 +151,20 @@ public class CompanyController {
             appointmentDTO.add(new AppointmentResponseDTO(a));
         }
         return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{companyId}/administrator")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<CompanyAdministratorResponseDTO>> getCompaniesAdministrators(@PathVariable Integer companyId) {
+
+        Company company = companyService.findOneWithAdministrators(companyId);
+
+        Set<CompanyAdministrator> administrators = company.getAdministrators();
+        List<CompanyAdministratorResponseDTO> administratorDTO = new ArrayList<>();
+
+        for (CompanyAdministrator a : administrators) {
+            administratorDTO.add(new CompanyAdministratorResponseDTO(a));
+        }
+        return new ResponseEntity<>(administratorDTO, HttpStatus.OK);
     }
 }

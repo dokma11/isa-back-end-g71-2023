@@ -71,8 +71,8 @@ public class AppointmentController {
     @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<AppointmentResponseDTO> saveAppointment(@RequestBody AppointmentCreateDTO appointmentDTO) {
 
-        CompanyAdministrator administrator = new CompanyAdministrator();
-        RegisteredUser user = new RegisteredUser();
+        CompanyAdministrator administrator = null;
+        RegisteredUser user = null;
 
         if(appointmentDTO.getAdministrator() != null){
             administrator = companyAdministratorService.findOne(appointmentDTO.getAdministrator().getId());
@@ -82,7 +82,7 @@ public class AppointmentController {
             user = registeredUserService.findOne(appointmentDTO.getUser().getId());
         }
 
-        Company company = companyService.findOne(appointmentDTO.getCompany().getId());
+        Company company = companyService.findOne(appointmentDTO.getCompanyId());
 
         Appointment appointment = new Appointment();
         appointment.setAdministrator(administrator);
