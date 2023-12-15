@@ -4,20 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentCreateDTO;
-import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentResponseDTO;
-import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentQuantityDTO;
-import rs.ac.uns.ftn.informatika.jpa.dto.RegisteredUserResponseDTO;
+import org.springframework.web.bind.annotation.*;
+import rs.ac.uns.ftn.informatika.jpa.dto.*;
 import rs.ac.uns.ftn.informatika.jpa.model.*;
 import rs.ac.uns.ftn.informatika.jpa.service.AppointmentService;
 import rs.ac.uns.ftn.informatika.jpa.service.EquipmentQuantityService;
 import rs.ac.uns.ftn.informatika.jpa.service.EquipmentService;
 import rs.ac.uns.ftn.informatika.jpa.service.MailService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,6 +26,7 @@ public class EquipmentQunatityController {
 
     @Autowired
     private MailService mailService;
+
     @PostMapping(consumes = "application/json")
     @PreAuthorize("hasAnyRole('REGISTERED_USER')")
     public ResponseEntity saveEquipmentQunatity(@RequestBody List<EquipmentQuantityDTO> equipmentQuantityDTOS) {
@@ -52,4 +48,39 @@ public class EquipmentQunatityController {
         }
     }
 
+    @GetMapping(value = "/equipment/{id}")
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<EquipmentQuantityDTO>> getById(@PathVariable Integer id) {
+
+        List<EquipmentQuantity> equipment = equipmentQuantityService.findAll();
+
+        List<EquipmentQuantityDTO> equipmentDTO = new ArrayList<>();
+        for (EquipmentQuantity e : equipment) {
+            if(e.getEquipmentId().equals(id)){
+                equipmentDTO.add(new EquipmentQuantityDTO(e));
+            }
+        }
+
+        return new ResponseEntity<>(equipmentDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/removable/{id}")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<EquipmentQuantityDTO>> getIfRemovable(@PathVariable Integer id) {
+
+        List<EquipmentQuantity> equipment = equipmentQuantityService.getIfRemovable(id);
+
+        List<EquipmentQuantityDTO> equipmentDTO = new ArrayList<>();
+        for (EquipmentQuantity e : equipment) {
+            equipmentDTO.add(new EquipmentQuantityDTO(e));
+        }
+
+        return new ResponseEntity<>(equipmentDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/quantity/{id}")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
+    public Integer getQuantityByEquipmentId(@PathVariable Integer id) {
+        return equipmentQuantityService.getQuantityByEquipmentId(id);
+    }
 }
