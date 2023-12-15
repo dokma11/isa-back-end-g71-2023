@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.*;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
+import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
 
@@ -146,5 +148,21 @@ public class CompanyController {
             appointmentDTO.add(new AppointmentResponseDTO(a));
         }
         return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/{companyId}/administrator")
+    @PreAuthorize("hasRole( 'REGISTERED_USER')")
+    public ResponseEntity<List<Integer>> getCompaniesAdministrators(@PathVariable Integer companyId) {
+
+        Company company = companyService.findOneWithAdministrators(companyId);
+
+        Set<CompanyAdministrator> administrators = company.getAdministrators();
+        List<Integer> administratorDTO = new ArrayList<>();
+
+        for (CompanyAdministrator a : administrators) {
+            administratorDTO.add(a.getId());
+        }
+        return new ResponseEntity<>(administratorDTO, HttpStatus.OK);
     }
 }

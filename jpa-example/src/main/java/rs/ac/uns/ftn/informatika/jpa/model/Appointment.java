@@ -17,7 +17,7 @@ public class Appointment {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "administrator_id")
+    @JoinColumn(name = "administrator_id", nullable = true)
     private CompanyAdministrator administrator;
 
     @Column(name = "pickupTime", nullable = false)
@@ -35,7 +35,7 @@ public class Appointment {
     inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
     private Set<Equipment> equipment = new HashSet<>();
 
-    @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "appointment", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //ovo sam promenila nije hteo da cita eqipment zbog LAZY
     private Set<EquipmentQuantity> equipmentQuantities = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)

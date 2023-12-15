@@ -23,6 +23,9 @@ insert into company(id, address, average_grade, description, latitude, longitude
 INSERT INTO public.users(id, company_information, city, enabled, last_password_reset_date, name, password, profession, state, surname, telephone_number, username, role_id) VALUES (-2, 'Iz dobre kompanije', 'Novi Sad',TRUE,'2023-09-12', 'Vukasin', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Dokmanovski', '0659443197', 'legenda@gmail.com',2);
 INSERT INTO public.company_administrator(id, company_id) VALUES (-2, -1);
 
+INSERT INTO public.users(id, company_information, city, enabled, last_password_reset_date, name, password, profession, state, surname, telephone_number, username, role_id) VALUES (-4, 'Iz dobre kompanije', 'Novi Sad',TRUE,'2023-09-12', 'Kukisa', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Vukisa', '0659443197', 'legendaKOPIJA@gmail.com',2);
+INSERT INTO public.company_administrator(id, company_id) VALUES (-4, -1);
+
 insert into equipment(id, description, grade, name, type, quantity, company_id) values (-1, 'Kvalitetan stalak', 4, 'Stalak za infuziju', 'Stalak', 10, -1);
 insert into equipment(id, description, grade, name, type, quantity, company_id) values (-2, 'Ostra igla', 5, 'Igla za vadjenje krvi', 'Igla', 20, -1);
 insert into equipment(id, description, grade, name, type, quantity, company_id) values (-3, 'Solidno udoban krevet', 3, 'Krevet za pacijenta', 'Krevet', 30, -1);
