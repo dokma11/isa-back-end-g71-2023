@@ -31,15 +31,15 @@ public class RegisteredUserService {
     @Autowired
     private MailService mailService;
     public Page<RegisteredUser> findAll(Pageable pageable) {return registeredUserRepository.findAll(pageable);}
-    public RegisteredUser create(RegisteredUser user)  {
+    public RegisteredUser create(RegisteredUser user, boolean isPasswordReset)  {
         // hesiranje lozinke
         //provjer da li je doslo do promjene lozinke ili tek treba da upisemo u bazu
-        RegisteredUser previousValue = registeredUserRepository.findByUsername(user.getUsername());
-        if(previousValue != null && !passwordEncoder.matches(user.getPassword(), previousValue.getPassword()))
+
+
+        if(isPasswordReset)
         {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-
         return registeredUserRepository.save(user);
     }
     public void remove(int id) { registeredUserRepository.deleteById(id);}
@@ -51,7 +51,7 @@ public class RegisteredUserService {
 
     public RegisteredUser register(RegisteredUser user) throws MailException{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        RegisteredUser newUser = create(user);
+        RegisteredUser newUser = create(user, false); //ne resetujemo lozinku prvi put kada se regostrujemo
         try{
             mailService.sendRegistrationNotification(newUser);
         }catch(InterruptedException e){

@@ -96,16 +96,21 @@ public class RegsteredUserController {
                 if(userForUpdate == null){
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 }
+                boolean isPasswordReset = false;
                 userForUpdate.setName(user.getName());
                 userForUpdate.setSurname(user.getSurname());
                 userForUpdate.setTelephoneNumber(user.getTelephoneNumber());
                 userForUpdate.setCity(user.getCity());
                 userForUpdate.setState(user.getState());
                 userForUpdate.setProfession(user.getProfession());
-                userForUpdate.setPassword(user.getPassword());
+                if(!user.getPassword().isEmpty()){
+                    userForUpdate.setPassword(user.getPassword());
+                    isPasswordReset = true;
+                }
+
                 userForUpdate.setCompanyInformation(user.getCompanyInformation());
 
-                userForUpdate = registeredUserService.create(userForUpdate);
+                userForUpdate = registeredUserService.create(userForUpdate, isPasswordReset);
                 return new ResponseEntity<>(new RegisteredUserResponseDTO(userForUpdate),HttpStatus.OK);
 
         }catch(Exception e){
