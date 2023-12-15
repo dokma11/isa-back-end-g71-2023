@@ -31,12 +31,10 @@ public class Equipment {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "appointment_equipment", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
     private Set<Appointment> appointments = new HashSet<>();
-
-    // MOJA DEVOJKA JE MNOGO LEPA, SLATKA I PAMETNA
 
     public Equipment() {
     }

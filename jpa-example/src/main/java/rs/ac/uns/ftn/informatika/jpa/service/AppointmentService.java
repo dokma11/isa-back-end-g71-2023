@@ -11,6 +11,7 @@ import rs.ac.uns.ftn.informatika.jpa.repository.CompanyRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,29 +76,37 @@ public class AppointmentService {
             return false;
         }
 
-        int bookedAdmins = 0;
+        HashMap<Integer, Integer> bookedAdmins = new HashMap<>();
 
         for (Appointment appointment : appointments) {
             LocalDateTime appointmentStartTime = appointment.getPickupTime();
             LocalDateTime appointmentEndTime = appointmentStartTime.plusMinutes(appointment.getDuration());
 
             // Ako se termin preklapa sa razmatranim vremenskim intervalom
-            if (appointmentStartTime.isBefore(endTime) && appointmentEndTime.isAfter(startTime)) {
-                // Ako postoji bar jedan admin koji nije zauzet, povećavamo brojač
+            if ((appointmentStartTime.isBefore(startTime) && appointmentEndTime.isAfter(startTime) && appointmentEndTime.isBefore(endTime)) ||
+                (appointmentStartTime.isAfter(startTime) && appointmentStartTime.isBefore(endTime) && appointmentEndTime.isAfter(endTime)) ||
+                (appointmentStartTime.equals(startTime) && appointmentEndTime.equals(endTime))) {
+
+                // Ako postoji bar jedan admin koji je zauzet, povećavamo brojač
                 if (appointment.getAdministrator() != null) {
-                    bookedAdmins++;
+                    if(!bookedAdmins.containsKey(appointment.getAdministrator().getId())){
+                        bookedAdmins.put(appointment.getAdministrator().getId(), 1);
+                    }
+                    else{
+                        Integer currentCount = bookedAdmins.getOrDefault(appointment.getAdministrator().getId(), 0);
+                        currentCount += 1;
+                        bookedAdmins.put(appointment.getAdministrator().getId(), currentCount);
+                    }
                 }
             }
         }
 
         // Poređenje broja zauzetih admina sa ukupnim brojem admina u kompaniji
-        return bookedAdmins == numberOfAdmins;
+        return bookedAdmins.size() == numberOfAdmins;
     }
 
     public List<Integer> findAdminIdsForAppointmentsAtPickupTime(LocalDateTime dateTime,Integer companyId){
         return appointmentRepository.findAdminIdsForAppointmentsAtPickupTime(dateTime,companyId);
     }
-
-
 
 }
