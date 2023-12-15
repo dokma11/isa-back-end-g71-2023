@@ -5,12 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.mail.MailException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
+import rs.ac.uns.ftn.informatika.jpa.util.TokenUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RegisteredUserService {
@@ -20,14 +23,23 @@ public class RegisteredUserService {
 
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @Autowired
     private MailService mailService;
     public Page<RegisteredUser> findAll(Pageable pageable) {return registeredUserRepository.findAll(pageable);}
-    public RegisteredUser create(RegisteredUser user)  {
+    public RegisteredUser create(RegisteredUser user, boolean isPasswordReset)  {
         // hesiranje lozinke
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //provjer da li je doslo do promjene lozinke ili tek treba da upisemo u bazu
+
+
+        if(isPasswordReset)
+        {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return registeredUserRepository.save(user);
     }
     public void remove(int id) { registeredUserRepository.deleteById(id);}
@@ -39,12 +51,26 @@ public class RegisteredUserService {
 
     public RegisteredUser register(RegisteredUser user) throws MailException{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        RegisteredUser newUser = create(user);
+        RegisteredUser newUser = create(user, false); //ne resetujemo lozinku prvi put kada se regostrujemo
         try{
             mailService.sendRegistrationNotification(newUser);
         }catch(InterruptedException e){
             System.out.println("Interrupted exception!");
         }
         return newUser;
+    }
+
+    public boolean confirmRegistration(String token){
+        String username = tokenUtils.getUsernameFromToken(token);
+        //pronalazenje pomocu username
+        RegisteredUser user = registeredUserRepository.findByUsername(username);
+
+        if(user == null)
+            return false;
+
+        user.setEnabled(true);
+        registeredUserRepository.save(user);
+
+        return true;
     }
 }

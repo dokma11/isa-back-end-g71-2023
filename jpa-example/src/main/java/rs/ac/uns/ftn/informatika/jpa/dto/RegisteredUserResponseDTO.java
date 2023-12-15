@@ -7,7 +7,7 @@ public class RegisteredUserResponseDTO {
     private int id;
     private String name;
     private String surname;
-    private String username;
+    private String email;
     private String password;
     private String telephoneNumber;
    private String city;
@@ -27,7 +27,7 @@ public class RegisteredUserResponseDTO {
         id = user.getId();
         name = user.getName();
         surname = user.getSurname();
-        username = user.getUsername();
+        email = user.getUsername();
         telephoneNumber = user.getTelephoneNumber();
         city = user.getCity();
         state = user.getState();
@@ -64,12 +64,12 @@ public class RegisteredUserResponseDTO {
         this.surname = surname;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getTelephoneNumber() {

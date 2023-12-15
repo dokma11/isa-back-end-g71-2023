@@ -53,7 +53,7 @@ public class RegsteredUserController {
             newUser.setSurname(user.getSurname());
             newUser.setState(user.getState());
             newUser.setCity(user.getCity());
-            newUser.setUsername(user.getUsername());
+            newUser.setUsername(user.getEmail());
             newUser.setPassword(user.getPassword());
             newUser.setTelephoneNumber(user.getTelephoneNumber());
             newUser.setProfession(user.getProfession());
@@ -96,16 +96,21 @@ public class RegsteredUserController {
                 if(userForUpdate == null){
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 }
+                boolean isPasswordReset = false;
                 userForUpdate.setName(user.getName());
                 userForUpdate.setSurname(user.getSurname());
                 userForUpdate.setTelephoneNumber(user.getTelephoneNumber());
                 userForUpdate.setCity(user.getCity());
                 userForUpdate.setState(user.getState());
                 userForUpdate.setProfession(user.getProfession());
-                userForUpdate.setPassword(user.getPassword());
+                if(!user.getPassword().isEmpty()){
+                    userForUpdate.setPassword(user.getPassword());
+                    isPasswordReset = true;
+                }
+
                 userForUpdate.setCompanyInformation(user.getCompanyInformation());
 
-                userForUpdate = registeredUserService.create(userForUpdate);
+                userForUpdate = registeredUserService.create(userForUpdate, isPasswordReset);
                 return new ResponseEntity<>(new RegisteredUserResponseDTO(userForUpdate),HttpStatus.OK);
 
         }catch(Exception e){
@@ -129,6 +134,16 @@ public class RegsteredUserController {
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @GetMapping(value ="/confirmRegistration/{token}")
+    public ResponseEntity confirmRegistration(@PathVariable String token)
+    {
+        // jej
+        boolean result = registeredUserService.confirmRegistration(token);
+        if(!result) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok("<h1>Your Registration was successfull!</h1>");
+    }
+
 
 
 }
