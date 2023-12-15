@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -74,12 +75,12 @@ public class AppointmentController {
         CompanyAdministrator administrator = null;
         RegisteredUser user = null;
 
-        if(appointmentDTO.getAdministrator() != null){
-            administrator = companyAdministratorService.findOne(appointmentDTO.getAdministrator().getId());
+        if(appointmentDTO.getAdministratorId() != null){
+            administrator = companyAdministratorService.findOne(appointmentDTO.getAdministratorId());
         }
 
-        if(appointmentDTO.getUser() != null){
-            user = registeredUserService.findOne(appointmentDTO.getUser().getId());
+        if(appointmentDTO.getUserId() != null){
+            user = registeredUserService.findOne(appointmentDTO.getUserId());
         }
 
         Company company = companyService.findOne(appointmentDTO.getCompanyId());
@@ -168,5 +169,18 @@ public class AppointmentController {
         // Poziv servisa sa odgovarajućim parametrima
         return appointmentService.findFreeTimeSlots(companyId, selectedDate, parsedStartTime, parsedEndTime);
     }
+
+    @GetMapping(value = "/admins")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER')")
+    public ResponseEntity<List<Integer>> findAdminIdsForAppointmentsAtPickupTime(
+            @RequestParam("pickupTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime pickupTime,
+            @RequestParam("companyId") Integer companyId) {
+
+        // Call the service method with both parameters
+        List<Integer> adminIds = appointmentService.findAdminIdsForAppointmentsAtPickupTime(pickupTime, companyId);
+
+        return new ResponseEntity<>(adminIds, HttpStatus.OK);
+    }
+
 
 }

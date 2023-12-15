@@ -153,17 +153,18 @@ public class CompanyController {
         return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
     }
 
+
     @GetMapping(value = "/{companyId}/administrator")
-    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
-    public ResponseEntity<List<CompanyAdministratorResponseDTO>> getCompaniesAdministrators(@PathVariable Integer companyId) {
+    @PreAuthorize("hasAnyRole( 'REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<Integer>> getCompaniesAdministrators(@PathVariable Integer companyId) {
 
         Company company = companyService.findOneWithAdministrators(companyId);
 
         Set<CompanyAdministrator> administrators = company.getAdministrators();
-        List<CompanyAdministratorResponseDTO> administratorDTO = new ArrayList<>();
+        List<Integer> administratorDTO = new ArrayList<>();
 
         for (CompanyAdministrator a : administrators) {
-            administratorDTO.add(new CompanyAdministratorResponseDTO(a));
+            administratorDTO.add(a.getId());
         }
         return new ResponseEntity<>(administratorDTO, HttpStatus.OK);
     }

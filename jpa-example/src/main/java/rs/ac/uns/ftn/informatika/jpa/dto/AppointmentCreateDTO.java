@@ -5,10 +5,10 @@ import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import java.time.LocalDateTime;
 
 public class AppointmentCreateDTO {
-    private CompanyAdministratorResponseDTO administrator;
+    private Integer administratorId;
     private LocalDateTime pickupTime;
     private Integer duration;
-    private RegisteredUserResponseDTO user;
+    private Integer userId;
     private Integer companyId;
     private Appointment.AppointmentStatus status;
     private Appointment.AppointmentType type;
@@ -17,12 +17,12 @@ public class AppointmentCreateDTO {
 
     }
 
-    public CompanyAdministratorResponseDTO getAdministrator() {
-        return administrator;
+    public Integer getAdministratorId() {
+        return administratorId;
     }
 
-    public void setAdministrator(CompanyAdministratorResponseDTO administrator) {
-        this.administrator = administrator;
+    public void setAdministratorId(Integer administratorId) {
+        this.administratorId = administratorId;
     }
 
     public LocalDateTime getPickupTime() {
@@ -41,12 +41,12 @@ public class AppointmentCreateDTO {
         this.duration = duration;
     }
 
-    public RegisteredUserResponseDTO getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(RegisteredUserResponseDTO user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getCompanyId() {
