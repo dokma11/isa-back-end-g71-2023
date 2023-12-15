@@ -55,7 +55,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.4.1</version> <!-- or the latest version available -->
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.4.1</version> <!-- or the latest version available -->
+		</dependency>
 <!--		SECURITY-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

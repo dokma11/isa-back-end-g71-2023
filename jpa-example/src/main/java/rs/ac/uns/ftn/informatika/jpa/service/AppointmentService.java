@@ -94,5 +94,10 @@ public class AppointmentService {
         return bookedAdmins == numberOfAdmins;
     }
 
+    public List<Integer> findAdminIdsForAppointmentsAtPickupTime(LocalDateTime dateTime,Integer companyId){
+        return appointmentRepository.findAdminIdsForAppointmentsAtPickupTime(dateTime,companyId);
+    }
+
+
 
 }
