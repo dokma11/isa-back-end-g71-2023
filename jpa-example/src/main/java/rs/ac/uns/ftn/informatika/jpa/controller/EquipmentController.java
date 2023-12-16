@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import rs.ac.uns.ftn.informatika.jpa.dto.AvailableEquipmentQuantityDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentCreateDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentResponseDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentUpdateDTO;
@@ -107,5 +108,13 @@ public class EquipmentController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/available/{companyId}")
+    @PreAuthorize("hasRole( 'REGISTERED_USER')")
+    public ResponseEntity<List<AvailableEquipmentQuantityDTO>> getAvailableQuantity(@PathVariable int companyId){
+        List<AvailableEquipmentQuantityDTO> result = equipmentService.getAvailableQuantity(companyId);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -5,8 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 
+import java.util.List;
+
 public interface EquipmentRepository extends JpaRepository<Equipment, Integer> {
     @Query("select e from Equipment e join fetch e.appointments a where e.id =?1")
     public Equipment findOneWithAppointments(Integer equipmentId);
+
+    public List<Equipment> findByCompany_Id(Integer companyId);
 
 }
