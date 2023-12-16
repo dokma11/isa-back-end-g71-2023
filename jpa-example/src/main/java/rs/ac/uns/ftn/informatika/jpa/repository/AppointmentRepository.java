@@ -26,4 +26,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             @Param("pickupTime") LocalDateTime pickupTime,
             @Param("companyId") Integer companyId);
 
+    public List<Appointment> findAllByUser_Id(Integer userId);
+
 }

@@ -15,6 +15,7 @@ public class AppointmentResponseDTO {
     private Appointment.AppointmentType type;
 
     private String companyAdminName;
+    private String companyName;
 
     public AppointmentResponseDTO() {
     }
@@ -34,6 +35,7 @@ public class AppointmentResponseDTO {
         this.type = a.getType();
         this.company = new CompanyResponseDTO(a.getCompany());
         this.companyAdminName = a.getAdministrator().getName() + " " + a.getAdministrator().getSurname();
+        this.companyName = a.getCompany().getName();
     }
 
     public Integer getId() {
@@ -106,5 +108,13 @@ public class AppointmentResponseDTO {
 
     public void setCompanyAdminName(String companyAdminName) {
         this.companyAdminName = companyAdminName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

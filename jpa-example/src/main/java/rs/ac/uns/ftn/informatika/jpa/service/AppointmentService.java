@@ -118,5 +118,9 @@ public class AppointmentService {
 
     }
 
+    public List<Appointment> getUsersAppointments(Integer userId){
+        return appointmentRepository.findAllByUser_Id(userId);
+    }
+
 
 }
