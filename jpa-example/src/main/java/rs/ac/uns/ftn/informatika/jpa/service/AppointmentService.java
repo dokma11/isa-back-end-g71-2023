@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
+import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.repository.AppointmentRepository;
 import rs.ac.uns.ftn.informatika.jpa.repository.CompanyRepository;
+import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +24,9 @@ public class AppointmentService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private RegisteredUserRepository registeredUserRepository;
 
     public Appointment findOne(Integer id) {
         return appointmentRepository.findById(id).orElseGet(null);
@@ -44,7 +49,8 @@ public class AppointmentService {
     }
 
     public List<Appointment> findAllPredefinedAppointmentsForCompany(Integer companyId) {
-        return appointmentRepository.findByCompany_IdAndType(companyId, Appointment.AppointmentType.PREDEFINED);
+        //if appointment has user, it is already reserved
+        return appointmentRepository.findByCompany_IdAndTypeAndUserIsNull(companyId, Appointment.AppointmentType.PREDEFINED);
     }
 
     public List<Appointment> findBookedTimeSlotsForDay(Integer companyId, LocalDateTime date) {
@@ -98,6 +104,19 @@ public class AppointmentService {
         return appointmentRepository.findAdminIdsForAppointmentsAtPickupTime(dateTime,companyId);
     }
 
+    public Appointment schedulePredefinedAppointment(Integer userId, Integer appointmentId){
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseGet(null);
+        RegisteredUser user = registeredUserRepository.findById(userId).orElseGet(null);
+        // nema rezervisanja ako - ne postoje user ili appointment, isto tako nema rez ako je vec neko rezervisao
+        if(appointment == null || user == null || appointment.getUser() != null)
+            return null;
+
+        appointment.setUser(user);
+        //save changes
+        appointment = appointmentRepository.save(appointment);
+        return appointment;
+
+    }
 
 
 }

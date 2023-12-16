@@ -182,5 +182,15 @@ public class AppointmentController {
         return new ResponseEntity<>(adminIds, HttpStatus.OK);
     }
 
+    @PutMapping(path = "/schedule/{userId}/{appointmentId}")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER')")
+    public ResponseEntity<AppointmentResponseDTO> schedulePredefinedAppointment(@PathVariable Integer userId, @PathVariable Integer appointmentId){
+        Appointment appointment = appointmentService.schedulePredefinedAppointment(userId,appointmentId);
+        if(appointment == null)
+            return ResponseEntity.notFound().build();
+        AppointmentResponseDTO dto = new AppointmentResponseDTO(appointment);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
+    }
+
 
 }

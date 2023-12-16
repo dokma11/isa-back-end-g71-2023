@@ -32,4 +32,5 @@ insert into equipment(id, description, grade, name, type, quantity, company_id) 
 
 
 insert into appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type) values (-1, 30, '2023-12-06T12:30:00', -2, -1, -3, 0, 0);
+insert into appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type) values (-2, 30, '2023-12-06T14:30:00', -2, -1, null, 0, 0);
 
