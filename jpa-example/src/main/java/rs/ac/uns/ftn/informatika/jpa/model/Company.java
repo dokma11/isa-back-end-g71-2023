@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
@@ -30,6 +31,12 @@ public class Company {
 
     @Column(name = "averageGrade", nullable = true)
     private double averageGrade;
+
+    @Column(name = "workinghoursstart", nullable = false)
+    private LocalTime workingHoursStart;
+
+    @Column(name = "workinghoursend", nullable = false)
+    private LocalTime workingHoursEnd;
 
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<CompanyAdministrator> administrators = new HashSet<CompanyAdministrator>();
@@ -146,6 +153,22 @@ public class Company {
 
     public void setGrades(Set<Grade> grades) {
         this.grades = grades;
+    }
+
+    public LocalTime getWorkingHoursStart() {
+        return workingHoursStart;
+    }
+
+    public void setWorkingHoursStart(LocalTime workingHoursStart) {
+        this.workingHoursStart = workingHoursStart;
+    }
+
+    public LocalTime getWorkingHoursEnd() {
+        return workingHoursEnd;
+    }
+
+    public void setWorkingHoursEnd(LocalTime workingHoursEnd) {
+        this.workingHoursEnd = workingHoursEnd;
     }
 
     public List<CompanyComplaint> getComplaints() {

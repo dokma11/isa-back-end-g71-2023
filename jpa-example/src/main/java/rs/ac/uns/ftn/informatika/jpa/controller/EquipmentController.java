@@ -30,7 +30,6 @@ public class EquipmentController {
 
         List<Equipment> equipment = equipmentService.findAll();
 
-        // convert companies to DTOs
         List<EquipmentResponseDTO> equipmentDTO = new ArrayList<>();
         for (Equipment e : equipment) {
             equipmentDTO.add(new EquipmentResponseDTO(e));
@@ -100,7 +99,15 @@ public class EquipmentController {
         Equipment equipment = equipmentService.findOne(id);
 
         if (equipment != null) {
+            Company company = equipment.getCompany();
+            company.removeEquipment(equipment);
+
+            equipment.setCompany(null);
+
             equipmentService.remove(id);
+
+            equipmentService.save(equipment);
+
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

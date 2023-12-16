@@ -2,6 +2,8 @@ package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 
+import java.time.LocalTime;
+
 public class CompanyResponseDTO {
     private Integer id;
     private String name;
@@ -10,6 +12,8 @@ public class CompanyResponseDTO {
     private double latitude;
     private String description;
     private double averageGrade;
+    private LocalTime workingHoursStart;
+    private LocalTime workingHoursEnd;
 
     public CompanyResponseDTO(){
     }
@@ -22,6 +26,8 @@ public class CompanyResponseDTO {
         this.latitude = company.getLatitude();
         this.description = company.getDescription();
         this.averageGrade = company.getAverageGrade();
+        this.workingHoursStart = company.getWorkingHoursStart();
+        this.workingHoursEnd = company.getWorkingHoursEnd();
     }
 
     public Integer getId() {
@@ -78,5 +84,21 @@ public class CompanyResponseDTO {
 
     public void setAverageGrade(double averageGrade) {
         this.averageGrade = averageGrade;
+    }
+
+    public LocalTime getWorkingHoursStart() {
+        return workingHoursStart;
+    }
+
+    public void setWorkingHoursStart(LocalTime workingHoursStart) {
+        this.workingHoursStart = workingHoursStart;
+    }
+
+    public LocalTime getWorkingHoursEnd() {
+        return workingHoursEnd;
+    }
+
+    public void setWorkingHoursEnd(LocalTime workingHoursEnd) {
+        this.workingHoursEnd = workingHoursEnd;
     }
 }

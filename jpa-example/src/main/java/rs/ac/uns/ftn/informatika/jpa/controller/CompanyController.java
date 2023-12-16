@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +63,8 @@ public class CompanyController {
         company.setLatitude(companyDTO.getLatitude());
         company.setDescription(companyDTO.getDescription());
         company.setAverageGrade(companyDTO.getAverageGrade());
+        company.setWorkingHoursStart(companyDTO.getWorkingHoursStart());
+        company.setWorkingHoursEnd(companyDTO.getWorkingHoursEnd());
 
         company = companyService.save(company);
         return new ResponseEntity<>(new CompanyResponseDTO(company), HttpStatus.CREATED);
@@ -86,6 +87,8 @@ public class CompanyController {
         company.setLatitude(companyDTO.getLatitude());
         company.setDescription(companyDTO.getDescription());
         company.setAverageGrade(companyDTO.getAverageGrade());
+        company.setWorkingHoursStart(companyDTO.getWorkingHoursStart());
+        company.setWorkingHoursEnd(companyDTO.getWorkingHoursEnd());
 
         company = companyService.save(company);
         return new ResponseEntity<>(new CompanyResponseDTO(company), HttpStatus.OK);
@@ -152,8 +155,8 @@ public class CompanyController {
 
 
     @GetMapping(value = "/{companyId}/administrator")
-    @PreAuthorize("hasRole( 'REGISTERED_USER')")
-    public ResponseEntity<List<Integer>> getCompaniesAdministrators(@PathVariable Integer companyId) {
+    @PreAuthorize("hasAnyRole( 'REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<Integer>> getCompaniesAdministratorIds(@PathVariable Integer companyId) {
 
         Company company = companyService.findOneWithAdministrators(companyId);
 
@@ -165,4 +168,20 @@ public class CompanyController {
         }
         return new ResponseEntity<>(administratorDTO, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/{companyId}/administrators")
+    @PreAuthorize("hasAnyRole( 'REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<CompanyAdministratorResponseDTO>> getCompaniesAdministrators(@PathVariable Integer companyId) {
+
+        Company company = companyService.findOneWithAdministrators(companyId);
+
+        Set<CompanyAdministrator> administrators = company.getAdministrators();
+        List<CompanyAdministratorResponseDTO> administratorDTO = new ArrayList<>();
+
+        for (CompanyAdministrator a : administrators) {
+            administratorDTO.add(new CompanyAdministratorResponseDTO(a));
+        }
+        return new ResponseEntity<>(administratorDTO, HttpStatus.OK);
+    }
+
 }
