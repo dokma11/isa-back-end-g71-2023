@@ -131,7 +131,12 @@ public class AppointmentController {
         Appointment appointment = appointmentService.findOne(id);
 
         if (appointment != null) {
+            Company company = appointment.getCompany();
+            company.removeAppointment(appointment);
+            appointment.setCompany(null);
+
             appointmentService.remove(id);
+            appointmentService.save(appointment);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -147,6 +147,15 @@ public class Company {
         this.appointments = appointments;
     }
 
+    public void addAppointment(Appointment a) {
+        appointments.add(a);
+        a.setCompany(this);
+    }
+
+    public void removeAppointment(Appointment a) {
+        appointments.remove(a);
+        a.setCompany(null);
+    }
     public Set<Grade> getGrades() {
         return grades;
     }

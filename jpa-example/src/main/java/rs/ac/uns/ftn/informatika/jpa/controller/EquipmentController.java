@@ -115,7 +115,7 @@ public class EquipmentController {
     }
 
     @GetMapping("/available/{companyId}")
-    @PreAuthorize("hasRole( 'REGISTERED_USER')")
+    @PreAuthorize("hasAnyRole( 'REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<List<AvailableEquipmentQuantityDTO>> getAvailableQuantity(@PathVariable int companyId){
         List<AvailableEquipmentQuantityDTO> result = equipmentService.getAvailableQuantity(companyId);
 
