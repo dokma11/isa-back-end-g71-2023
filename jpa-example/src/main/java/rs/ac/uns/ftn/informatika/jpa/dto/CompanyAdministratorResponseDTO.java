@@ -18,6 +18,7 @@ public class CompanyAdministratorResponseDTO {
     private java.lang.String role;
     private String profession;
     private CompanyResponseDTO company;
+    private boolean verified;
 
     public CompanyAdministratorResponseDTO() {
     }
@@ -35,6 +36,7 @@ public class CompanyAdministratorResponseDTO {
         this.role = administrator.getRole().getName();
         this.profession = administrator.getProfession();
         this.company = new CompanyResponseDTO(administrator.getCompany());
+        this.verified = administrator.isVerified();
     }
 
     public Integer getId() {
@@ -131,5 +133,13 @@ public class CompanyAdministratorResponseDTO {
 
     public void setCompany(CompanyResponseDTO company) {
         this.company = company;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }

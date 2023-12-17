@@ -74,7 +74,6 @@ public class RegsteredUserController {
 
     }
 
-
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasRole('SYSTEM_ADMINISTRATOR')")
     public ResponseEntity<Void> delete(@PathVariable Integer id){

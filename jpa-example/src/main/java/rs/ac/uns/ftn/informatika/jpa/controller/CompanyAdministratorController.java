@@ -25,6 +25,7 @@ public class CompanyAdministratorController {
 
     @Autowired
     private RoleService roleService;
+
     @Autowired
     private CompanyService companyService;
 
@@ -70,13 +71,14 @@ public class CompanyAdministratorController {
         companyAdministrator.setCompany(company);
         company.addAdministrator(companyAdministrator);
         companyAdministrator.setCompanyInformation(companyAdministratorDTO.getCompanyInformation());
-        companyAdministrator.setUsername(companyAdministratorDTO.getEmail());
+        companyAdministrator.setUsername(companyAdministratorDTO.getUsername());
         companyAdministrator.setPassword(companyAdministratorDTO.getPassword());
         companyAdministrator.setProfession(companyAdministratorDTO.getProfession());
         //POGLEDATI JOS JEDNOM
         companyAdministrator.setRole(roleService.findByName("ROLE_COMPANY_ADMINISTRATOR").get(0));
         companyAdministrator.setState(companyAdministratorDTO.getState());
         companyAdministrator.setTelephoneNumber(companyAdministratorDTO.getTelephoneNumber());
+        companyAdministrator.setVerified(companyAdministratorDTO.isVerified());
 
         companyAdministrator = companyAdministratorService.save(companyAdministrator);
         return new ResponseEntity<>(new CompanyAdministratorResponseDTO(companyAdministrator), HttpStatus.CREATED);
@@ -97,12 +99,18 @@ public class CompanyAdministratorController {
         companyAdministrator.setSurname(companyAdministratorDTO.getSurname());
         companyAdministrator.setCity(companyAdministratorDTO.getCity());
         companyAdministrator.setCompanyInformation(companyAdministratorDTO.getCompanyInformation());
-        companyAdministrator.setUsername(companyAdministratorDTO.getEmail());
-        companyAdministrator.setPassword(companyAdministratorDTO.getPassword());
+        companyAdministrator.setUsername(companyAdministratorDTO.getUsername());
+
+        if(!companyAdministrator.getPassword().equals(companyAdministratorDTO.getPassword())){
+            companyAdministrator.setPassword(companyAdministratorDTO.getPassword());
+            companyAdministratorService.SetPassword(companyAdministrator);
+        }
+        
         companyAdministrator.setProfession(companyAdministratorDTO.getProfession());
         companyAdministrator.setRole(roleService.findByName("ROLE_COMPANY_ADMINISTRATOR").get(0));
         companyAdministrator.setState(companyAdministratorDTO.getState());
         companyAdministrator.setTelephoneNumber(companyAdministratorDTO.getTelephoneNumber());
+        companyAdministrator.setVerified(companyAdministratorDTO.isVerified());
 
         companyAdministrator = companyAdministratorService.save(companyAdministrator);
         return new ResponseEntity<>(new CompanyAdministratorResponseDTO(companyAdministrator), HttpStatus.OK);

@@ -21,7 +21,6 @@ public class RegisteredUserService {
     @Autowired
     RegisteredUserRepository registeredUserRepository;
 
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -30,7 +29,9 @@ public class RegisteredUserService {
 
     @Autowired
     private MailService mailService;
+
     public Page<RegisteredUser> findAll(Pageable pageable) {return registeredUserRepository.findAll(pageable);}
+
     public RegisteredUser create(RegisteredUser user, boolean isPasswordReset)  {
         // hesiranje lozinke
         //provjer da li je doslo do promjene lozinke ili tek treba da upisemo u bazu
@@ -42,9 +43,11 @@ public class RegisteredUserService {
         }
         return registeredUserRepository.save(user);
     }
+
     public void remove(int id) { registeredUserRepository.deleteById(id);}
 
     public List<RegisteredUser> getAll() {return registeredUserRepository.findAll();}
+
     public RegisteredUser findOne(Integer id){
         return registeredUserRepository.findById(id).orElse(null);
     }

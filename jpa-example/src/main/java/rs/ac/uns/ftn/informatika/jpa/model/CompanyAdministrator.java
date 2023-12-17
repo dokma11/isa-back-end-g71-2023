@@ -10,7 +10,6 @@ import java.util.Set;
 @Table(name="company_administrator")
 public class CompanyAdministrator extends User{
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -20,6 +19,9 @@ public class CompanyAdministrator extends User{
 
     @OneToMany(mappedBy = "administrator", fetch = FetchType.LAZY)
     private Set<Appointment> appointments = new HashSet<>();
+
+    @Column(name="verified", nullable = false)
+    private boolean verified;
 
     public CompanyAdministrator() {
     }
@@ -46,5 +48,13 @@ public class CompanyAdministrator extends User{
 
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }

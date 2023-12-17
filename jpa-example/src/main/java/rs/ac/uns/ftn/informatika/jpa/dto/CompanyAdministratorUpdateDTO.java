@@ -8,7 +8,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.User;
 public class CompanyAdministratorUpdateDTO {
     private String name;
     private String surname;
-    private String email;
+    private String username;
     private String password;
     private String CompanyInformation;
     private String telephoneNumber;
@@ -17,6 +17,7 @@ public class CompanyAdministratorUpdateDTO {
     private String role;
     private String profession;
     private CompanyResponseDTO company;
+    private boolean verified;
 
     public CompanyAdministratorUpdateDTO() {
     }
@@ -24,7 +25,7 @@ public class CompanyAdministratorUpdateDTO {
     public CompanyAdministratorUpdateDTO(CompanyAdministrator administrator) {
         this.name = administrator.getName();
         this.surname = administrator.getSurname();
-        this.email = administrator.getUsername();
+        this.username = administrator.getUsername();
         this.password = administrator.getPassword();
         this.CompanyInformation = administrator.getCompanyInformation();
         this.telephoneNumber = administrator.getTelephoneNumber();
@@ -33,6 +34,7 @@ public class CompanyAdministratorUpdateDTO {
         this.role = administrator.getRole().getName();
         this.profession = administrator.getProfession();
         this.company = new CompanyResponseDTO(administrator.getCompany());
+        this.verified = administrator.isVerified();
     }
 
     public String getName() {
@@ -51,12 +53,12 @@ public class CompanyAdministratorUpdateDTO {
         this.surname = surname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -121,5 +123,13 @@ public class CompanyAdministratorUpdateDTO {
 
     public void setCompany(CompanyResponseDTO company) {
         this.company = company;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }
