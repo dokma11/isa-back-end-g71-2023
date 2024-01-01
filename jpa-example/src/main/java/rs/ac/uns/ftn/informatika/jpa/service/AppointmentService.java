@@ -133,5 +133,7 @@ public class AppointmentService {
         return appointmentRepository.findAllByUser_Id(userId);
     }
 
+    public void SendPickUpInformationEmail(){
 
+    }
 }
