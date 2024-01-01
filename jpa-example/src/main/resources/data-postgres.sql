@@ -6,7 +6,6 @@ VALUES (2, 'ROLE_COMPANY_ADMINISTRATOR');
 INSERT INTO public.role(id, name)
 VALUES (3, 'ROLE_SYSTEM_ADMINISTRATOR');
 
-
 -- sifra je cicika
 --insert into registered_user(id, company_information, city, username,enabled, last_password_reset_date, name, password, profession, state, surname, telephone_number, category, points,role_id) values (1, 'Najbolja kompanija', 'Novi Sad', 'kuzminacn@gmail.com',TRUE,'2023-09-12', 'Nina', '$2a$10$A6O.ZfJmoUmfj0oL70ud6O6ztHfiRprKB8bqbgJeO5sZdYArkmA4e', 'Proizvodjac parfema', 'Srbija', 'Kuzmijanac', '0659443197', 0, 0,1);
 INSERT INTO public.users(id, company_information, city, enabled, last_password_reset_date, name, password, profession, state, surname, telephone_number, username, role_id)
@@ -48,12 +47,18 @@ VALUES (-2, 'Ostra igla', 5, 'Igla za vadjenje krvi', 'Igla', 20, -1);
 INSERT INTO equipment(id, description, grade, name, type, quantity, company_id)
 VALUES (-3, 'Solidno udoban krevet', 3, 'Krevet za pacijenta', 'Krevet', 30, -1);
 
+INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
+VALUES (-1, 30, '2023-12-31T12:30:00', -2, -1, -3, 0, 0);
+INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
+VALUES (-2, 30, '2023-12-31T14:30:00', -2, -1, null, 0, 0);
+INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
+VALUES (-3, 30, '2023-12-31T17:30:00', -2, -1, -3, 0, 0);
 
-insert into appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type) values (-1, 30, '2023-12-31T12:30:00', -2, -1, -3, 0, 0);
-insert into appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type) values (-2, 30, '2023-12-31T14:30:00', -2, -1, null, 0, 0);
-insert into appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type) values (-3, 30, '2023-12-31T17:30:00', -2, -1, -3, 0, 0);
-INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id) VALUES (-1, -1, 2, -1);
-INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id) VALUES (-2, -2, 2, -1);
-INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id) VALUES (-3, -1, 3, -3);
-INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id) VALUES (-4, -2, 2, -3);
-
+INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
+VALUES (-1, -1, 2, -1);
+INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
+VALUES (-2, -2, 2, -1);
+INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
+VALUES (-3, -1, 3, -3);
+INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
+VALUES (-4, -2, 2, -3);
