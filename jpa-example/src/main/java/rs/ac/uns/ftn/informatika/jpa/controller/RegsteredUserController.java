@@ -120,7 +120,7 @@ public class RegsteredUserController {
     }
 
     @GetMapping(value ="/{id}")
-    @PreAuthorize("hasRole('REGISTERED_USER')")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<RegisteredUserResponseDTO> getOneUser(@PathVariable Integer id)
     {
         RegisteredUser u = registeredUserService.findOne(id);
@@ -142,7 +142,5 @@ public class RegsteredUserController {
         if(!result) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok("<h1>Your Registration was successfull!</h1>");
     }
-
-
 
 }

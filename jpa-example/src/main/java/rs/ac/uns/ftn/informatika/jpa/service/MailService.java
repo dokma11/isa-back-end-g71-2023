@@ -158,4 +158,43 @@ public class MailService {
         return out;
     }
 
+    @Async
+    public void sendAppointmentPickUpNotification(Appointment appointment) throws MailException, InterruptedException {
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            mimeMessageHelper.setTo(appointment.getUser().getUsername());
+            mimeMessageHelper.setFrom(env.getProperty("spring.mail.username"));
+            mimeMessageHelper.setSubject("Appointment Pick Up Confirmation");
+
+            String emailBody = "Hello " + appointment.getUser().getName() + ",<br/><br/>Thank you for using our site.<br/>You successfully picked up your medical equipment!<br/><br/>";
+
+            String appointmentDetails = "Appointment Details:<br/>";
+            LocalDateTime pickupTime = appointment.getPickupTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = pickupTime.format(formatter);
+            appointmentDetails += "Date and time: " + formattedDateTime + "<br/>";
+            appointmentDetails += "Duration: " + appointment.getDuration() + " minutes<br/>";
+            appointmentDetails += "Company name: " + appointment.getCompany().getName() + "<br/>";
+            appointmentDetails += "Company administrator that will give you the equipment: " + appointment.getAdministrator().getName() + " " + appointment.getAdministrator().getSurname() + "<br/><br/>";
+            Set<EquipmentQuantity> equipmentQuantitySet = appointment.getEquipmentQuantities();
+            appointmentDetails += "Equipment: <br/>";
+            for(EquipmentQuantity eq : equipmentQuantitySet){
+                Equipment equipment = equipmentRepository.findById(eq.getEquipmentId()).orElseGet(null);;
+                appointmentDetails += "Name: " + equipment.getName()+ "<br/>" + " Quantity: " + eq.getQuantity() + "<br/>";
+            }
+
+            emailBody += appointmentDetails;
+
+            mimeMessageHelper.setText(emailBody, true);
+
+            javaMailSender.send(mimeMessageHelper.getMimeMessage());
+
+            System.out.println("Email sent!");
+        } catch (MessagingException e) {
+            throw new MailSendException("Failed to send appointment pick up confirmation email", e);
+        }
+    }
 }

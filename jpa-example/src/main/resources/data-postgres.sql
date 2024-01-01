@@ -16,7 +16,7 @@ VALUES (0, 0, -1);
 
 -- legenda11
 INSERT INTO public.users(id, company_information, city, enabled, last_password_reset_date, name, password, profession, state, surname, telephone_number, username, role_id)
-VALUES (-3, 'Iz dobre kompanije', 'Novi Sad', TRUE,'2023-09-12', 'Vukasin', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Dokmanovski', '0659443197','legenda+4@gmail.com',1);
+VALUES (-3, 'Iz dobre kompanije', 'Novi Sad', TRUE,'2023-09-12', 'Vukasin', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Dokmanovski', '0659443197','vule.dok@gmail.com',1);
 
 INSERT INTO public.registered_user(category, points, id)
 VALUES (0, 0, -3);
@@ -32,12 +32,12 @@ VALUES (-4, '27, Alekse Santica, Novi Sad, Srbija', 4, 'Tu i tamo', 45.243548, 1
 
 -- legenda11
 INSERT INTO public.users(id, company_information, city, enabled, last_password_reset_date, name, password, profession, state, surname, telephone_number, username, role_id)
-VALUES (-2, 'Iz dobre kompanije', 'Novi Sad', TRUE,'2023-09-12', 'Vukasin', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Dokmanovski', '0659443197', 'legenda@gmail.com',2);
+VALUES (-2, 'Iz dobre kompanije', 'Novi Sad', TRUE,'2023-09-12', 'Vukasin', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Dokmanovski', '0659443197', 'legenda@gmail.com', 2);
 INSERT INTO public.company_administrator(id, company_id, verified)
-VALUES (-2, -1, FALSE);
+VALUES (-2, -1, TRUE);
 
 INSERT INTO public.users(id, company_information, city, enabled, last_password_reset_date, name, password, profession, state, surname, telephone_number, username, role_id)
-VALUES (-4, 'Iz dobre kompanije', 'Novi Sad',TRUE,'2023-09-12', 'Kukisa', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Vukisa', '0659443197', 'legendaKOPIJA@gmail.com',2);
+VALUES (-4, 'Iz dobre kompanije', 'Novi Sad',TRUE,'2023-09-12', 'Kukisa', '$2a$10$nWbxkfSzQQgBLU0t5OcbTOUV6MDXSeJoaRMfBld.NrpC1a8VDRNzS', 'Profesionalan sef',  'Srbija', 'Vukisa', '0659443197', 'legendaKOPIJA@gmail.com', 2);
 INSERT INTO public.company_administrator(id, company_id, verified)
 VALUES (-4, -1, FALSE);
 

@@ -13,10 +13,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
-import rs.ac.uns.ftn.informatika.jpa.service.AppointmentService;
-import rs.ac.uns.ftn.informatika.jpa.service.CompanyAdministratorService;
-import rs.ac.uns.ftn.informatika.jpa.service.CompanyService;
-import rs.ac.uns.ftn.informatika.jpa.service.RegisteredUserService;
+import rs.ac.uns.ftn.informatika.jpa.service.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +35,9 @@ public class AppointmentController {
 
     @Autowired
     private RegisteredUserService registeredUserService;
+
+    @Autowired
+    private MailService mailService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
@@ -104,9 +104,18 @@ public class AppointmentController {
 
         // an appointment must exist
         Appointment appointment = appointmentService.findOne(id);
-        CompanyAdministrator administrator = companyAdministratorService.findOne(appointmentDTO.getAdministrator().getId());
-        RegisteredUser user = registeredUserService.findOne(appointmentDTO.getUser().getId());
         Company company = companyService.findOne(appointmentDTO.getCompany().getId());
+
+        CompanyAdministrator administrator = null;
+        RegisteredUser user = null;
+
+        if(appointmentDTO.getAdministrator() != null){
+            administrator = companyAdministratorService.findOne(appointmentDTO.getAdministrator().getId());
+        }
+
+        if(appointmentDTO.getUser() != null){
+            user = registeredUserService.findOne(appointmentDTO.getUser().getId());
+        }
 
         if (appointment == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -210,5 +219,24 @@ public class AppointmentController {
         return new ResponseEntity<>(dtos,HttpStatus.OK);
     }
 
+    @PutMapping(value = "/pickUpAppointment/{id}", consumes = "application/json")
+    @PreAuthorize("hasAnyRole('COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<AppointmentResponseDTO> pickUpAppointment(@PathVariable Integer id, @RequestBody AppointmentUpdateDTO appointmentDTO) throws InterruptedException {
 
+        // an appointment must exist
+        Appointment appointment = appointmentService.findOne(id);
+
+        if (appointment == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        appointment.setStatus(appointmentDTO.getStatus());
+
+        if(appointment.getUser() != null){
+            mailService.sendAppointmentPickUpNotification(appointment);
+        }
+
+        appointment = appointmentService.save(appointment);
+        return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
+    }
 }

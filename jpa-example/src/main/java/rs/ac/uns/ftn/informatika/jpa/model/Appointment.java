@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 public class Appointment {
 
-    public enum AppointmentStatus {ON_HOLD, IN_PROGRESS, DONE, CANCELED}
+    public enum AppointmentStatus {ON_HOLD, IN_PROGRESS, DONE, CANCELED, EXPIRED}
     public enum AppointmentType{PREDEFINED, EXCEPTIONAL}
 
     @Id
