@@ -12,6 +12,8 @@ import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
 import rs.ac.uns.ftn.informatika.jpa.util.TokenUtils;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,5 +77,18 @@ public class RegisteredUserService {
         registeredUserRepository.save(user);
 
         return true;
+    }
+
+    public RegisteredUser updatePenaltyPoints(Integer userId, LocalDateTime appointmentTime){
+        RegisteredUser user = findOne(userId);
+        long hoursUntilAppointment = LocalDateTime.now().until(appointmentTime, ChronoUnit.HOURS);
+        if(hoursUntilAppointment >= 24){
+            //jedan penalty poen se dodjeljuje
+            user.setPoints(user.getPoints() + 1);
+        }else{
+            //dodjeljuju se dva penalty poena
+            user.setPoints(user.getPoints() + 2);
+        }
+        return create(user,false);
     }
 }
