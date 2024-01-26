@@ -136,4 +136,12 @@ public class AppointmentService {
     public void SendPickUpInformationEmail(){
 
     }
+
+
+
+    public List<Appointment> findDoneAppointments(Integer userId) {
+        return appointmentRepository.findByStatusAndUser(Appointment.AppointmentStatus.DONE,userId);
+    }
+
+
 }

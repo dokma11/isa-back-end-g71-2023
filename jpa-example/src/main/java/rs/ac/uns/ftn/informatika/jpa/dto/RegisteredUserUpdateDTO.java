@@ -12,6 +12,7 @@ public class RegisteredUserUpdateDTO {
     private String state;
     private String profession;
     private String companyInformation;
+    private int points;
 
     public String getName() {
         return name;
@@ -29,8 +30,16 @@ public class RegisteredUserUpdateDTO {
         profession = user.getProfession();
         password = user.getPassword();
         companyInformation = user.getCompanyInformation();
+        points = user.getPoints();
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
 
     public void setName(String name) {
         this.name = name;
