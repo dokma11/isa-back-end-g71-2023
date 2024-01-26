@@ -13,6 +13,7 @@ import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -133,7 +134,14 @@ public class AppointmentService {
         return appointmentRepository.findAllByUser_Id(userId);
     }
 
+    public List<Appointment> getUsersFutureAppointments(Integer userId){
+        List<Appointment.AppointmentStatus> allowedStatuses = Arrays.asList(Appointment.AppointmentStatus.ON_HOLD, Appointment.AppointmentStatus.IN_PROGRESS);
+        return appointmentRepository.findUsersFutureAppointments(userId,allowedStatuses);
+    }
     public void SendPickUpInformationEmail(){
 
     }
+
+
+
 }

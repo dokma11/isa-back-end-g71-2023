@@ -210,7 +210,7 @@ public class AppointmentController {
     @PreAuthorize("hasAnyRole('REGISTERED_USER')")
     public ResponseEntity<List<AppointmentResponseDTO>> getUsersAppointments(@PathVariable Integer userId){
         List<AppointmentResponseDTO> dtos = new ArrayList<>();
-        List<Appointment> appointments = appointmentService.getUsersAppointments(userId);
+        List<Appointment> appointments = appointmentService.getUsersFutureAppointments(userId);
         for (Appointment a: appointments) {
             AppointmentResponseDTO dto = new AppointmentResponseDTO(a);
             dtos.add(dto);
@@ -238,5 +238,18 @@ public class AppointmentController {
 
         appointment = appointmentService.save(appointment);
         return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/users/future/{userId}")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER')")
+    public ResponseEntity<List<AppointmentResponseDTO>> getUsersFutureAppointments(@PathVariable Integer userId){
+        List<AppointmentResponseDTO> dtos = new ArrayList<>();
+        List<Appointment> appointments = appointmentService.getUsersFutureAppointments(userId);
+        for (Appointment a: appointments) {
+            AppointmentResponseDTO dto = new AppointmentResponseDTO(a);
+            dtos.add(dto);
+        }
+
+        return new ResponseEntity<>(dtos,HttpStatus.OK);
     }
 }
