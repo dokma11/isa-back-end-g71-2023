@@ -9,6 +9,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import rs.ac.uns.ftn.informatika.jpa.model.EquipmentQuantity;
 import rs.ac.uns.ftn.informatika.jpa.repository.EquipmentQuantityRepository;
+import rs.ac.uns.ftn.informatika.jpa.repository.EquipmentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,9 @@ public class EquipmentQuantityService {
 
     @Autowired
     private EquipmentQuantityRepository equipmentQuantityRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
 
     public EquipmentQuantity findOne(Integer id) {
         return equipmentQuantityRepository.findById(id).orElseGet(null);
@@ -31,6 +35,17 @@ public class EquipmentQuantityService {
     }
 
     public EquipmentQuantity save(EquipmentQuantity equipment) {
+
+            //najdemo eq
+            Equipment eqForUpdate = equipmentRepository.findById(equipment.getEquipmentId()).orElseGet(null);
+            if(eqForUpdate == null || eqForUpdate.getAvailableQuantity() < equipment.getQuantity()){
+                return null;
+            }
+            //umanjivanje
+            eqForUpdate.setAvailableQuantity(eqForUpdate.getAvailableQuantity() - equipment.getQuantity());
+            //cuvanje
+            equipmentRepository.save(eqForUpdate);
+
         return equipmentQuantityRepository.save(equipment);
     }
 

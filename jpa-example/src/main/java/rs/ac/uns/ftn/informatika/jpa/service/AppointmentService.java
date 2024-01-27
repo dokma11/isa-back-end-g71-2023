@@ -5,10 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
+import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
+import rs.ac.uns.ftn.informatika.jpa.model.EquipmentQuantity;
 import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
-import rs.ac.uns.ftn.informatika.jpa.repository.AppointmentRepository;
-import rs.ac.uns.ftn.informatika.jpa.repository.CompanyRepository;
-import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
+import rs.ac.uns.ftn.informatika.jpa.repository.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +30,11 @@ public class AppointmentService {
     @Autowired
     private RegisteredUserRepository registeredUserRepository;
 
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private EquipmentQuantityRepository equipmentQuantityRepository;
     public Appointment findOne(Integer id) {
         return appointmentRepository.findById(id).orElseGet(null);
     }
@@ -43,6 +48,7 @@ public class AppointmentService {
     }
 
     public Appointment save(Appointment appointment) {
+
         return appointmentRepository.save(appointment);
     }
 
@@ -124,6 +130,7 @@ public class AppointmentService {
             return null;
 
         appointment.setUser(user);
+
         //save changes
         appointment = appointmentRepository.save(appointment);
         return appointment;
