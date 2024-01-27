@@ -13,6 +13,7 @@ import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -133,6 +134,10 @@ public class AppointmentService {
         return appointmentRepository.findAllByUser_Id(userId);
     }
 
+    public List<Appointment> getUsersFutureAppointments(Integer userId){
+        List<Appointment.AppointmentStatus> allowedStatuses = Arrays.asList(Appointment.AppointmentStatus.ON_HOLD, Appointment.AppointmentStatus.IN_PROGRESS);
+        return appointmentRepository.findUsersFutureAppointments(userId,allowedStatuses);
+    }
     public void SendPickUpInformationEmail(){
 
     }
@@ -142,6 +147,26 @@ public class AppointmentService {
     public List<Appointment> findDoneAppointments(Integer userId) {
         return appointmentRepository.findByStatusAndUser(Appointment.AppointmentStatus.DONE,userId);
     }
+
+
+
+    public Appointment cancelApppointment (Appointment appointment){
+        if(appointment.getType() == Appointment.AppointmentType.EXCEPTIONAL){
+            //ako je exceptional onda cemo ga postaviti na cancelled
+            appointment.setStatus(Appointment.AppointmentStatus.CANCELED);
+        }else{
+            //postavi na cancel ali napravi novi sa istim parametrima!
+            //pravljenje novog
+            Appointment freedAppointment = new Appointment(appointment.getAdministrator(), appointment.getPickupTime(), appointment.getDuration(), null, appointment.getCompany(), appointment.getStatus(), appointment.getType());
+            save(freedAppointment);
+            //ovaj je otkazan
+            appointment.setStatus(Appointment.AppointmentStatus.CANCELED);
+        }
+        //cuvanje
+        return save(appointment);
+
+    }
+
 
 
 }

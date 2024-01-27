@@ -240,6 +240,40 @@ public class AppointmentController {
         return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/users/future/{userId}")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER')")
+    public ResponseEntity<List<AppointmentResponseDTO>> getUsersFutureAppointments(@PathVariable Integer userId){
+        List<AppointmentResponseDTO> dtos = new ArrayList<>();
+        List<Appointment> appointments = appointmentService.getUsersFutureAppointments(userId);
+        for (Appointment a: appointments) {
+            AppointmentResponseDTO dto = new AppointmentResponseDTO(a);
+            dtos.add(dto);
+        }
+
+        return new ResponseEntity<>(dtos,HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/cancel/{id}", consumes = "application/json")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER')")
+    public ResponseEntity<AppointmentResponseDTO> cancelAppointment(@PathVariable Integer id, @RequestBody AppointmentUpdateDTO appointmentDTO) throws InterruptedException {
+
+        // an appointment must exist
+        Appointment appointment = appointmentService.findOne(id);
+
+        if (appointment == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(appointment.getUser() == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        //ako je proslo vise od 24 h da se ne smije otkazati
+        //penalty points to user
+        registeredUserService.updatePenaltyPoints(appointment.getUser().getId(),appointment.getPickupTime());
+        appointment = appointmentService.cancelApppointment(appointment);
+
+        return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
+    }
+
 
 
     @GetMapping(path = "/users/{userId}/doneAppointemnts")
