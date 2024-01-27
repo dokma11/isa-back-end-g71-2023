@@ -48,6 +48,12 @@ public class Appointment {
     @Column(name="type", nullable = false)
     private AppointmentType type;
 
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "qrCode_id")
+    QRCode qrCode;
+
+
+
     public Appointment() {
     }
 

@@ -102,6 +102,7 @@ public class RegsteredUserController {
                 userForUpdate.setCity(user.getCity());
                 userForUpdate.setState(user.getState());
                 userForUpdate.setProfession(user.getProfession());
+                userForUpdate.setPoints(user.getPoints());
                 if(!user.getPassword().isEmpty()){
                     userForUpdate.setPassword(user.getPassword());
                     isPasswordReset = true;
