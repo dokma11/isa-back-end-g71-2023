@@ -18,7 +18,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     List<Appointment> findByCompany_IdAndTypeAndUserIsNull(Integer companyId, Appointment.AppointmentType type);
 
-    @Query("SELECT DISTINCT a FROM Appointment a WHERE a.company.id = :companyId AND DATE(a.pickupTime) = DATE(:date) AND (a.administrator IS NOT NULL OR a.user IS NOT NULL)")
+    @Query("SELECT DISTINCT a FROM Appointment a WHERE a.company.id = :companyId AND DATE(a.pickupTime) = DATE(:date) AND (a.administrator IS NOT NULL OR a.user IS NOT NULL) and a.status not in(3,4)")
     List<Appointment> findBookedTimeSlotsForDay(@Param("companyId") Integer companyId, @Param("date") LocalDateTime date);
 
     @Query("SELECT DISTINCT a.administrator.id FROM Appointment a WHERE a.pickupTime = :pickupTime AND a.administrator.id IS NOT NULL AND a.company.id = :companyId")
