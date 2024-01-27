@@ -14,11 +14,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
-import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
-import rs.ac.uns.ftn.informatika.jpa.model.EquipmentQuantity;
-import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
+import rs.ac.uns.ftn.informatika.jpa.model.*;
+import rs.ac.uns.ftn.informatika.jpa.repository.QRCodeRepository;
 import rs.ac.uns.ftn.informatika.jpa.util.TokenUtils;
-import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.repository.EquipmentRepository;
 
 import javax.mail.MessagingException;
@@ -43,6 +41,9 @@ public class MailService {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private QRCodeRepository qrCodeRepository;
 
     @Async
     public void sendRegistrationNotification(RegisteredUser user) throws MailException, InterruptedException {
@@ -119,6 +120,10 @@ public class MailService {
             String qrCodeContent = appointmentDetails;
             ByteArrayOutputStream qrCodeStream = generateQRCode(qrCodeContent);
             byte[] qrCodeBytes = qrCodeStream.toByteArray();
+
+            saveQRCodeToDatabase(appointment.getUser(), appointment, qrCodeContent);
+
+
             //String qrCodeBase64 = Base64.getEncoder().encodeToString(qrCodeBytes);
             mimeMessageHelper.addAttachment("qr-code.png", new ByteArrayResource(qrCodeBytes));
 
@@ -197,4 +202,16 @@ public class MailService {
             throw new MailSendException("Failed to send appointment pick up confirmation email", e);
         }
     }
+
+
+    private void saveQRCodeToDatabase(RegisteredUser user,Appointment appointment,String content) {
+        QRCode qrCode = new QRCode();
+        qrCode.setAppointment(appointment);
+        qrCode.setUser(user);
+        qrCode.setContent(content);
+        qrCode.setSentDate(LocalDateTime.now());
+        qrCodeRepository.save(qrCode);
+    }
+
+
 }

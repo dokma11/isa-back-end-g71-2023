@@ -239,4 +239,20 @@ public class AppointmentController {
         appointment = appointmentService.save(appointment);
         return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
     }
+
+
+
+    @GetMapping(path = "/users/{userId}/doneAppointemnts")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER')")
+    public ResponseEntity<List<AppointmentResponseDTO>> getUsersDoneAppointments(@PathVariable Integer userId){
+        List<AppointmentResponseDTO> dtos = new ArrayList<>();
+        List<Appointment> appointments = appointmentService.findDoneAppointments(userId);
+        for (Appointment a: appointments) {
+            AppointmentResponseDTO dto = new AppointmentResponseDTO(a);
+            dtos.add(dto);
+        }
+
+        return new ResponseEntity<>(dtos,HttpStatus.OK);
+    }
+
 }
