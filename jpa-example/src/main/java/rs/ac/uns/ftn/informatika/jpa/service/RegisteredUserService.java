@@ -79,6 +79,7 @@ public class RegisteredUserService {
         return true;
     }
 
+
     public RegisteredUser updatePenaltyPoints(Integer userId, LocalDateTime appointmentTime){
         RegisteredUser user = findOne(userId);
         long hoursUntilAppointment = LocalDateTime.now().until(appointmentTime, ChronoUnit.HOURS);
@@ -91,4 +92,6 @@ public class RegisteredUserService {
         }
         return create(user,false);
     }
+
+
 }

@@ -27,6 +27,10 @@ public class Equipment {
     @Column(name = "quantity",  unique = false, nullable = false)
     private int quantity;
 
+    @Column(name = "available_quantity",  unique = false, nullable = false)
+    private int availableQuantity;
+
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -46,6 +50,7 @@ public class Equipment {
         this.type = type;
         this.grade = grade;
         this.quantity = quantity;
+        this.availableQuantity  = quantity;
     }
 
     public Integer getId() {
@@ -103,4 +108,14 @@ public class Equipment {
     public void setCompany(Company company) {
         this.company = company;
     }
+
+    public void setAvailableQuantity(int availableQuantity) {
+        this.availableQuantity = availableQuantity;
+    }
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+
 }

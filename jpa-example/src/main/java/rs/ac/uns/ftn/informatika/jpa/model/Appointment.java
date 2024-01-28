@@ -57,6 +57,7 @@ public class Appointment {
     public Appointment() {
     }
 
+
     public Appointment(CompanyAdministrator administrator, LocalDateTime pickupTime, Integer duration, RegisteredUser user, Company company, AppointmentStatus status, AppointmentType type) {
         this.administrator = administrator;
         this.pickupTime = pickupTime;

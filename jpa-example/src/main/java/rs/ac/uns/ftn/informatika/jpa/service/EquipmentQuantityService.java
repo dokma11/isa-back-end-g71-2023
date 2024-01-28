@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentQuantityDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import rs.ac.uns.ftn.informatika.jpa.model.EquipmentQuantity;
 import rs.ac.uns.ftn.informatika.jpa.repository.EquipmentQuantityRepository;
+import rs.ac.uns.ftn.informatika.jpa.repository.EquipmentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,9 @@ public class EquipmentQuantityService {
 
     @Autowired
     private EquipmentQuantityRepository equipmentQuantityRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
 
     public EquipmentQuantity findOne(Integer id) {
         return equipmentQuantityRepository.findById(id).orElseGet(null);
@@ -30,7 +35,19 @@ public class EquipmentQuantityService {
         return equipmentQuantityRepository.findAll(page);
     }
 
+    @Transactional(readOnly = false)
     public EquipmentQuantity save(EquipmentQuantity equipment) {
+
+            //najdemo eq
+            Equipment eqForUpdate = equipmentRepository.findById(equipment.getEquipmentId()).orElseGet(null);
+            if(eqForUpdate == null || eqForUpdate.getAvailableQuantity() < equipment.getQuantity()){
+                return null;
+            }
+            //umanjivanje
+            eqForUpdate.setAvailableQuantity(eqForUpdate.getAvailableQuantity() - equipment.getQuantity());
+            //cuvanje
+            equipmentRepository.save(eqForUpdate);
+
         return equipmentQuantityRepository.save(equipment);
     }
 

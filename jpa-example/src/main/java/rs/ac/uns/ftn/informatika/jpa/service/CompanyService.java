@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.repository.CompanyRepository;
 
@@ -43,6 +45,7 @@ public class CompanyService {
     public Company findOneWithAdministrators(Integer id) {
         return companyRepository.findOneWithAdministrators(id);
     }
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED) // da ne bude dirty read
     public Company findOneWithAppointments(Integer id) {
         return companyRepository.findOneWithAppointments(id);
     }
