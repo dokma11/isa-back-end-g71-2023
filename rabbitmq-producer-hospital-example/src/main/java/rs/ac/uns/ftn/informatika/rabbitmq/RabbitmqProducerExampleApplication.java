@@ -27,7 +27,7 @@ public class RabbitmqProducerExampleApplication {
 	@Value("${myqueue2}")
 	String queue2;
 
-	@Value("control-queue")
+	@Value("control-queue-hospital")
 	String queue3;
 
 	@Value("${myexchange}")

@@ -41,9 +41,15 @@ public class ProducerController {
 
 		log.info("Producer > " + message);
 
-		String message2 = "1|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|101, Bulevar oslobodjenja, Novi Sad, Srbija|Igla za vadjenje krvi|15|2023-02-02";
+		String message2 = "1|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|101, Bulevar oslobodjenja, Novi Sad, Srbija|Stalak za infuziju|5|2023-02-05";
 
 		producer.sendToExchange(exchange, queue, message2);
+
+		log.info("Producer > " + message);
+
+		String message3 = "2|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|10, Futoski put, Novi Sad, Srbija|Krevet za pacijenta|10|2023-01-29";
+
+		producer.sendToExchange(exchange, queue, message3);
 
 		log.info("Producer > " + message);
 	}
@@ -53,7 +59,7 @@ public class ProducerController {
 		sendAutomaticMessage();
 	}
 
-	@RabbitListener(queues = "control-queue")
+	@RabbitListener(queues = "control-queue-hospital")
 	public void handleControlMessage(String message) {
 		log.info("Producer> " + message);
 	}
