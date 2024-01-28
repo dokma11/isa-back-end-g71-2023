@@ -1,59 +1,59 @@
-package rs.ac.uns.ftn.informatika.jpa.model;
+package rs.ac.uns.ftn.informatika.jpa.dto;
 
-import javax.persistence.*;
+import rs.ac.uns.ftn.informatika.jpa.model.HospitalContract;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDate;
 
-@Entity
-public class HospitalContract {
+public class HospitalContractDTO {
 
-    public enum HospitalContractStatus {NEW, CANCELED}
-    @Column(name="status", nullable = false)
-    private HospitalContract.HospitalContractStatus status;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
 
-    @Column(name = "companyName", nullable = false)
     private String companyName;
 
-    @Column(name = "companyAddress", nullable = false)
+
     private String companyAddress;
 
-    @Column(name = "hospitalName", nullable = false)
+
     private String hospitalName;
 
-    @Column(name = "hospitalAddress", nullable = false)
+
     private String hospitalAddress;
 
-    @Column(name = "equipmentName", nullable = false)
+
     private String equipmentName;
 
-    @Column(name = "equipmentQuantity", nullable = false)
+
     private Integer equipmentQuantity;
 
-    @Column(name = "deliveryDate", nullable = false)
+
     private LocalDate deliveryDate;
 
-    public HospitalContract() {
+    private HospitalContract.HospitalContractStatus status;
+
+
+
+    public HospitalContractDTO(HospitalContract hospitalContract) {
+        this.id = hospitalContract.getId();
+        this.companyName = hospitalContract.getCompanyName();
+        this.companyAddress = hospitalContract.getCompanyAddress();
+        this.hospitalName = hospitalContract.getHospitalName();
+        this.hospitalAddress = hospitalContract.getHospitalAddress();
+        this.equipmentName = hospitalContract.getEquipmentName();
+        this.equipmentQuantity = hospitalContract.getEquipmentQuantity();
+        this.deliveryDate = hospitalContract.getDeliveryDate();
+        this.status = hospitalContract.getStatus();
     }
 
-    public HospitalContract(String id, String companyName, String companyAddress, String hospitalName, String hospitalAddress, String equipmentName, String equipmentQuantity, String deliveryDate, HospitalContract.HospitalContractStatus status) {
-        this.id = Integer.parseInt(id);
-        this.companyName = companyName;
-        this.companyAddress = companyAddress;
-        this.hospitalName = hospitalName;
-        this.hospitalAddress = hospitalAddress;
-        this.equipmentName = equipmentName;
-        this.equipmentQuantity = Integer.parseInt(equipmentQuantity);
-        this.deliveryDate = LocalDate.parse(deliveryDate);
-        this.status = status;
-    }
-
-    public HospitalContractStatus getStatus() {
+    public HospitalContract.HospitalContractStatus getStatus() {
         return status;
     }
 
-    public void setStatus(HospitalContractStatus status) {
+    public void setStatus(HospitalContract.HospitalContractStatus status) {
         this.status = status;
     }
 
@@ -81,6 +81,22 @@ public class HospitalContract {
         this.companyAddress = companyAddress;
     }
 
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
+    public String getHospitalAddress() {
+        return hospitalAddress;
+    }
+
+    public void setHospitalAddress(String hospitalAddress) {
+        this.hospitalAddress = hospitalAddress;
+    }
+
     public String getEquipmentName() {
         return equipmentName;
     }
@@ -103,22 +119,6 @@ public class HospitalContract {
 
     public void setDeliveryDate(LocalDate deliveryDate) {
         this.deliveryDate = deliveryDate;
-    }
-
-    public String getHospitalName() {
-        return hospitalName;
-    }
-
-    public void setHospitalName(String hospitalName) {
-        this.hospitalName = hospitalName;
-    }
-
-    public String getHospitalAddress() {
-        return hospitalAddress;
-    }
-
-    public void setHospitalAddress(String hospitalAddress) {
-        this.hospitalAddress = hospitalAddress;
     }
 
     @Override
