@@ -93,7 +93,7 @@ public class VehicleLocationController {
         rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorStartMessage);
 
         try {
-            Thread.sleep(3_000);
+            Thread.sleep(55_000);
         } catch (InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();

@@ -85,9 +85,8 @@ public class HospitalContractController {
 
         String[] parts = message.split("\\|");
 
-        if (parts.length >= 8) {
+        if (parts.length > 8) {
             HospitalContract hospitalContract = new HospitalContract(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], HospitalContract.HospitalContractStatus.valueOf(parts[8]));
-            log.info(hospitalContract.toString());
         } else {
             log.error("Invalid message format: " + message);
         }
