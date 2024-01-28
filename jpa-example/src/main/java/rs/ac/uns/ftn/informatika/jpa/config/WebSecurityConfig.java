@@ -125,7 +125,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
                         .antMatchers(HttpMethod.POST,"/api/registeredUsers")
                         .antMatchers("/api/registeredUsers/confirmRegistration/**")
-                        .antMatchers(HttpMethod.POST,"/api/auth/login");
+                        .antMatchers(HttpMethod.POST,"/api/auth/login")
+                        .antMatchers(HttpMethod.POST,"/socket/**")  // Allow WebSocket handshake requests without authentication
+                        .antMatchers(HttpMethod.GET,"/socket/**");
 
     }
 
@@ -142,17 +144,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/resources/ts/**").permitAll()
-
+                .antMatchers(HttpMethod.POST,"/socket/**").permitAll()  // Allow WebSocket handshake requests without authentication
+                .antMatchers(HttpMethod.GET,"/socket/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/registeredUsers").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/companies").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/auth/login").permitAll()// Allow access without authentication
                 .antMatchers(HttpMethod.GET,"/api/companies/search").not().hasRole("COMPANY_ADMINISTRATOR")// for everybody but not for COMPANY_ADMINISTRATOR
-                .antMatchers("/api/registeredUsers/confirmRegistration/**").permitAll()
+
                 .anyRequest().authenticated() // Require authentication for any other request
                 .and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils,  userDetailsService()), BasicAuthenticationFilter.class);
         // ulancavanje autentifikacije
         http.authenticationProvider(authenticationProvider());
+
     }
 
 }

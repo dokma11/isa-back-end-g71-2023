@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.informatika.jpa;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,12 @@ public class JpaExampleApplication {
 	}
 
 	public Docket apis() { return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("rs.ac.uns.ftn.informatika.jpa")).build();}
+
+	@Bean
+	public ConnectionFactory connectionFactory() {
+		CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost");
+		return connectionFactory;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(JpaExampleApplication.class, args);
