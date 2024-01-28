@@ -6,8 +6,24 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentResponseDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentUpdateDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.HospitalContractDTO;
+import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import rs.ac.uns.ftn.informatika.jpa.model.HospitalContract;
+import rs.ac.uns.ftn.informatika.jpa.service.EquipmentService;
+import rs.ac.uns.ftn.informatika.jpa.service.HospitalContractService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class HospitalContractController {
@@ -18,14 +34,54 @@ public class HospitalContractController {
     private static final Logger log = LoggerFactory.getLogger(VehicleLocationController.class);
 
 
+    @Autowired
+    private HospitalContractService hospitalContractService;
+
+    @GetMapping
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<HospitalContractDTO>> getContract() {
+
+        List<HospitalContract> hospitalContracts = hospitalContractService.findAll();
+
+        List<HospitalContractDTO> hospitalContractDTOS = new ArrayList<>();
+        for (HospitalContract contract : hospitalContracts) {
+            hospitalContractDTOS.add(new HospitalContractDTO(contract));
+        }
+
+        return new ResponseEntity<>(hospitalContractDTOS, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{id}", consumes = "application/json")
+    @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<HospitalContractDTO> updateHospitalContract(@PathVariable Integer id, @RequestBody HospitalContractDTO hospitalContractDTO) {
+
+        // an equipment must exist
+        HospitalContract hospitalContract = hospitalContractService.findOne(id);
+
+        if (hospitalContract == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        hospitalContract.setHospitalName(hospitalContractDTO.getHospitalName());
+        hospitalContract.setHospitalAddress(hospitalContractDTO.getHospitalAddress());
+        hospitalContract.setCompanyName(hospitalContractDTO.getEquipmentName());
+        hospitalContract.setCompanyAddress(hospitalContractDTO.getCompanyAddress());
+        hospitalContract.setEquipmentName(hospitalContractDTO.getEquipmentName());
+        hospitalContract.setEquipmentQuantity(hospitalContractDTO.getEquipmentQuantity());
+        hospitalContract.setDeliveryDate(hospitalContractDTO.getDeliveryDate());
+        hospitalContract.setStatus(hospitalContractDTO.getStatus());
+        hospitalContract = hospitalContractService.save(hospitalContract);
+        return new ResponseEntity<>(new HospitalContractDTO(hospitalContract), HttpStatus.OK);
+    }
+
     @RabbitListener(queues = "spring-boot-hospital2")
     public void handler(String message) {
         log.info("Consumer> " + message);
 
         String[] parts = message.split("\\|");
 
-        if (parts.length >= 7) {
-            HospitalContract hospitalContract = new HospitalContract(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7]);
+        if (parts.length >= 8) {
+            HospitalContract hospitalContract = new HospitalContract(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], HospitalContract.HospitalContractStatus.valueOf(parts[8]));
             log.info(hospitalContract.toString());
         } else {
             log.error("Invalid message format: " + message);
