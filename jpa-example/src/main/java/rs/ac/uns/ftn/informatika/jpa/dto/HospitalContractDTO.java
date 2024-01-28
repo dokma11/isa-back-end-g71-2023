@@ -9,33 +9,15 @@ import javax.persistence.Id;
 import java.time.LocalDate;
 
 public class HospitalContractDTO {
-
-
     private Integer id;
-
     private String companyName;
-
-
     private String companyAddress;
-
-
     private String hospitalName;
-
-
     private String hospitalAddress;
-
-
     private String equipmentName;
-
-
     private Integer equipmentQuantity;
-
-
     private LocalDate deliveryDate;
-
     private HospitalContract.HospitalContractStatus status;
-
-
 
     public HospitalContractDTO(HospitalContract hospitalContract) {
         this.id = hospitalContract.getId();
@@ -47,6 +29,10 @@ public class HospitalContractDTO {
         this.equipmentQuantity = hospitalContract.getEquipmentQuantity();
         this.deliveryDate = hospitalContract.getDeliveryDate();
         this.status = hospitalContract.getStatus();
+    }
+
+    public HospitalContractDTO(){
+
     }
 
     public HospitalContract.HospitalContractStatus getStatus() {

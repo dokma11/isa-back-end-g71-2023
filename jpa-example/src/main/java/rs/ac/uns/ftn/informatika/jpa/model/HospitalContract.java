@@ -6,9 +6,6 @@ import java.time.LocalDate;
 @Entity
 public class HospitalContract {
 
-    public enum HospitalContractStatus {NEW, CANCELED}
-    @Column(name="status", nullable = false)
-    private HospitalContract.HospitalContractStatus status;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -33,6 +30,11 @@ public class HospitalContract {
 
     @Column(name = "deliveryDate", nullable = false)
     private LocalDate deliveryDate;
+
+    public enum HospitalContractStatus {NEW, CANCELED}
+
+    @Column(name="status", nullable = false)
+    private HospitalContract.HospitalContractStatus status;
 
     public HospitalContract() {
     }

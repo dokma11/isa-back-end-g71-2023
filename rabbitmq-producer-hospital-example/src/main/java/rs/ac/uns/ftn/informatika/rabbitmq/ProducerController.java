@@ -45,13 +45,13 @@ public class ProducerController {
 
 		producer.sendToExchange(exchange, queue, message2);
 
-		log.info("Producer > " + message);
+		log.info("Producer > " + message2);
 
-		String message3 = "2|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|10, Futoski put, Novi Sad, Srbija|Krevet za pacijenta|10|2024-01-05|NEW";
+		String message3 = "2|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|10, Futoski put, Novi Sad, Srbija|Krevet za pacijenta|10|2024-02-05|NEW";
 
 		producer.sendToExchange(exchange, queue, message3);
 
-		log.info("Producer > " + message);
+		log.info("Producer > " + message3);
 	}
 
 	@PostConstruct

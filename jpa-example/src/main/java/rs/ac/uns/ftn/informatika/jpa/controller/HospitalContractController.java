@@ -9,10 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.HospitalContractDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.HospitalContract;
 import rs.ac.uns.ftn.informatika.jpa.service.HospitalContractService;
@@ -22,7 +19,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootApplication
+@RestController
+@RequestMapping(value = "api/contracts")
 public class HospitalContractController {
 
     @Autowired
