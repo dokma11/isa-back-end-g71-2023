@@ -53,7 +53,7 @@ public class ProducerController {
 		sendAutomaticMessage();
 	}
 
-	@RabbitListener(queues = "control-queue")
+	@RabbitListener(queues = "control-queue-hospital")
 	public void handleControlMessage(String message) {
 		log.info("Producer> " + message);
 	}

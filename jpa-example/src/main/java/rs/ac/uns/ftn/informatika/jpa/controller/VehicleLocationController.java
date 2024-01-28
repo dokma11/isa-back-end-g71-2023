@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Map;
 
 @RestController
@@ -91,6 +93,19 @@ public class VehicleLocationController {
 
     private void sendControlMessageToProducer(String controlMessage) {
         rabbitTemplate.convertAndSend("control-queue", controlMessage);
+
+        String hospitalSimulatorStartMessage = "Pocelo je slanje datuma: " + LocalDate.now() + " u: " + LocalTime.now();
+        rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorStartMessage);
+
+        try {
+            Thread.sleep(3_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
+
+        String hospitalSimulatorEndMessage = "Zavrseno je slanje datuma: " + LocalDate.now() + " u: " + LocalTime.now();
+        rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorEndMessage);
     }
 
 }
