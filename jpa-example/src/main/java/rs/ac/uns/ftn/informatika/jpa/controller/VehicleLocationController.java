@@ -55,7 +55,7 @@ public class VehicleLocationController {
         Map<String, String> retVal;
 
         try {
-            retVal = mapper.readValue(message, Map.class); // parsiranje JSON stringa
+            retVal = mapper.readValue(message, Map.class);
         } catch (IOException e) {
             retVal = null;
         }
@@ -67,14 +67,9 @@ public class VehicleLocationController {
     public void handler(String message){
         log.info("Consumer> " + message);
         returnMessage = message;
-        log.info("Return messsage is " + returnMessage);
-
         String destination = "/socket-publisher";
-        //Map<String, String> messageConverted = parseMessage(message);
 
         simpMessagingTemplate.convertAndSend(destination, message);
-
-        log.info("POSLAO JE JEBNO");
     }
 
     @GetMapping("/startSending")

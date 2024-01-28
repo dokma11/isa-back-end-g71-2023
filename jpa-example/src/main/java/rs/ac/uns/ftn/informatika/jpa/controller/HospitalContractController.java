@@ -8,20 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentResponseDTO;
-import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentUpdateDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.HospitalContractDTO;
-import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import rs.ac.uns.ftn.informatika.jpa.model.HospitalContract;
-import rs.ac.uns.ftn.informatika.jpa.service.EquipmentService;
 import rs.ac.uns.ftn.informatika.jpa.service.HospitalContractService;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +29,6 @@ public class HospitalContractController {
     private RabbitTemplate rabbitTemplate;
 
     private static final Logger log = LoggerFactory.getLogger(VehicleLocationController.class);
-
 
     @Autowired
     private HospitalContractService hospitalContractService;
@@ -55,7 +51,6 @@ public class HospitalContractController {
     @PreAuthorize("hasRole( 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<HospitalContractDTO> updateHospitalContract(@PathVariable Integer id, @RequestBody HospitalContractDTO hospitalContractDTO) {
 
-        // an equipment must exist
         HospitalContract hospitalContract = hospitalContractService.findOne(id);
 
         if (hospitalContract == null) {
@@ -71,6 +66,16 @@ public class HospitalContractController {
         hospitalContract.setDeliveryDate(hospitalContractDTO.getDeliveryDate());
         hospitalContract.setStatus(hospitalContractDTO.getStatus());
         hospitalContract = hospitalContractService.save(hospitalContract);
+
+        if(hospitalContract.getStatus() == HospitalContract.HospitalContractStatus.NEW){
+            String hospitalSimulatorEditMessage = "Vas ugovor je izmenjen datuma: " + LocalDate.now() + " u: " + LocalTime.now() + "h";
+            rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorEditMessage);
+        }
+        else{
+            String hospitalSimulatorCancelMessage = "Vasa porudzbina je otkazana datuma: " + LocalDate.now() + " u: " + LocalTime.now() + "h";
+            rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorCancelMessage);
+        }
+
         return new ResponseEntity<>(new HospitalContractDTO(hospitalContract), HttpStatus.OK);
     }
 
