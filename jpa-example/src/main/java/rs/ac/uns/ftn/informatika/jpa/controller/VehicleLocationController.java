@@ -94,7 +94,7 @@ public class VehicleLocationController {
     private void sendControlMessageToProducer(String controlMessage) {
         rabbitTemplate.convertAndSend("control-queue", controlMessage);
 
-        String hospitalSimulatorStartMessage = "Pocelo je slanje datuma: " + LocalDate.now() + " u: " + LocalTime.now();
+        String hospitalSimulatorStartMessage = "Pocela je dostava opreme datuma: " + LocalDate.now() + " u: " + LocalTime.now() + "h";
         rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorStartMessage);
 
         try {
@@ -104,7 +104,7 @@ public class VehicleLocationController {
             Thread.currentThread().interrupt();
         }
 
-        String hospitalSimulatorEndMessage = "Zavrseno je slanje datuma: " + LocalDate.now() + " u: " + LocalTime.now();
+        String hospitalSimulatorEndMessage = "Zavrsena je dostava opreme datuma: " + LocalDate.now() + " u: " + LocalTime.now() + "h";
         rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorEndMessage);
     }
 
