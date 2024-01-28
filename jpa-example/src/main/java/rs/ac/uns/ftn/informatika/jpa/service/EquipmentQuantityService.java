@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentQuantityDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
@@ -34,6 +35,7 @@ public class EquipmentQuantityService {
         return equipmentQuantityRepository.findAll(page);
     }
 
+    @Transactional(readOnly = false)
     public EquipmentQuantity save(EquipmentQuantity equipment) {
 
             //najdemo eq

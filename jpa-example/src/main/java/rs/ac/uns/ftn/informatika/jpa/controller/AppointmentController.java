@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentCreateDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentResponseDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.AppointmentUpdateDTO;
-import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
-import rs.ac.uns.ftn.informatika.jpa.model.Company;
-import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
-import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
+import rs.ac.uns.ftn.informatika.jpa.model.*;
 import rs.ac.uns.ftn.informatika.jpa.service.*;
 
 import java.time.LocalDateTime;
@@ -130,6 +127,7 @@ public class AppointmentController {
         appointment.setType(appointmentDTO.getType());
 
         appointment = appointmentService.save(appointment);
+
         return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
     }
 
@@ -288,5 +286,6 @@ public class AppointmentController {
 
         return new ResponseEntity<>(dtos,HttpStatus.OK);
     }
+
 
 }

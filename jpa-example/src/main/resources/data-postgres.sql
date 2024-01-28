@@ -53,6 +53,8 @@ INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id,
 VALUES (-2, 30, '2023-12-31T14:30:00', -2, -1, null, 0, 0);
 INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
 VALUES (-3, 30, '2023-12-31T17:30:00', -2, -1, -3, 0, 0);
+INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
+VALUES (-4, 30, '2024-12-31T17:30:00', -2, -1, null, 0, 0);
 
 INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
 VALUES (-1, -1, 2, -1);
