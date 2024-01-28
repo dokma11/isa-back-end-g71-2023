@@ -34,20 +34,20 @@ public class ProducerController {
 	@Scheduled(cron = "0 0 0 1 * ?")
 	public void sendAutomaticMessage() {
 		String queue = "spring-boot-hospital2";
-		String message = "0|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Dom zdravlja Novi Sad|77, Bulevar cara Lazara, Novi Sad, Srbija|Igla za vadjenje krvi|15|2023-02-02";
+		String message = "0|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Dom zdravlja Novi Sad|77, Bulevar cara Lazara, Novi Sad, Srbija|Igla za vadjenje krvi|15|2024-02-02|NEW";
 		String exchange = "myexchangehospital";
 
 		producer.sendToExchange(exchange, queue, message);
 
 		log.info("Producer > " + message);
 
-		String message2 = "1|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|101, Bulevar oslobodjenja, Novi Sad, Srbija|Stalak za infuziju|5|2023-02-05";
+		String message2 = "1|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|101, Bulevar oslobodjenja, Novi Sad, Srbija|Stalak za infuziju|5|2024-01-03|NEW";
 
 		producer.sendToExchange(exchange, queue, message2);
 
 		log.info("Producer > " + message);
 
-		String message3 = "2|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|10, Futoski put, Novi Sad, Srbija|Krevet za pacijenta|10|2023-01-29";
+		String message3 = "2|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|10, Futoski put, Novi Sad, Srbija|Krevet za pacijenta|10|2024-01-05|NEW";
 
 		producer.sendToExchange(exchange, queue, message3);
 

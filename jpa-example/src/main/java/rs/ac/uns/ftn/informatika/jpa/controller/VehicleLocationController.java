@@ -7,10 +7,14 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import rs.ac.uns.ftn.informatika.jpa.model.HospitalContract;
+import rs.ac.uns.ftn.informatika.jpa.service.HospitalContractService;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -24,6 +28,9 @@ public class VehicleLocationController {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private HospitalContractService hospitalContractService;
 
     private static final Logger log = LoggerFactory.getLogger(VehicleLocationController.class);
 
@@ -89,6 +96,25 @@ public class VehicleLocationController {
     private void sendControlMessageToProducer(String controlMessage) {
         rabbitTemplate.convertAndSend("control-queue", controlMessage);
 
+        sendMessagesToHospital();
+    }
+
+    @Scheduled(cron = "0 0 10 * * ?")
+    public void sendAutomaticMessage() {
+        for (HospitalContract hospitalContract : hospitalContractService.findAll()) {
+            if (hospitalContract != null && hospitalContract.getDeliveryDate() != null) {
+                String deliveryDateString = hospitalContract.getDeliveryDate().toString();
+                String currentDateString = LocalDate.now().toString();
+
+                if (deliveryDateString.equals(currentDateString)) {
+                    sendMessagesToHospital();
+                }
+            }
+        }
+
+    }
+
+    private void sendMessagesToHospital(){
         String hospitalSimulatorStartMessage = "Pocela je dostava opreme datuma: " + LocalDate.now() + " u: " + LocalTime.now() + "h";
         rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorStartMessage);
 
@@ -102,5 +128,4 @@ public class VehicleLocationController {
         String hospitalSimulatorEndMessage = "Zavrsena je dostava opreme datuma: " + LocalDate.now() + " u: " + LocalTime.now() + "h";
         rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorEndMessage);
     }
-
 }
