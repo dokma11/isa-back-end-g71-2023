@@ -13,8 +13,5 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:4200")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowCredentials(true);
-
-        System.out.println("USAO");
-
     }
 }
