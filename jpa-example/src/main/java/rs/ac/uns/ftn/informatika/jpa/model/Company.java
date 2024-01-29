@@ -18,7 +18,7 @@ public class Company {
     private String name;
 
     @Column(name = "address", nullable = false)
-    private String address; // for this one need to add maps to save its location...
+    private String address;
 
     @Column(name = "longitude", nullable = false)
     private double longitude;
@@ -156,6 +156,7 @@ public class Company {
         appointments.remove(a);
         a.setCompany(null);
     }
+
     public Set<Grade> getGrades() {
         return grades;
     }

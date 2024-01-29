@@ -30,7 +30,6 @@ public class Equipment {
     @Column(name = "available_quantity",  unique = false, nullable = false)
     private int availableQuantity;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -116,6 +115,5 @@ public class Equipment {
     public int getAvailableQuantity() {
         return availableQuantity;
     }
-
 
 }

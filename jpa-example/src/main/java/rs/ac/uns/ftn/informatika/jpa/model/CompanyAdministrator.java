@@ -24,6 +24,7 @@ public class CompanyAdministrator extends User{
     private boolean verified;
 
     public CompanyAdministrator() {
+
     }
 
     public Company getCompany() {

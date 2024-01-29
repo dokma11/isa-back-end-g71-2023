@@ -25,7 +25,6 @@ public class QRCode {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
-
     public QRCode(String content, LocalDateTime sentDate, RegisteredUser user, Appointment appointment) {
         this.content = content;
         this.sentDate = sentDate;

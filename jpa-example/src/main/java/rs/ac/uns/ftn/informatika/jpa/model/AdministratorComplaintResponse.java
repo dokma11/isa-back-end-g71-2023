@@ -21,6 +21,9 @@ public class AdministratorComplaintResponse {
     @Column(name = "comment", nullable = false, unique = false)
     private String comment;
 
+    public AdministratorComplaintResponse(){
+        
+    }
 
     public Integer getId() {
         return id;

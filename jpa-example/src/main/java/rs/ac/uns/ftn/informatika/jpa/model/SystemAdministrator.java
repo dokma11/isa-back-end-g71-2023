@@ -14,7 +14,10 @@ public class SystemAdministrator extends User {
 
     @OneToMany(mappedBy = "systemAdministrator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<CompanyComplaintResponse> companyComplaintResponses = new HashSet<CompanyComplaintResponse>();
-    public SystemAdministrator(){}
+
+    public SystemAdministrator(){
+
+    }
 
     public Set<AdministratorComplaintResponse> getAdministratorComplaintResponseSet() {
         return administratorComplaintResponseSet;

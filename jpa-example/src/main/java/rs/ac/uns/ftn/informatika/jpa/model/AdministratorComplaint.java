@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 @Entity
 public class AdministratorComplaint {
-    public AdministratorComplaint(){}
 
     @Id
     @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
@@ -26,6 +25,9 @@ public class AdministratorComplaint {
     @JoinColumn(name = "administrator_complaint_Response_id")
     AdministratorComplaintResponse administratorComplaintResponse;
 
+    public AdministratorComplaint(){
+
+    }
 
     public Integer getId() {
         return id;

@@ -22,7 +22,9 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @Inheritance(strategy =JOINED)
 @Table(name="users")
 public class User implements UserDetails {
+
     public enum UserRole {REGISTERED_USER, COMPANY_ADMINISTRATOR, SYSTEM_ADMINISTRATOR}
+
     @Id
     @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
@@ -58,9 +60,6 @@ public class User implements UserDetails {
     @Column(name="state", unique=false, nullable=false)
     private String state;
 
-//    @Column(name="role", unique=false, nullable=false)
-//    private UserRole role;
-
     @Column(name="profession", unique=false, nullable=false)
     private String profession;
 
@@ -69,9 +68,11 @@ public class User implements UserDetails {
 
     @Column(name = "enabled")
     private boolean enabled;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id") // This is the foreign key in the USER table
     private Role role;
+
     public User() {
     }
 
@@ -132,14 +133,6 @@ public class User implements UserDetails {
         this.state = state;
     }
 
-//    public UserRole getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(UserRole role) {
-//        this.role = role;
-//    }
-
     public String getProfession() {
         return profession;
     }
@@ -199,7 +192,6 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
 
     @Override
     public boolean isEnabled() {

@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 @Entity
 public class CompanyComplaint {
-    public CompanyComplaint(){}
 
     @Id
     @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
@@ -25,6 +24,10 @@ public class CompanyComplaint {
     @OneToOne(mappedBy = "companyComplaint", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "company_complaint_response_id")
     CompanyComplaintResponse companyComplaintResponse;
+
+    public CompanyComplaint(){
+
+    }
 
     public Integer getId() {
         return id;

@@ -37,6 +37,7 @@ public class HospitalContract {
     private HospitalContract.HospitalContractStatus status;
 
     public HospitalContract() {
+
     }
 
     public HospitalContract(String id, String companyName, String companyAddress, String hospitalName, String hospitalAddress, String equipmentName, String equipmentQuantity, String deliveryDate, HospitalContract.HospitalContractStatus status) {

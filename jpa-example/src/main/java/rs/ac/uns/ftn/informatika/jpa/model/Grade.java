@@ -7,31 +7,37 @@ import java.util.Set;
 @Entity
 public class Grade {
 
-
     @Id
     @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
     private Integer id;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "registeredUser_id")
     private RegisteredUser registeredUser;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
 
     @Column(name = "reasonForGrade", nullable = false)
     private String reasonsForGrade;
+
     @Column(name = "personalReason", nullable = false)
     private String personalReason;
+
     @Column(name = "gradeValue", nullable = false)
     private int gradeValue;
+
+    public Grade() {
+        
+    }
 
     public Grade(String reasonsForGrade, String personalReason, int gradeValue) {
         this.reasonsForGrade = reasonsForGrade;
         this.personalReason = personalReason;
         this.gradeValue = gradeValue;
     }
-
 
     public Integer getId() {
         return id;

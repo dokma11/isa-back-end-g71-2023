@@ -8,11 +8,10 @@ import java.util.List;
 
 @Entity
 @Table(name="registered_user")
-
-
 public class RegisteredUser extends User{
 
     public enum User_Category {BRONSE, SILVER, GOLD}
+
     @Column(name = "points", unique = false, nullable = true)
     private int points;
 
@@ -35,7 +34,6 @@ public class RegisteredUser extends User{
     @OneToMany(mappedBy = "registeredUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Grade> givenGrade = new HashSet<Grade>();
 
-
     public int getPoints() {
         return points;
     }
@@ -51,7 +49,6 @@ public class RegisteredUser extends User{
     public void setCategory(User_Category category) {
         this.category = category;
     }
-
 
     public Set<Grade> getGivenGrade() {
         return givenGrade;

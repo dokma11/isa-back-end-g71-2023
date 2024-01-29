@@ -52,5 +52,4 @@ public class CompanyComplaintResponse {
         this.comment = comment;
     }
 
-
 }
