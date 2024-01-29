@@ -14,10 +14,6 @@ import java.util.List;
 @Service
 public class HospitalContractService {
 
-    //treba nam save
-
-    //treba nam otkazivanje sto je update status
-
     @Autowired
     private HospitalContractRepository hospitalContractRepository;
 
@@ -40,5 +36,7 @@ public class HospitalContractService {
     public void remove(Integer id) {
         hospitalContractRepository.deleteById(id);
     }
+
+    public List<HospitalContract> findAllByCompanyName (String name){ return  hospitalContractRepository.findAllByCompanyName(name);}
 
 }

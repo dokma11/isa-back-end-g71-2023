@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.jpa.dto.HospitalContractDTO;
+import rs.ac.uns.ftn.informatika.jpa.model.CompanyAdministrator;
 import rs.ac.uns.ftn.informatika.jpa.model.HospitalContract;
+import rs.ac.uns.ftn.informatika.jpa.service.CompanyAdministratorService;
 import rs.ac.uns.ftn.informatika.jpa.service.HospitalContractService;
 
 import java.time.LocalDate;
@@ -30,6 +32,9 @@ public class HospitalContractController {
 
     @Autowired
     private HospitalContractService hospitalContractService;
+
+    @Autowired
+    private CompanyAdministratorService companyAdministratorService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR')")
@@ -57,7 +62,7 @@ public class HospitalContractController {
 
         hospitalContract.setHospitalName(hospitalContractDTO.getHospitalName());
         hospitalContract.setHospitalAddress(hospitalContractDTO.getHospitalAddress());
-        hospitalContract.setCompanyName(hospitalContractDTO.getEquipmentName());
+        hospitalContract.setCompanyName(hospitalContractDTO.getCompanyName());
         hospitalContract.setCompanyAddress(hospitalContractDTO.getCompanyAddress());
         hospitalContract.setEquipmentName(hospitalContractDTO.getEquipmentName());
         hospitalContract.setEquipmentQuantity(hospitalContractDTO.getEquipmentQuantity());
@@ -76,6 +81,21 @@ public class HospitalContractController {
 
         return new ResponseEntity<>(new HospitalContractDTO(hospitalContract), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole( 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<HospitalContractDTO>> getCompanyContracts(@PathVariable Integer id) {
+        CompanyAdministrator admin  = companyAdministratorService.findOne(id);
+        List<HospitalContract> hospitalContracts = hospitalContractService.findAllByCompanyName(admin.getCompany().getName());
+
+        List<HospitalContractDTO> hospitalContractDTOS = new ArrayList<>();
+        for (HospitalContract contract : hospitalContracts) {
+            hospitalContractDTOS.add(new HospitalContractDTO(contract));
+        }
+
+        return new ResponseEntity<>(hospitalContractDTOS, HttpStatus.OK);
+    }
+
 
     @RabbitListener(queues = "spring-boot-hospital2")
     public void handler(String message) {

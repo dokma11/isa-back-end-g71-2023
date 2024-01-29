@@ -102,16 +102,25 @@ public class VehicleLocationController {
     @Scheduled(cron = "0 0 10 * * ?")
     public void sendAutomaticMessage() {
         for (HospitalContract hospitalContract : hospitalContractService.findAll()) {
-            if (hospitalContract != null && hospitalContract.getDeliveryDate() != null) {
+            if (hospitalContract != null && hospitalContract.getDeliveryDate() != null && hospitalContract.getStatus() == HospitalContract.HospitalContractStatus.NEW) {
                 String deliveryDateString = hospitalContract.getDeliveryDate().toString();
                 String currentDateString = LocalDate.now().toString();
 
                 if (deliveryDateString.equals(currentDateString)) {
                     sendMessagesToHospital();
                 }
+            } else if (hospitalContract != null && hospitalContract.getDeliveryDate() != null && hospitalContract.getStatus() == HospitalContract.HospitalContractStatus.CANCELED) {
+                LocalDate currentDate = LocalDate.now();
+                LocalDate newDate = currentDate.plusMonths(1);
+
+                hospitalContract.setDeliveryDate(newDate);
+                hospitalContract.setStatus(HospitalContract.HospitalContractStatus.NEW);
+                hospitalContractService.save(hospitalContract);
+
+                String hospitalSimulatorEditMessage = "Izmenjen je ugovor datuma: " + LocalDate.now() + " u: " + LocalTime.now() + "h";
+                rabbitTemplate.convertAndSend("control-queue-hospital", hospitalSimulatorEditMessage);
             }
         }
-
     }
 
     private void sendMessagesToHospital(){
