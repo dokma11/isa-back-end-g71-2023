@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import rs.ac.uns.ftn.informatika.jpa.model.Company;
 
@@ -35,4 +36,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     @Query("SELECT a FROM Appointment a WHERE a.user.id = :userId AND a.status IN (:statuses)")
     public List<Appointment> findUsersFutureAppointments(@Param("userId") Integer userId, @Param("statuses")List<Appointment.AppointmentStatus> statuses);
 
+    @Query("Select a FROM Appointment a where a.user.id = :userId AND a.pickupTime = :pickupTime AND a.company.id = :companyId")
+    public List<Appointment> findUsersAppointmentsOnPickupAndCompany(@Param("userId") Integer userId,@Param("pickupTime") LocalDateTime pickupTime, @Param("companyId") Integer companyId);
 }
