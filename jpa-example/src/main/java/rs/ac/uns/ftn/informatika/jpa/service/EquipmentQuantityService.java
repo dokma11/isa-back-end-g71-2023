@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +36,18 @@ public class EquipmentQuantityService {
         return equipmentQuantityRepository.findById(id).orElseGet(null);
     }
 
+    @RateLimiter(name = "standard", fallbackMethod = "standardFallback")
     public List<EquipmentQuantity> findAll() {
+        LOG.info("Uspjesan poziv za rate limiter.");
         return equipmentQuantityRepository.findAll();
     }
 
+    // Metoda koja ce se pozvati u slucaju RequestNotPermitted exception-a
+    public List<EquipmentQuantity> standardFallback(RequestNotPermitted rnp) {
+        LOG.warn("Prevazidjen broj poziva u ogranicenom vremenskom intervalu");
+        // Samo prosledjujemo izuzetak -> global exception handler koji bi ga obradio :)
+        throw rnp;
+    }
     public Page<EquipmentQuantity> findAll(Pageable page) {
         return equipmentQuantityRepository.findAll(page);
     }

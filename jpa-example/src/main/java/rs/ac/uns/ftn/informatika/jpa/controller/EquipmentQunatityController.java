@@ -99,7 +99,18 @@ public class EquipmentQunatityController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<List<EquipmentQuantityDTO>> getAll(){
+        List<EquipmentQuantityDTO> dtos = new ArrayList<>();
+        for(EquipmentQuantity ew : equipmentQuantityService.findAll()){
+            EquipmentQuantityDTO dto = new EquipmentQuantityDTO(ew);
+            dtos.add(dto);
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
     @GetMapping(value = "/removeCache")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<String> removeFromCache() {
         equipmentQuantityService.removeFromCache();
         return ResponseEntity.ok("equipmentQuantities successfully removed from cache!");
