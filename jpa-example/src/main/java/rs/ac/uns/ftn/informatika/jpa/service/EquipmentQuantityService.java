@@ -1,6 +1,10 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,12 +22,14 @@ import java.util.List;
 @Transactional(readOnly = false)
 public class EquipmentQuantityService {
 
+    private final Logger LOG = LoggerFactory.getLogger(RegisteredUserService.class);
     @Autowired
     private EquipmentQuantityRepository equipmentQuantityRepository;
 
     @Autowired
     private EquipmentRepository equipmentRepository;
 
+    @Cacheable("equipmentQuantity")
     public EquipmentQuantity findOne(Integer id) {
         return equipmentQuantityRepository.findById(id).orElseGet(null);
     }
@@ -85,5 +91,10 @@ public class EquipmentQuantityService {
         }
 
         return counter;
+    }
+
+    @CacheEvict(cacheNames = {"equipmentQuantity"}, allEntries = true)
+    public void removeFromCache() {
+        LOG.info("equipmentQuantity removed from cache!");
     }
 }

@@ -83,4 +83,25 @@ public class EquipmentQunatityController {
     public Integer getQuantityByEquipmentId(@PathVariable Integer id) {
         return equipmentQuantityService.getQuantityByEquipmentId(id);
     }
+
+    @GetMapping(value ="/{id}")
+    @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<EquipmentQuantityDTO> getOneById(@PathVariable Integer id)
+    {
+        EquipmentQuantity u = equipmentQuantityService.findOne(id);
+
+        if(u == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        EquipmentQuantityDTO dto = new EquipmentQuantityDTO(u);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/removeCache")
+    public ResponseEntity<String> removeFromCache() {
+        equipmentQuantityService.removeFromCache();
+        return ResponseEntity.ok("equipmentQuantities successfully removed from cache!");
+    }
 }

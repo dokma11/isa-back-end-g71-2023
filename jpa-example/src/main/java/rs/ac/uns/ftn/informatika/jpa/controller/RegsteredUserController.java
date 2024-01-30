@@ -144,4 +144,6 @@ public class RegsteredUserController {
         return ResponseEntity.ok("<h1>Your Registration was successfull!</h1>");
     }
 
+
+
 }
