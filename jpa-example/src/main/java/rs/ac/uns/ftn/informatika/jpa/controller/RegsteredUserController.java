@@ -144,4 +144,10 @@ public class RegsteredUserController {
         return ResponseEntity.ok("<h1>Your Registration was successfull!</h1>");
     }
 
+    @GetMapping(value = "/removeCache")
+    public ResponseEntity<String> removeFromCache() {
+        registeredUserService.removeFromCache();
+        return ResponseEntity.ok("Products successfully removed from cache!");
+    }
+
 }
