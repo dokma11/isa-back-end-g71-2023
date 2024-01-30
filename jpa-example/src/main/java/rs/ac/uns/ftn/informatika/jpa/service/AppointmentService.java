@@ -61,15 +61,18 @@ public class AppointmentService {
 
     @Transactional(readOnly = false)
     public Appointment save(Appointment appointment) {
-        if(appointment.getCompany() != null && appointment.getUser() != null){
-            List<Appointment> prevoiusAppointments = appointmentRepository.findUsersAppointmentsOnPickupAndCompany(appointment.getUser().getId(), appointment.getPickupTime(), appointment.getCompany().getId());
-            if(!prevoiusAppointments.isEmpty()){
-                return null;
-            }
-        }
+
         return appointmentRepository.save(appointment);
     }
 
+    public List<Appointment> findPrevoiusByUserTimeAndCompany(Appointment appointment){
+        if(appointment.getCompany() != null && appointment.getUser() != null){
+            return appointmentRepository.findUsersAppointmentsOnPickupAndCompany(appointment.getUser().getId(), appointment.getPickupTime(), appointment.getCompany().getId());
+
+        }else{
+            return null;
+        }
+    }
     public void remove(Integer id) {
         appointmentRepository.deleteById(id);
     }
