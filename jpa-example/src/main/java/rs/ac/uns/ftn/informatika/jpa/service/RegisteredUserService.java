@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.repository.RegisteredUserRepository;
 import rs.ac.uns.ftn.informatika.jpa.util.TokenUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -101,5 +103,15 @@ public class RegisteredUserService {
     }
 
 
+    @Scheduled(cron = "0 30 20 30 * ?")
+    public void updatePenaltyPoints(){
+
+        List<RegisteredUser> registeredUsers = registeredUserRepository.findAll();
+        for(RegisteredUser u : registeredUsers){
+            u.setPoints(0);
+            registeredUserRepository.save(u);
+        }
+
+    }
 
 }
