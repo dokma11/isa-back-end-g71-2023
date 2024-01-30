@@ -12,7 +12,7 @@
         <!-- ttl - TIME TO LIVE - ukupno vreme koje će objekti provesti u kešu bez obzira da li im se pristupa ili ne
             tti - TIME TO IDLE - ukupno vreme koje će objekti provesti u kešu ako im se ne pristupa -->
         <expiry>
-            <ttl unit="seconds">15</ttl>
+            <ttl unit="seconds">60</ttl>
         </expiry>
         <!-- Registruje se listener koji osluškuje svaku promenu u kešu:
         - CREATED - dodavanje objekta u keš
@@ -42,9 +42,9 @@
     </cache-template>
 
     <!-- Cache configurations -->
-    <cache alias="registeredUser" uses-template="default">
+    <cache alias="equipmentQuantity" uses-template="default">
         <key-type>java.lang.Integer</key-type>
-        <value-type>rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser</value-type>
+        <value-type>rs.ac.uns.ftn.informatika.jpa.model.EquipmentQuantity</value-type>
         <resources>
             <heap>2</heap>
         </resources>

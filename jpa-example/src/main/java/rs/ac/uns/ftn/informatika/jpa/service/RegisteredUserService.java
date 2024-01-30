@@ -24,7 +24,7 @@ import java.util.Optional;
 @Service
 public class RegisteredUserService {
 
-    private final Logger LOG = LoggerFactory.getLogger(RegisteredUserService.class);
+
     @Autowired
     RegisteredUserRepository registeredUserRepository;
 
@@ -55,9 +55,9 @@ public class RegisteredUserService {
 
     public List<RegisteredUser> getAll() {return registeredUserRepository.findAll();}
 
-    @Cacheable("registeredUser")
+
     public RegisteredUser findOne(Integer id){
-        LOG.info("Product with id: " + id + " successfully cached!");
+
         return registeredUserRepository.findById(id).orElse(null);
     }
 
@@ -101,8 +101,5 @@ public class RegisteredUserService {
     }
 
 
-    @CacheEvict(cacheNames = {"registeredUser"}, allEntries = true)
-    public void removeFromCache() {
-        LOG.info("Products removed from cache!");
-    }
+
 }
