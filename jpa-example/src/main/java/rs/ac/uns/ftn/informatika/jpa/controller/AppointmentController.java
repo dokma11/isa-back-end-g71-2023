@@ -94,6 +94,9 @@ public class AppointmentController {
         appointment.setType(appointmentDTO.getType());
 
         appointment = appointmentService.save(appointment);
+        if(appointment == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.CREATED);
     }
 

@@ -65,6 +65,7 @@ public class EquipmentController {
         equipment.setGrade(equipmentDTO.getGrade());
         equipment.setQuantity(equipmentDTO.getQuantity());
         equipment.setCompany(company);
+        equipment.setAvailableQuantity(equipmentDTO.getQuantity());
         company.addEquipment(equipment);
 
         equipment = equipmentService.save(equipment);

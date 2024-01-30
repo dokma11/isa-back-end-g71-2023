@@ -61,7 +61,12 @@ public class AppointmentService {
 
     @Transactional(readOnly = false)
     public Appointment save(Appointment appointment) {
-
+        if(appointment.getCompany() != null && appointment.getUser() != null){
+            List<Appointment> prevoiusAppointments = appointmentRepository.findUsersAppointmentsOnPickupAndCompany(appointment.getUser().getId(), appointment.getPickupTime(), appointment.getCompany().getId());
+            if(!prevoiusAppointments.isEmpty()){
+                return null;
+            }
+        }
         return appointmentRepository.save(appointment);
     }
 
@@ -139,11 +144,19 @@ public class AppointmentService {
 
     @Transactional(readOnly = false)
     public Appointment schedulePredefinedAppointment(Integer userId, Integer appointmentId){
+
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseGet(null);
         RegisteredUser user = registeredUserRepository.findById(userId).orElseGet(null);
         // nema rezervisanja ako - ne postoje user ili appointment, isto tako nema rez ako je vec neko rezervisao
         if(appointment == null || user == null || appointment.getUser() != null)
             return null;
+        //provjera da li je vec zakazivano u ovoj kompaniji
+        if(appointment.getCompany() != null){
+            List<Appointment> prevoiusAppointments = appointmentRepository.findUsersAppointmentsOnPickupAndCompany(userId, appointment.getPickupTime(), appointment.getCompany().getId());
+            if(!prevoiusAppointments.isEmpty()){
+                return null;
+            }
+        }
 
         appointment.setUser(user);
 
