@@ -93,6 +93,11 @@ public class AppointmentController {
         appointment.setStatus(appointmentDTO.getStatus());
         appointment.setType(appointmentDTO.getType());
 
+        //provjera da li je korisnik ima starih appointmenta
+        List<Appointment> previousAppointments = appointmentService.findPrevoiusByUserTimeAndCompany(appointment);
+        if(!(previousAppointments == null || previousAppointments.isEmpty())){
+             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         appointment = appointmentService.save(appointment);
         if(appointment == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
