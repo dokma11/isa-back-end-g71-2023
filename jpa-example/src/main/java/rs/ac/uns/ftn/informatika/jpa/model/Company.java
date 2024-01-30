@@ -38,6 +38,7 @@ public class Company {
     @Column(name = "workinghoursend", nullable = false)
     private LocalTime workingHoursEnd;
 
+
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<CompanyAdministrator> administrators = new HashSet<CompanyAdministrator>();
 
@@ -221,4 +222,5 @@ public class Company {
     public String toString() {
         return super.toString();
     }
+
 }

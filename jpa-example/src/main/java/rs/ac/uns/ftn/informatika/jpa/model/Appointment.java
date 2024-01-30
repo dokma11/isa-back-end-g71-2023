@@ -52,6 +52,8 @@ public class Appointment {
     @JoinColumn(name = "qrCode_id")
     QRCode qrCode;
 
+    @Version
+    private Integer version;
     public Appointment() {
     }
 
@@ -145,4 +147,11 @@ public class Appointment {
         this.type = type;
     }
 
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 }

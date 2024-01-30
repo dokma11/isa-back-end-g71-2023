@@ -19,6 +19,8 @@ public class EquipmentQuantity {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @Version
+    private Integer version;
     public EquipmentQuantity() {
 
     }
@@ -53,5 +55,13 @@ public class EquipmentQuantity {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

@@ -14,6 +14,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Company;
 import rs.ac.uns.ftn.informatika.jpa.repository.CompanyRepository;
 
 @Service
+@Transactional(readOnly = false)
 public class CompanyService {
 
     @Autowired

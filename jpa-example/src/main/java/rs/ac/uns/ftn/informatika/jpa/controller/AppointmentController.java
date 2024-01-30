@@ -81,7 +81,9 @@ public class AppointmentController {
         }
 
         Company company = companyService.findOne(appointmentDTO.getCompanyId());
-
+        if(user != null && user.getPoints()>=3){
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
         Appointment appointment = new Appointment();
         appointment.setAdministrator(administrator);
         appointment.setPickupTime(appointmentDTO.getPickupTime());
@@ -197,9 +199,14 @@ public class AppointmentController {
     @PutMapping(path = "/schedule/{userId}/{appointmentId}")
     @PreAuthorize("hasAnyRole('REGISTERED_USER')")
     public ResponseEntity<AppointmentResponseDTO> schedulePredefinedAppointment(@PathVariable Integer userId, @PathVariable Integer appointmentId){
+        RegisteredUser user = registeredUserService.findOne(userId);
+        if(user != null && user.getPoints()>=3){
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
         Appointment appointment = appointmentService.schedulePredefinedAppointment(userId,appointmentId);
         if(appointment == null)
             return ResponseEntity.notFound().build();
+
         AppointmentResponseDTO dto = new AppointmentResponseDTO(appointment);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
