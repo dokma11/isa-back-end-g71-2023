@@ -103,7 +103,7 @@ public class RegisteredUserService {
     }
 
 
-    @Scheduled(cron = "0 30 20 30 * ?")
+    @Scheduled(cron = "0 0 0 1 * ?")
     public void updatePenaltyPoints(){
 
         List<RegisteredUser> registeredUsers = registeredUserRepository.findAll();
