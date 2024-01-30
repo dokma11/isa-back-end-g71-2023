@@ -15,6 +15,7 @@ import rs.ac.uns.ftn.informatika.jpa.repository.EquipmentRepository;
 import java.util.ArrayList;
 import java.util.List;
 @Service
+@Transactional(readOnly = false)
 public class EquipmentQuantityService {
 
     @Autowired

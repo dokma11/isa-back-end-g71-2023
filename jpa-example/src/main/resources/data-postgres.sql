@@ -40,27 +40,27 @@ VALUES (-4, 'Iz dobre kompanije', 'Novi Sad',TRUE,'2023-09-12', 'Kukisa', '$2a$1
 INSERT INTO public.company_administrator(id, company_id, verified)
 VALUES (-4, -1, FALSE);
 
-INSERT INTO equipment(id, description, grade, name, type, quantity, company_id,available_quantity)
-VALUES (-1, 'Kvalitetan stalak', 4, 'Stalak za infuziju', 'Stalak', 10, -1,5);
-INSERT INTO equipment(id, description, grade, name, type, quantity, company_id,available_quantity)
-VALUES (-2, 'Ostra igla', 5, 'Igla za vadjenje krvi', 'Igla', 20, -1,16);
-INSERT INTO equipment(id, description, grade, name, type, quantity, company_id, available_quantity)
-VALUES (-3, 'Solidno udoban krevet', 3, 'Krevet za pacijenta', 'Krevet', 30, -1, 30);
+INSERT INTO equipment(id, description, grade, name, type, quantity, company_id,available_quantity, version)
+VALUES (-1, 'Kvalitetan stalak', 4, 'Stalak za infuziju', 'Stalak', 10, -1,5, 0);
+INSERT INTO equipment(id, description, grade, name, type, quantity, company_id,available_quantity, version)
+VALUES (-2, 'Ostra igla', 5, 'Igla za vadjenje krvi', 'Igla', 20, -1,16, 0);
+INSERT INTO equipment(id, description, grade, name, type, quantity, company_id, available_quantity, version)
+VALUES (-3, 'Solidno udoban krevet', 3, 'Krevet za pacijenta', 'Krevet', 30, -1, 30, 0);
 
-INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
-VALUES (-1, 30, '2023-12-31T12:30:00', -2, -1, -3, 0, 0);
-INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
-VALUES (-2, 30, '2023-12-31T14:30:00', -2, -1, null, 0, 0);
-INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
-VALUES (-3, 30, '2023-12-31T17:30:00', -2, -1, -3, 0, 0);
-INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type)
-VALUES (-4, 30, '2024-12-31T17:30:00', -2, -1, null, 0, 0);
+INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type, version)
+VALUES (-1, 30, '2023-12-31T12:30:00', -2, -1, -3, 0, 0, 0);
+INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type, version)
+VALUES (-2, 30, '2023-12-31T14:30:00', -2, -1, null, 0, 0,0);
+INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type, version)
+VALUES (-3, 30, '2023-12-31T17:30:00', -2, -1, -3, 0, 0,0);
+INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id, registered_user_id, status, type, version)
+VALUES (-4, 30, '2024-12-31T17:30:00', -2, -1, null, 0, 0, 0);
 
-INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
-VALUES (-1, -1, 2, -1);
-INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
-VALUES (-2, -2, 2, -1);
-INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
-VALUES (-3, -1, 3, -3);
-INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id)
-VALUES (-4, -2, 2, -3);
+INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id, version)
+VALUES (-1, -1, 2, -1,0);
+INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id, version)
+VALUES (-2, -2, 2, -1, 0);
+INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id, version)
+VALUES (-3, -1, 3, -3,0);
+INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id, version)
+VALUES (-4, -2, 2, -3,0);

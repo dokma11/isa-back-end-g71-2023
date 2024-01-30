@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.informatika.jpa.dto.AvailableEquipmentQuantityDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.EquipmentAndQuantityResponseDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = false)
 public class EquipmentService {
     @Autowired
     private EquipmentRepository equipmentRepository;
@@ -46,6 +48,8 @@ public class EquipmentService {
         equipmentRepository.deleteById(id);
     }
 
+
+    @Transactional(readOnly = false)
     public List<AvailableEquipmentQuantityDTO> getAvailableQuantity(Integer companyId){
         //get all equipment from company
         List<Equipment> equipment = equipmentRepository.findByCompany_Id(companyId);
