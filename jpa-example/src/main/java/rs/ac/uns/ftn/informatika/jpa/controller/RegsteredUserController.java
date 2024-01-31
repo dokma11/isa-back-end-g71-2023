@@ -117,7 +117,6 @@ public class RegsteredUserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-
     }
 
     @GetMapping(value ="/{id}")
@@ -143,7 +142,4 @@ public class RegsteredUserController {
         if(!result) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok("<h1>Your Registration was successfull!</h1>");
     }
-
-
-
 }

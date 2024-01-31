@@ -5,6 +5,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import java.time.LocalDateTime;
 
 public class AppointmentUpdateDTO {
+
     private CompanyAdministratorResponseDTO administrator;
     private LocalDateTime pickupTime;
     private Integer duration;
@@ -82,4 +83,5 @@ public class AppointmentUpdateDTO {
     public void setType(Appointment.AppointmentType type) {
         this.type = type;
     }
+
 }

@@ -15,4 +15,5 @@ public interface EquipmentQuantityRepository  extends JpaRepository<EquipmentQua
     Integer getSumOfQuantitiesByEquipmentId(@Param("equipmentId") Integer equipmentId);
 
     List<EquipmentQuantity> findAllByAppointment_Id(Integer appointmentId);
+
 }

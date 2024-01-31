@@ -68,4 +68,5 @@ public class AdministratorComplaint {
     public void setAdministratorComplaintResponse(AdministratorComplaintResponse administratorComplaintResponse) {
         this.administratorComplaintResponse = administratorComplaintResponse;
     }
+
 }

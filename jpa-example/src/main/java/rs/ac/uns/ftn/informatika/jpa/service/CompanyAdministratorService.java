@@ -46,4 +46,5 @@ public class CompanyAdministratorService {
     public void SetPassword(CompanyAdministrator administrator){
         administrator.setPassword(passwordEncoder.encode(administrator.getPassword()));
     }
+
 }

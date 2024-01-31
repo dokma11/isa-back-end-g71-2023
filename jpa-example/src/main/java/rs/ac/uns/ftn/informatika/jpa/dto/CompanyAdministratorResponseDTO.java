@@ -142,4 +142,5 @@ public class CompanyAdministratorResponseDTO {
     public void setVerified(boolean verified) {
         this.verified = verified;
     }
+
 }

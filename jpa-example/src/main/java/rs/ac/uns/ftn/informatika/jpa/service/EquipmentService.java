@@ -19,14 +19,12 @@ import java.util.List;
 @Service
 @Transactional(readOnly = false)
 public class EquipmentService {
+
     @Autowired
     private EquipmentRepository equipmentRepository;
 
     @Autowired
     private EquipmentQuantityRepository equipmentQuantityRepository;
-
-    @Autowired
-    private AppointmentRepository appointmentRepository;
 
     public Equipment findOne(Integer id) {
         return equipmentRepository.findById(id).orElseGet(null);

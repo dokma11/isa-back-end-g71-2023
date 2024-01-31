@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/companyAdministrator")
 public class CompanyAdministratorController {
+
     @Autowired
     private CompanyAdministratorService companyAdministratorService;
 

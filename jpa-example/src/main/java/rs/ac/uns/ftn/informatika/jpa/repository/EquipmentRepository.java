@@ -10,10 +10,11 @@ import rs.ac.uns.ftn.informatika.jpa.model.Equipment;
 import java.util.List;
 
 public interface EquipmentRepository extends JpaRepository<Equipment, Integer> {
-    @Query("select e from Equipment e join fetch e.appointments a where e.id =?1")
-    public Equipment findOneWithAppointments(Integer equipmentId);
 
-    public List<Equipment> findByCompany_Id(Integer companyId);
+    @Query("select e from Equipment e join fetch e.appointments a where e.id =?1")
+    Equipment findOneWithAppointments(Integer equipmentId);
+
+    List<Equipment> findByCompany_Id(Integer companyId);
 
     @Query("SELECT NEW rs.ac.uns.ftn.informatika.jpa.dto.EquipmentAndQuantityResponseDTO(eq.equipmentId, e.name, e.description,e.type,eq.quantity) " +
             "FROM EquipmentQuantity eq " +

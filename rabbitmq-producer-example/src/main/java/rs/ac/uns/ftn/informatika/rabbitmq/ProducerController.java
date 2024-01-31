@@ -46,7 +46,7 @@ public class ProducerController {
 
 	@RabbitListener(queues = "control-queue")
 	public void handleControlMessage(String message) {
-		if ("start-sending".equals(message)) {
+		if ("start-sending-3-seconds".equals(message)) {
 			startSendingMessages();
 		} else if ("stop-sending".equals(message)) {
 			stopSendingMessages();

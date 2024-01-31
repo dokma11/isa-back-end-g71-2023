@@ -75,4 +75,5 @@ public class QRCode {
     public void setUser(RegisteredUser user) {
         this.user = user;
     }
+
 }

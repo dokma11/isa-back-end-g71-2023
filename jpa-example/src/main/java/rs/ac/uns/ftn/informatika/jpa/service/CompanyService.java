@@ -1,6 +1,5 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +42,16 @@ public class CompanyService {
     public List<Company> search(String name, String city){
         return companyRepository.findByNameContainingIgnoreCaseAndAddressContainingIgnoreCase(name,city);
     }
+
     public Company findOneWithAdministrators(Integer id) {
         return companyRepository.findOneWithAdministrators(id);
     }
+
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED) // da ne bude dirty read
     public Company findOneWithAppointments(Integer id) {
         return companyRepository.findOneWithAppointments(id);
     }
+
     public Company findOneWithEquipment(Integer id) {
         return companyRepository.findOneWithEquipment(id);
     }

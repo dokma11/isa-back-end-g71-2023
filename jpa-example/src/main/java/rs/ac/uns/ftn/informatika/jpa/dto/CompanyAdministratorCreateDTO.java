@@ -114,4 +114,5 @@ public class CompanyAdministratorCreateDTO {
     public void setVerified(boolean verified) {
         this.verified = verified;
     }
+
 }

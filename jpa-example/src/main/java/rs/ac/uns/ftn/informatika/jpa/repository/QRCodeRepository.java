@@ -12,8 +12,10 @@ import java.util.List;
 public interface QRCodeRepository  extends JpaRepository<QRCode, Integer> {
 
     List<QRCode> findByUserId(Integer userId);
+
     @Query("SELECT qr FROM QRCode qr " +
             "WHERE qr.user.id = :userId " +
             "AND qr.appointment.status = :status")
     List<QRCode> findQRCodeByUserAndAppointmentStatus(@Param("userId") Integer userId, @Param("status") Appointment.AppointmentStatus status);
+
 }

@@ -23,4 +23,5 @@ public class Producer {
 		log.info("Sending> ... Message=[ " + message + " ] Exchange=[" + exchange + "] RoutingKey=[" + routingkey + "]");
 		this.rabbitTemplate.convertAndSend(exchange, routingkey, message);
 	}
+
 }

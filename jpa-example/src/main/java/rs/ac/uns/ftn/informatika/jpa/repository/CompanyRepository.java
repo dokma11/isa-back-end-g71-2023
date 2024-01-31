@@ -8,6 +8,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Company;
 
 import java.util.List;
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
+
     List<Company> findByNameContainingIgnoreCaseAndAddressContainingIgnoreCase(String name, String address);
 
     @Query("select c from Company c join fetch c.administrators a where c.id =?1")
@@ -27,4 +28,5 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
     @Query("SELECT COUNT(DISTINCT a.id) FROM Company c JOIN c.administrators a WHERE c.id = :companyId")
     long countAdminsByCompanyId(@Param("companyId") Integer companyId);
+
 }

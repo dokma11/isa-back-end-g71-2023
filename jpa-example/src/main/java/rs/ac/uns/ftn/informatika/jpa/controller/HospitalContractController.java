@@ -96,7 +96,6 @@ public class HospitalContractController {
         return new ResponseEntity<>(hospitalContractDTOS, HttpStatus.OK);
     }
 
-
     @RabbitListener(queues = "spring-boot-hospital2")
     public void handler(String message) {
         log.info("Consumer> " + message);

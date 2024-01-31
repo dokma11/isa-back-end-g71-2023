@@ -39,10 +39,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket swaggerSpringfoxDocket() {
-
-
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
-
                 .pathMapping("/")
                 .apiInfo(ApiInfo.DEFAULT)
                 .forCodeGeneration(true)
@@ -64,7 +61,6 @@ public class SwaggerConfig {
         return docket;
     }
 
-
     private ApiKey apiKey() {
         return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
     }
@@ -84,4 +80,5 @@ public class SwaggerConfig {
         return Lists.newArrayList(
                 new SecurityReference("JWT", authorizationScopes));
     }
+
 }

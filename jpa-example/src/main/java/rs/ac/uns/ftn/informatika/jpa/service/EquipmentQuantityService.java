@@ -25,6 +25,7 @@ import java.util.List;
 public class EquipmentQuantityService {
 
     private final Logger LOG = LoggerFactory.getLogger(RegisteredUserService.class);
+
     @Autowired
     private EquipmentQuantityRepository equipmentQuantityRepository;
 
@@ -48,13 +49,13 @@ public class EquipmentQuantityService {
         // Samo prosledjujemo izuzetak -> global exception handler koji bi ga obradio :)
         throw rnp;
     }
+
     public Page<EquipmentQuantity> findAll(Pageable page) {
         return equipmentQuantityRepository.findAll(page);
     }
 
     @Transactional(readOnly = false)
     public EquipmentQuantity save(EquipmentQuantity equipment) {
-
             //najdemo eq
             Equipment eqForUpdate = equipmentRepository.findById(equipment.getEquipmentId()).orElseGet(null);
             if(eqForUpdate == null || eqForUpdate.getAvailableQuantity() < equipment.getQuantity()){
@@ -107,4 +108,5 @@ public class EquipmentQuantityService {
     public void removeFromCache() {
         LOG.info("equipmentQuantity removed from cache!");
     }
+
 }

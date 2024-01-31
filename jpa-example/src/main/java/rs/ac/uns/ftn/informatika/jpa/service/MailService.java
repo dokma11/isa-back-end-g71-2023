@@ -30,6 +30,7 @@ import java.util.Set;
 
 @Service
 public class MailService {
+
     @Autowired
     private JavaMailSender javaMailSender;
 

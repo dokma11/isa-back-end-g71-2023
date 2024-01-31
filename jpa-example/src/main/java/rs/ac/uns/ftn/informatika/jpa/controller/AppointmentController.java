@@ -105,6 +105,46 @@ public class AppointmentController {
         return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.CREATED);
     }
 
+    @PostMapping(consumes = "application/json", value = "/admin")
+    @PreAuthorize("hasRole('COMPANY_ADMINISTRATOR')")
+    public ResponseEntity<AppointmentResponseDTO> saveAppointmentByAdmin(@RequestBody AppointmentCreateDTO appointmentDTO) {
+
+        CompanyAdministrator administrator = null;
+        RegisteredUser user = null;
+
+        if(appointmentDTO.getAdministratorId() != null){
+            administrator = companyAdministratorService.findOne(appointmentDTO.getAdministratorId());
+        }
+
+        if(appointmentDTO.getUserId() != null){
+            user = registeredUserService.findOne(appointmentDTO.getUserId());
+        }
+
+        Company company = companyService.findOne(appointmentDTO.getCompanyId());
+        if(user != null && user.getPoints()>=3){
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
+        Appointment appointment = new Appointment();
+        appointment.setAdministrator(administrator);
+        appointment.setPickupTime(appointmentDTO.getPickupTime());
+        appointment.setDuration(appointmentDTO.getDuration());
+        appointment.setUser(user);
+        appointment.setCompany(company);
+        appointment.setStatus(appointmentDTO.getStatus());
+        appointment.setType(appointmentDTO.getType());
+
+        //provjera da li je korisnik ima starih appointmenta
+        List<Appointment> previousAppointments = appointmentService.findPrevoiusByUserTimeAndCompany(appointment);
+        if(!(previousAppointments == null || previousAppointments.isEmpty())){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        appointment = appointmentService.saveByAdmin(appointment);
+        if(appointment == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.CREATED);
+    }
+
     @PutMapping(value = "/{id}", consumes = "application/json")
     @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<AppointmentResponseDTO> updateAppointment(@PathVariable Integer id, @RequestBody AppointmentUpdateDTO appointmentDTO) {
@@ -287,8 +327,6 @@ public class AppointmentController {
         return new ResponseEntity<>(new AppointmentResponseDTO(appointment), HttpStatus.OK);
     }
 
-
-
     @GetMapping(path = "/users/{userId}/doneAppointemnts")
     @PreAuthorize("hasAnyRole('REGISTERED_USER')")
     public ResponseEntity<List<AppointmentResponseDTO>> getUsersDoneAppointments(@PathVariable Integer userId){
@@ -298,9 +336,7 @@ public class AppointmentController {
             AppointmentResponseDTO dto = new AppointmentResponseDTO(a);
             dtos.add(dto);
         }
-
         return new ResponseEntity<>(dtos,HttpStatus.OK);
     }
-
 
 }

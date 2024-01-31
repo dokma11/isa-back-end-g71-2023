@@ -5,6 +5,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Appointment;
 import java.time.LocalDateTime;
 
 public class AppointmentResponseDTO {
+
     private Integer id;
     private CompanyAdministratorResponseDTO administrator;
     private LocalDateTime pickupTime;
@@ -13,11 +14,11 @@ public class AppointmentResponseDTO {
     private CompanyResponseDTO company;
     private Appointment.AppointmentStatus status;
     private Appointment.AppointmentType type;
-
     private String companyAdminName;
     private String companyName;
 
     public AppointmentResponseDTO() {
+
     }
 
     public AppointmentResponseDTO(Appointment a) {
@@ -117,4 +118,5 @@ public class AppointmentResponseDTO {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+
 }

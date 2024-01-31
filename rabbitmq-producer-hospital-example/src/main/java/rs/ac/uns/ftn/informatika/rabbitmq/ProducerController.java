@@ -19,7 +19,7 @@ public class ProducerController {
 	private Producer producer;
 
 	private String message1 = "1|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Dom zdravlja Novi Sad|77, Bulevar cara Lazara, Novi Sad, Srbija|Igla za vadjenje krvi|15|2024-02-02|NEW";
-	private String message2 = "2|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|101, Bulevar oslobodjenja, Novi Sad, Srbija|Stalak za infuziju|5|2024-01-29|NEW";
+	private String message2 = "2|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|101, Bulevar oslobodjenja, Novi Sad, Srbija|Stalak za infuziju|5|2024-01-31|NEW";
 	private	String message3 = "3|Ninina kompanija|4, Mihala Babinke, Novi Sad, Srbija|Klinicki centar Novi Sad|10, Futoski put, Novi Sad, Srbija|Krevet za pacijenta|10|2024-02-05|NEW";
 
 	private String queue = "spring-boot-hospital2";

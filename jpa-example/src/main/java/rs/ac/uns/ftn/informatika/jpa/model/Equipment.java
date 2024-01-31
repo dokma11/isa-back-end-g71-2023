@@ -39,7 +39,6 @@ public class Equipment {
     inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
     private Set<Appointment> appointments = new HashSet<>();
 
-
     @Version
     private Integer version;
     public Equipment() {
@@ -126,4 +125,5 @@ public class Equipment {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
 }

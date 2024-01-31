@@ -82,7 +82,7 @@ public class VehicleLocationController {
     @GetMapping("/startSending")
     @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR', 'SYSTEM_ADMINISTRATOR')")
     public String startSendingMessages() {
-        sendControlMessageToProducer("start-sending");
+        sendControlMessageToProducer("start-sending-3-seconds");
         return "Sending messages started!";
     }
 

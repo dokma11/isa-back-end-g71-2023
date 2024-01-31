@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
 public class EquipmentAndQuantityResponseDTO {
+
     private int id;
     private String name;
     private String description;
@@ -46,8 +47,6 @@ public class EquipmentAndQuantityResponseDTO {
     public void setType(String type) {
         this.type = type;
     }
-
-
 
     public int getQuantity() {
         return quantity;

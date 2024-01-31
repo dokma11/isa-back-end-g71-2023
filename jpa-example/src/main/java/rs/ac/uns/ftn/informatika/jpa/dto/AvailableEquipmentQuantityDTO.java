@@ -24,4 +24,5 @@ public class AvailableEquipmentQuantityDTO {
     public void setAvailableQuantity(int availableQuantity) {
         this.availableQuantity = availableQuantity;
     }
+
 }

@@ -10,13 +10,16 @@ import java.util.List;
 
 @Service
 public class QRCodeService {
+
     @Autowired
     private QRCodeRepository qrCodeRepository;
 
     public List<QRCode> getAllQRCodeByUser(Integer userId) {
         return qrCodeRepository.findByUserId(userId);
     }
+
     public List<QRCode> getQRCodeByUserAndStatus(Integer userId, Appointment.AppointmentStatus status) {
         return qrCodeRepository.findQRCodeByUserAndAppointmentStatus(userId, status);
     }
+
 }

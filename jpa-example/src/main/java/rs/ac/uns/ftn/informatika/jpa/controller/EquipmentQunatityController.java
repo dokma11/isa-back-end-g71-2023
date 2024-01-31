@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/equipmentQuantity")
 public class EquipmentQunatityController {
+
     @Autowired
     private EquipmentQuantityService equipmentQuantityService;
 
@@ -31,7 +32,6 @@ public class EquipmentQunatityController {
     @PreAuthorize("hasAnyRole('REGISTERED_USER')")
     public ResponseEntity saveEquipmentQunatity(@RequestBody List<EquipmentQuantityDTO> equipmentQuantityDTOS) {
         try{
-
             for(EquipmentQuantityDTO eq : equipmentQuantityDTOS){
                 EquipmentQuantity equipmentQuantity = new EquipmentQuantity();
                 equipmentQuantity.setId(eq.getId());
@@ -109,6 +109,7 @@ public class EquipmentQunatityController {
         }
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
+
     @GetMapping(value = "/removeCache")
     @PreAuthorize("hasAnyRole('REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<String> removeFromCache() {

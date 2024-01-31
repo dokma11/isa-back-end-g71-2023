@@ -73,4 +73,5 @@ public class RegisteredUser extends User{
     public void setAdministratorComplaints(List<AdministratorComplaint> administratorComplaints) {
         this.administratorComplaints = administratorComplaints;
     }
+
 }

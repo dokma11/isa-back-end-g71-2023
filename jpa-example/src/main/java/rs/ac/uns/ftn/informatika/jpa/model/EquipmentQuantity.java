@@ -21,6 +21,7 @@ public class EquipmentQuantity {
 
     @Version
     private Integer version;
+
     public EquipmentQuantity() {
 
     }
@@ -64,4 +65,5 @@ public class EquipmentQuantity {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
 }

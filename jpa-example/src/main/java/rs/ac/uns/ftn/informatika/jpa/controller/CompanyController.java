@@ -153,7 +153,6 @@ public class CompanyController {
         return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
     }
 
-
     @GetMapping(value = "/{companyId}/administrator")
     @PreAuthorize("hasAnyRole( 'REGISTERED_USER', 'COMPANY_ADMINISTRATOR')")
     public ResponseEntity<List<Integer>> getCompaniesAdministratorIds(@PathVariable Integer companyId) {

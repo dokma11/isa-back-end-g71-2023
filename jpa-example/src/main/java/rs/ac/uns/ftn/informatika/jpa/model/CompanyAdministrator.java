@@ -58,4 +58,5 @@ public class CompanyAdministrator extends User{
     public void setVerified(boolean verified) {
         this.verified = verified;
     }
+
 }

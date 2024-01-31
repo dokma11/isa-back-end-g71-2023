@@ -138,4 +138,5 @@ public class HospitalContract {
                 ", status=" + status +
                 '}';
     }
+
 }

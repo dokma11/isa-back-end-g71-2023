@@ -68,4 +68,5 @@ public class CompanyComplaint {
     public void setCompanyComplaintResponse(CompanyComplaintResponse companyComplaintResponse) {
         this.companyComplaintResponse = companyComplaintResponse;
     }
+
 }

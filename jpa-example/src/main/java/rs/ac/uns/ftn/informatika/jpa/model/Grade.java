@@ -86,4 +86,5 @@ public class Grade {
     public void setGradeValue(int gradeValue) {
         this.gradeValue = gradeValue;
     }
+
 }

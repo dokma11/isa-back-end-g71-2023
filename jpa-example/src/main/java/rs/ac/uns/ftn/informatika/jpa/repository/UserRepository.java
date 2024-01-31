@@ -5,5 +5,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.RegisteredUser;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
+
     User findByUsername(String username);
+
 }

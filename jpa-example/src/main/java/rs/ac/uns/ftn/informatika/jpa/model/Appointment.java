@@ -54,6 +54,7 @@ public class Appointment {
 
     @Version
     private Integer version;
+
     public Appointment() {
     }
 
@@ -154,4 +155,5 @@ public class Appointment {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
 }

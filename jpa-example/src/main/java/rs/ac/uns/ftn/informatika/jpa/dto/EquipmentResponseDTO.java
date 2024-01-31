@@ -12,6 +12,7 @@ public class EquipmentResponseDTO {
     private CompanyResponseDTO company;
 
     public EquipmentResponseDTO(){
+
     }
 
     public EquipmentResponseDTO(Equipment equipment){

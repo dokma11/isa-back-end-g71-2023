@@ -17,8 +17,10 @@ public class AuthorisationService {
 
     @Autowired
     private TokenUtils tokenUtils;
+
     @Autowired
     private BCryptPasswordEncoder encoder;
+
     public String login(CredentialsDTO credentials){
         try{
             UserDetails user = customUserService.loadUserByUsername(credentials.getUsername());
@@ -34,7 +36,5 @@ public class AuthorisationService {
             System.out.println("OVO NIJE REALNO VISE EVO.");
             return "";
         }
-
-
     }
 }

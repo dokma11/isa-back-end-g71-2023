@@ -57,10 +57,37 @@ INSERT INTO appointment(id, duration, pickup_time, administrator_id, company_id,
 VALUES (-4, 30, '2024-12-31T17:30:00', -2, -1, null, 0, 0, 0);
 
 INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id, version)
-VALUES (-1, -1, 2, -1,0);
+VALUES (-1, -1, 2, -1, 0);
 INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id, version)
 VALUES (-2, -2, 2, -1, 0);
 INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id, version)
-VALUES (-3, -1, 3, -3,0);
+VALUES (-3, -1, 3, -3, 0);
 INSERT INTO public.equipment_quantity(id, equipment_id, quantity, appointment_id, version)
-VALUES (-4, -2, 2, -3,0);
+VALUES (-4, -2, 2, -3, 0);
+
+INSERT INTO public.qrcode(id, content, date, appointment_id, registered_user_id)
+VALUES (-1, 'Appointment Details:
+Date and time: 2023-12-31 12:30:00
+Duration: 30
+Company: Ninina kompanija
+Company administrator that will give you the equipment: Kukisa
+Equipment:
+Name: Stalak za infuziju
+ Quantity: 2
+Name: Igla za vadjenje krvi
+ Quantity: 2'
+
+       , '2023-12-29T20:09:03.325', -1, -3);
+INSERT INTO public.qrcode(id, content, date, appointment_id, registered_user_id)
+VALUES (-2, 'Appointment Details:
+Date and time: 2023-12-31 17:30:00
+Duration: 30
+Company: Ninina kompanija
+Company administrator that will give you the equipment: Kukisa
+Equipment:
+Name: Stalak za infuziju
+ Quantity: 3
+Name: Igla za vadjenje krvi
+ Quantity: 2'
+
+       , '2023-12-29T20:09:03.325', -3, -3);

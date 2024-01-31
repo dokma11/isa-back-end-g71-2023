@@ -41,12 +41,14 @@ public class AppointmentService {
     @Autowired
     private EquipmentQuantityRepository equipmentQuantityRepository;
 
-    @Autowired RegisteredUserService registeredUserService;
+    @Autowired
+    private RegisteredUserService registeredUserService;
 
     @PostConstruct
     public void onStartup() {
        markAsExpiredOrDone();
     }
+
     public Appointment findOne(Integer id) {
         return appointmentRepository.findById(id).orElseGet(null);
     }
@@ -61,18 +63,31 @@ public class AppointmentService {
 
     @Transactional(readOnly = false)
     public Appointment save(Appointment appointment) {
-
         return appointmentRepository.save(appointment);
+    }
+
+    @Transactional(readOnly = false)
+    public Appointment saveByAdmin(Appointment appointment) {
+        List<Appointment> appointments;
+        appointments = appointmentRepository.findBookedTimeSlotsForDayForCompany(appointment.getCompany().getId(), appointment.getPickupTime());
+
+        if(appointments == null || appointments.isEmpty()){
+            return appointmentRepository.save(appointment);
+        }
+        else{
+            return null;
+        }
     }
 
     public List<Appointment> findPrevoiusByUserTimeAndCompany(Appointment appointment){
         if(appointment.getCompany() != null && appointment.getUser() != null){
             return appointmentRepository.findUsersAppointmentsOnPickupAndCompany(appointment.getUser().getId(), appointment.getPickupTime(), appointment.getCompany().getId());
-
-        }else{
+        }
+        else{
             return null;
         }
     }
+
     public void remove(Integer id) {
         appointmentRepository.deleteById(id);
     }
@@ -85,6 +100,7 @@ public class AppointmentService {
     public List<Appointment> findBookedTimeSlotsForDay(Integer companyId, LocalDateTime date) {
         return appointmentRepository.findBookedTimeSlotsForDay(companyId, date);
     }
+
     public List<LocalDateTime> findFreeTimeSlots(Integer companyId, LocalDateTime date,LocalDateTime startTime, LocalDateTime endTime) {
         List<Appointment> appointments = findBookedTimeSlotsForDay(companyId,date);
         List<LocalDateTime> freeTimeSlots = new ArrayList<>();
@@ -139,8 +155,7 @@ public class AppointmentService {
         return bookedAdmins.size() == numberOfAdmins;
     }
 
-
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED) //provjeriti ovo
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
     public List<Integer> findAdminIdsForAppointmentsAtPickupTime(LocalDateTime dateTime,Integer companyId){
         return appointmentRepository.findAdminIdsForAppointmentsAtPickupTime(dateTime,companyId);
     }
@@ -166,7 +181,6 @@ public class AppointmentService {
         //save changes
         appointment = appointmentRepository.save(appointment);
         return appointment;
-
     }
 
     public List<Appointment> getUsersAppointments(Integer userId){
@@ -177,17 +191,10 @@ public class AppointmentService {
         List<Appointment.AppointmentStatus> allowedStatuses = Arrays.asList(Appointment.AppointmentStatus.ON_HOLD, Appointment.AppointmentStatus.IN_PROGRESS);
         return appointmentRepository.findUsersFutureAppointments(userId,allowedStatuses);
     }
-    public void SendPickUpInformationEmail(){
-
-    }
-
-
 
     public List<Appointment> findDoneAppointments(Integer userId) {
         return appointmentRepository.findByStatusAndUser(Appointment.AppointmentStatus.DONE,userId);
     }
-
-
 
     public Appointment cancelApppointment (Appointment appointment){
         if(appointment.getStatus() == Appointment.AppointmentStatus.ON_HOLD){
@@ -265,11 +272,7 @@ public class AppointmentService {
 
             save(appointment);
         }
-
         System.out.println("pokrenuo zakazanog");
-
-
-
     }
 
 }
