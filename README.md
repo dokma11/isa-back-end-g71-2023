@@ -1,7 +1,7 @@
 # ISA Project 2023 - Group 71 - Hospital Equipment Delivery system
 Backend project for course Internet software architectures.
 
-[Front end project](https://github.com/dokma11/isa-front-end-g71-2023)
+[Frontend project](https://github.com/dokma11/isa-front-end-g71-2023)
 # Overview
 - Hospital Equipment Delivery backend application named [jpa-example](https://github.com/dokma11/isa-back-end-g71-2023/tree/main/jpa-example/src/main/java/rs/ac/uns/ftn/informatika/jpa): written in Java using Spring backend framework
 - Proof of Concept: A [document](https://github.com/dokma11/isa-back-end-g71-2023/tree/main/ProofOfConcept) consisted of:
